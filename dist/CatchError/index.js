@@ -55,7 +55,14 @@ var CatchError = function CatchError(_1) {
 		var next = _1 || _nullCallback;
 
 		arguments[0] = function _wrapper() {
-			arguments[0] = null;
+			var args = arguments;
+
+			args.length++;
+			for (var i = args.length - 1; i > 0; i--) {
+				args[i] = args[i - 1];
+			}
+			args[0] = null;
+
 			next.apply(null, arguments);
 		};
 

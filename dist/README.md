@@ -29,6 +29,7 @@ This allows us to build powerful compositions of callback-driven async functions
     * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
     * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
+    * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>taskFunction</code>
     * [.While(conditionTask, loopTask)](#callback-patterns.While) ⇒ <code>function</code>
 
 
@@ -349,6 +350,32 @@ Race accepts a number of functions, and returns a task function that executes al
 **Params**
 
 - ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+
+* * *
+
+<a name="callback-patterns.TimeOut"></a>
+
+### callback-patterns.TimeOut(task, ms) ⇒ <code>taskFunction</code>
+```javascript
+  let chain = TimeOut(
+    function(next, ...args) {},
+			1000
+  );
+
+  chain(next, ...args);
+```
+
+TimeOut wraps a single task function, and returns a function that returns early if the task fails to complete before the timeout triggers.
+
+NOTE: the timeout being triggered will not cancel the original task.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task  
+**Params**
+
+- task <code>taskFunction</code> - the task to wrap in a timeout.
+- ms <code>number</code> - the timeout in ms.
 
 
 * * *
