@@ -29,6 +29,7 @@ This allows us to build powerful compositions of callback-driven async functions
     * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
     * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
+    * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>taskFunction</code>
     * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>taskFunction</code>
     * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>taskFunction</code>
     * [.While(conditionTask, loopTask)](#callback-patterns.While) ⇒ <code>function</code>
@@ -358,6 +359,22 @@ Race accepts a number of functions, and returns a task function that executes al
 **Params**
 
 - ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+
+* * *
+
+<a name="callback-patterns.Throttle"></a>
+
+### callback-patterns.Throttle(task, limit) ⇒ <code>taskFunction</code>
+Wraps a task and ensures that only X number of instances of the task can be run in parallel.
+Requests are queued up in an unbounded FIFO queue until they can be run.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task  
+**Params**
+
+- task <code>taskFunction</code> - the task to throttle
+- limit <code>number</code> - the number of instances that can run in parallel. default 1.
 
 
 * * *

@@ -11,6 +11,7 @@ module.exports = {
 	Logging: require('./Logging'),
 	PassThrough: require('./PassThrough'),
 	Race: require('./Race'),
+	Throttle: require('./Throttle'),
 	TimeIn: require('./TimeIn'),
 	TimeOut: require('./TimeOut'),
 	While: require('./While'),
