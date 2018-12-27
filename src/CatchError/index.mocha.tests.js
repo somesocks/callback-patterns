@@ -9,7 +9,7 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { InSeries, InParallel, PassThrough, Logging, CatchError } = require('../');
+const { InSeries, CatchError } = require('../');
 
 describe('CatchError', () => {
 	it('CatchError 1', (done) => {

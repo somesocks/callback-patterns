@@ -9,7 +9,7 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { If, InSeries, InParallel, PassThrough, CatchError, Logging } = require('../');
+const { If } = require('../');
 
 describe('If', () => {
 	it('Function.length should be at least 1', () => {

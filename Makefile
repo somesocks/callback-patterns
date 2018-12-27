@@ -47,7 +47,7 @@ test-cases:
 	$(NPM) run cmd-test-cases -- $(MOCHA)
 
 test-eslint:
-	$(NPM) run cmd-test-eslint -- $(MOCHA)
+	$(NPM) run cmd-test-eslint -- $(ESLINT)
 
 ##		make test - run test cases against the built package
 ##

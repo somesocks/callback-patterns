@@ -3,7 +3,9 @@ var _catchWrapper = require('../_private/catchWrapper');
 var _nullCallback = require('../_private/nullCallback');
 
 /**
-* Errors bypass the normal flow of execution.  They always return immediately up the "stack" even if they occur inside nested InSeries or InParallel chains.
+* Errors bypass the normal flow of execution.
+* They always return immediately up the "stack",
+* even if they occur inside nested InSeries or InParallel chains.
 *
 * ```javascript
 *   const InSeries = require('callback-patterns/InSeries');
@@ -22,7 +24,9 @@ var _nullCallback = require('../_private/nullCallback');
 *   )(console.log); // prints out 1 2 3 Error, eventually
 * ```
 *
-* If you need to catch an error explicitly at some point, wrap a chain in CatchError, which will return the error as the first argument to the next function.
+* If you need to catch an error explicitly at some point,
+* wrap a task in CatchError, which will return the error as the first argument
+* to the next function.
 *
 * ```javascript
 *   const InSeries = require('callback-patterns/InSeries');

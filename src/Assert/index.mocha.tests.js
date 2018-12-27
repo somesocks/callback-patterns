@@ -9,7 +9,7 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { Assert, InSeries, InParallel, PassThrough, Logging, CatchError } = require('../');
+const { Assert, InSeries, CatchError } = require('../');
 
 const Vet = require('vet');
 const { optional, exists, isBoolean, isNumber } = Vet;
@@ -43,7 +43,10 @@ describe('Assert', () => {
 		InSeries(
 			(next) => next(null, true),
 			CatchError(
-				Assert((val) => val === false, (val) => `val should be false, is ${val}`)
+				Assert(
+					(val) => val === false,
+					(val) => `val should be false, is ${val}`
+				)
 			),
 			Assert((...args) => matches([ exists ])(args))
 		)

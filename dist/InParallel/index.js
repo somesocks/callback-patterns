@@ -7,6 +7,21 @@ var _onceWrapper = require('../_private/onceWrapper');
 
 var EMPTY = function (next) { return (next || _nullCallback)(); };
 
+var _callbackBuilder = function (context, index) {
+	return function _ondone(err) {
+		var args = arguments;
+		if (err) {
+			context.next.apply(undefined, args);
+		} else {
+			context.results[index + 1] = Array.prototype.slice.call(args, 1);
+			context.done++;
+			if (context.done === context.handlers.length) {
+				context.next.apply(undefined, context.results);
+			}
+		}
+	};
+};
+
 /**
 * ```javascript
 *   const InParallel = require('callback-patterns/InParallel');
@@ -52,23 +67,16 @@ function InParallel() {
 		var args = arguments;
 		var next = _onceWrapper(_1);
 
-		var results = Array(handlers.length + 1);
-		var done = 0;
+		var context = {
+			next: _onceWrapper(next),
+			handlers: handlers,
+			results: Array(handlers.length + 1),
+			done: 0,
+		};
 
 		for (var i = 0; i < handlers.length; i++) {
 			// eslint-disable-next-line no-loop-func
-			var onDone = function (err) {
-				var args = arguments;
-				if (err) {
-					next.apply(undefined, args);
-				} else {
-					results[i + 1] = Array.prototype.slice.call(args, 1);
-					done++;
-					if (done === handlers.length) {
-						next.apply(undefined, results);
-					}
-				}
-			};
+			var onDone = _callbackBuilder(context, i);
 
 			var handler = _catchWrapper(handlers[i])
 				.bind(undefined, _onceWrapper(onDone));

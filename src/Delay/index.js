@@ -2,7 +2,6 @@
 
 var _delay = require('../_private/delay');
 var _nullCallback = require('../_private/nullCallback');
-var _stringWrapper = require('../_private/stringWrapper');
 
 /**
 *

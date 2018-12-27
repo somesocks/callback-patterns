@@ -14,7 +14,7 @@ const { InSeries, InParallel, PassThrough, CatchError, Logging } = require('../'
 describe('InParallel', () => {
 	it('Parallel Performance', (done) => {
 		const chain = InParallel(
-			...Array(50000).fill(PassThrough)
+			...Array(10000).fill(PassThrough)
 		);
 
 		chain(done);

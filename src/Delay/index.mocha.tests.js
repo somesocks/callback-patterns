@@ -12,16 +12,8 @@
 const {
 	Assert,
 	InSeries,
-	InParallel,
-	PassThrough,
-	Logging,
-	CatchError,
 	Delay,
 } = require('../');
-
-const Vet = require('vet');
-const { optional, exists, isBoolean, isNumber } = Vet;
-const { matches } = Vet.Object;
 
 describe('Delay', () => {
 

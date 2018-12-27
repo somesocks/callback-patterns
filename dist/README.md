@@ -23,12 +23,13 @@ This allows us to build powerful compositions of callback-driven async functions
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>taskFunction</code>
     * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>taskFunction</code>
     * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>taskFunction</code>
-    * [.If(conditionTask, thenTask, elseTask)](#callback-patterns.If) ⇒ <code>taskFunction</code>
+    * [.If(ifTask, thenTask, elseTask)](#callback-patterns.If) ⇒ <code>taskFunction</code>
     * [.InOrder(...tasks)](#callback-patterns.InOrder) ⇒ <code>taskFunction</code>
     * [.InParallel(...tasks)](#callback-patterns.InParallel) ⇒ <code>taskFunction</code>
     * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
     * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
+    * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>taskFunction</code>
     * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>taskFunction</code>
     * [.While(conditionTask, loopTask)](#callback-patterns.While) ⇒ <code>function</code>
 
@@ -56,7 +57,8 @@ This allows us to build powerful compositions of callback-driven async functions
   task(onDone, 1); // prints null 1, eventually
   task(onDone, -1); // prints '-1 is less than zero', eventually
 ```
-Builds an async assertion task.  When called, if the arguments do not match the validator functions,
+Builds an async assertion task.  When called,
+if the arguments do not match the validator functions,
 Assert passes an error to its callback.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
@@ -72,7 +74,9 @@ Assert passes an error to its callback.
 <a name="callback-patterns.CatchError"></a>
 
 ### callback-patterns.CatchError(task) ⇒ <code>taskFunction</code>
-Errors bypass the normal flow of execution.  They always return immediately up the "stack" even if they occur inside nested InSeries or InParallel chains.
+Errors bypass the normal flow of execution.
+They always return immediately up the "stack",
+even if they occur inside nested InSeries or InParallel chains.
 
 ```javascript
   const InSeries = require('callback-patterns/InSeries');
@@ -91,7 +95,9 @@ Errors bypass the normal flow of execution.  They always return immediately up t
   )(console.log); // prints out 1 2 3 Error, eventually
 ```
 
-If you need to catch an error explicitly at some point, wrap a chain in CatchError, which will return the error as the first argument to the next function.
+If you need to catch an error explicitly at some point,
+wrap a task in CatchError, which will return the error as the first argument
+to the next function.
 
 ```javascript
   const InSeries = require('callback-patterns/InSeries');
@@ -151,7 +157,7 @@ Delay acts like PassThrough, but inserts a delay in the call.
 
 <a name="callback-patterns.If"></a>
 
-### callback-patterns.If(conditionTask, thenTask, elseTask) ⇒ <code>taskFunction</code>
+### callback-patterns.If(ifTask, thenTask, elseTask) ⇒ <code>taskFunction</code>
 ```javascript
   const If = require('callback-patterns/If');
 
@@ -166,16 +172,18 @@ Delay acts like PassThrough, but inserts a delay in the call.
   logIfEven(null, 1); // prints out 'is not even!' eventually
   logIfEven(null, 2); // prints out 'is even!' eventually
 ```
-If accepts up to three tasks and returns a task that conditionally executes some.
-note: by default, the conditionTask, thenTask, and elseTask are all set to PassThrough
-note: the conditionTask can return multiple results, but only the first is checked for truthiness
+If accepts up to three tasks,
+an 'if' task, a 'then' task, and lastly an 'else' task
+note: by default, the ifTask, thenTask, and elseTask are PassThrough
+note: the ifTask can return multiple results,
+but only the first is checked for truthiness
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 **Params**
 
-- conditionTask <code>taskFunction</code> - a condition task.
-- thenTask <code>taskFunction</code> - a task to run if the condition returns a truthy value.
-- elseTask <code>taskFunction</code> - a task to run if the condition returns a falsy value.
+- ifTask <code>taskFunction</code> - a condition task.
+- thenTask <code>taskFunction</code> - a task to run when ifTask returns a truthy value.
+- elseTask <code>taskFunction</code> - a task to run when ifTask returns a falsy value.
 
 
 * * *
@@ -350,6 +358,30 @@ Race accepts a number of functions, and returns a task function that executes al
 **Params**
 
 - ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+
+* * *
+
+<a name="callback-patterns.TimeIn"></a>
+
+### callback-patterns.TimeIn(task, ms) ⇒ <code>taskFunction</code>
+```javascript
+  let task = TimeIn(
+    function(next, ...args) {},
+			1000
+  );
+
+  task(next, ...args);
+```
+
+TimeIn wraps a single task function, and returns a function that only returns after X ms.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task  
+**Params**
+
+- task <code>taskFunction</code> - the task to wrap in a timeout.
+- ms <code>number</code> - the timein in ms.
 
 
 * * *

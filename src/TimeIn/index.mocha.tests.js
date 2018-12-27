@@ -12,29 +12,31 @@
 const {
 	Assert,
 	InSeries,
+	InParallel,
+	PassThrough,
+	Logging,
+	CatchError,
 	Delay,
+	TimeIn,
 } = require('../');
 
-describe('Delay', () => {
+const Vet = require('vet');
+const { optional, exists, isBoolean, isNumber } = Vet;
+const { matches } = Vet.Object;
+
+describe('TimeIn', () => {
 
 	it('Function.length should be at least 1', () => {
-		if (Delay().length < 1) { throw new Error(); }
+		if (TimeIn().length < 1) { throw new Error(); }
 	});
 
-	it('Delay 1',
+	it('TimeIn works ',
 		InSeries(
 			(next) => next(null, 1, 2, 3),
-			Delay(100),
-			Assert(
-				(a, b, c) => (a === 1 && b === 2 && c === 3)
-			)
-		)
-	);
-
-	it('Delay 2',
-		InSeries(
-			(next) => next(null, 1, 2, 3),
-			Delay(),
+			TimeIn(
+				Delay(200),
+				1000
+			),
 			Assert(
 				(a, b, c) => (a === 1 && b === 2 && c === 3)
 			)
@@ -109,10 +111,10 @@ describe('Delay', () => {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
 	];
 
-	it('Delay performance',
+	it('TimeIn performance',
 		InSeries(
 			(next) => next.apply(null, LONG_ARGS),
-			Delay()
+			TimeIn()
 		)
 	);
 
