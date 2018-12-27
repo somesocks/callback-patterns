@@ -1,0 +1,53 @@
+
+var _catchWrapper = require('./_catchWrapper');
+var _onceWrapper = require('./_onceWrapper');
+var PassThrough = require('./PassThrough');
+
+/**
+* ```javascript
+*   let task = InSeries(
+*     function(next, ...args) {...},
+*     Callbackify(
+*       (...args) => new Promise((resolve, reject) => resolve(...args))
+*     ),
+*     function(next, ...args) {},
+*     ...
+*   );
+*
+*   task(next, ...args);
+* ```
+* Wraps around a promise generator function,
+* to make it easier to integrate with task functions.
+* @param {function} generator - a function that generates a promise from the args.
+* @returns {taskFunction} a task that wraps around the promise
+* @memberof callback-patterns
+*/
+function Callbackify(promiseGenerator) {
+	if (promiseGenerator == null) {
+		return PassThrough;
+	}
+
+	var _callbackifyInstance = function _callbackifyInstance(_1) {
+		var next = _onceWrapper(_1);
+		var args = arguments;
+
+		args.length--;
+		for (var i = 0; i < args.length; i++) {
+			args[i] = args[i+1];
+		}
+
+		var promise = promiseGenerator.apply(null, args);
+
+		var resolve = next.bind(null, null);
+		var reject = next;
+
+		return promise
+			.then(resolve, reject);
+	};
+
+	return _catchWrapper(_callbackifyInstance);
+}
+
+Callbackify.default = Callbackify;
+
+module.exports = Callbackify;

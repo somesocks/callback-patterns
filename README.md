@@ -21,6 +21,7 @@ This allows us to build powerful compositions of callback-driven async functions
 
 * [callback-patterns](#callback-patterns) : <code>object</code>
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>taskFunction</code>
+    * [.Callbackify(generator)](#callback-patterns.Callbackify) ⇒ <code>taskFunction</code>
     * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>taskFunction</code>
     * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>taskFunction</code>
     * [.If(ifTask, thenTask, elseTask)](#callback-patterns.If) ⇒ <code>taskFunction</code>
@@ -28,6 +29,7 @@ This allows us to build powerful compositions of callback-driven async functions
     * [.InParallel(...tasks)](#callback-patterns.InParallel) ⇒ <code>taskFunction</code>
     * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
     * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
+    * [.Promisify(task)](#callback-patterns.Promisify) ⇒ <code>function</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
     * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>taskFunction</code>
     * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>taskFunction</code>
@@ -68,6 +70,33 @@ Assert passes an error to its callback.
 
 - validator <code>function</code> - a function that checks the arguments.
 - message <code>string</code> - an optional error message to throw if the assertion fails, or a message builder function.
+
+
+* * *
+
+<a name="callback-patterns.Callbackify"></a>
+
+### callback-patterns.Callbackify(generator) ⇒ <code>taskFunction</code>
+```javascript
+  let task = InSeries(
+    function(next, ...args) {...},
+    Callbackify(
+      (...args) => new Promise((resolve, reject) => resolve(...args))
+    ),
+    function(next, ...args) {},
+    ...
+  );
+
+  task(next, ...args);
+```
+Wraps around a promise generator function,
+to make it easier to integrate with task functions.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task that wraps around the promise  
+**Params**
+
+- generator <code>function</code> - a function that generates a promise from the args.
 
 
 * * *
@@ -319,6 +348,44 @@ It passes the arguments received into all the statements, collects the results, 
 **Params**
 
 - ...statements <code>function</code> - any number of logging values.  Functions are called with the calling arguments, everything else is passed directly to
+
+
+* * *
+
+<a name="callback-patterns.Promisify"></a>
+
+### callback-patterns.Promisify(task) ⇒ <code>function</code>
+```javascript
+
+  let task = Promisify(
+    InSeries(
+      function(next, ...args) {...},
+      function(next, ...args) {...},
+      ...
+    )
+  );
+
+ Promise
+   .resolve()
+   .then(task)
+   ...
+
+```
+
+Wraps around a task function and greates a promise generator,
+to make it easier to integrate task functions and promises.
+
+NOTE: callback-patterns does not come bundled with a promise library,
+it expects Promise to already exists in the global namespace.
+
+NOTE: even though callback-patterns can 'return' multiple values through the next callback,
+Promisify always resolves to the first result returned.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>function</code> - a function that generates a Promise when called  
+**Params**
+
+- task <code>function</code> - a function that generates a promise from the args.
 
 
 * * *

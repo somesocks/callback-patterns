@@ -2,6 +2,7 @@
 
 module.exports = {
 	Assert: require('./Assert'),
+	Callbackify: require('./Callbackify'),
 	CatchError: require('./CatchError'),
 	Delay: require('./Delay'),
 	If: require('./If'),
@@ -10,6 +11,7 @@ module.exports = {
 	InSeries: require('./InSeries'),
 	Logging: require('./Logging'),
 	PassThrough: require('./PassThrough'),
+	Promisify: require('./Promisify'),
 	Race: require('./Race'),
 	Throttle: require('./Throttle'),
 	TimeIn: require('./TimeIn'),
