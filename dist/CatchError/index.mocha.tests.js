@@ -1,4 +1,13 @@
-/* eslint-disable */
+/* eslint-env mocha, node */
+/* eslint-disable es5/no-destructuring */
+/* eslint-disable es5/no-block-scoping */
+/* eslint-disable es5/no-shorthand-properties */
+/* eslint-disable es5/no-arrow-expression */
+/* eslint-disable es5/no-arrow-functions */
+/* eslint-disable es5/no-rest-parameters */
+/* eslint-disable es5/no-spread */
+/* eslint-disable es5/no-template-literals */
+/* eslint-disable es5/no-es6-methods */
 
 const { InSeries, InParallel, PassThrough, Logging, CatchError } = require('../');
 
@@ -37,7 +46,7 @@ describe('CatchError', () => {
 
 	it('CatchError 5', (done) => {
 		const chain = InSeries(
-				CatchError(
+			CatchError(
 				(next) => next(new Error('error'), null)
 			),
 			(next) => done()

@@ -22,6 +22,7 @@ This allows us to build powerful compositions of callback-driven async functions
 * [callback-patterns](#callback-patterns) : <code>object</code>
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>taskFunction</code>
     * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>taskFunction</code>
+    * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>taskFunction</code>
     * [.If(conditionTask, thenTask, elseTask)](#callback-patterns.If) ⇒ <code>taskFunction</code>
     * [.InOrder(...tasks)](#callback-patterns.InOrder) ⇒ <code>taskFunction</code>
     * [.InParallel(...tasks)](#callback-patterns.InParallel) ⇒ <code>taskFunction</code>
@@ -115,6 +116,34 @@ If you need to catch an error explicitly at some point, wrap a chain in CatchErr
 **Params**
 
 - task <code>taskFunction</code> - a function that checks the arguments.
+
+
+* * *
+
+<a name="callback-patterns.Delay"></a>
+
+### callback-patterns.Delay(delay) ⇒ <code>taskFunction</code>
+```javascript
+  const Delay = require('callback-patterns/Delay');
+  const InSeries = require('callback-patterns/InSeries');
+
+  const task = InSeries(
+    (next, num) => next(null, num),
+    Delay(100),
+    (next, num) => next(null, num + 1),
+  );
+
+  const onDone = (err, result) => console.log(err, result);
+
+  task(onDone, 1); // prints null 1, after a 100 ms delay
+```
+Delay acts like PassThrough, but inserts a delay in the call.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a delay task  
+**Params**
+
+- delay <code>number</code> - The time to delay, in ms.
 
 
 * * *

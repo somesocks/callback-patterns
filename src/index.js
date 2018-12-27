@@ -3,6 +3,7 @@
 module.exports = {
 	Assert: require('./Assert'),
 	CatchError: require('./CatchError'),
+	Delay: require('./Delay'),
 	If: require('./If'),
 	InOrder: require('./InOrder'),
 	InParallel: require('./InParallel'),

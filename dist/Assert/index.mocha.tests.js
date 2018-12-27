@@ -1,4 +1,13 @@
-/* eslint-disable */
+/* eslint-env mocha, node */
+/* eslint-disable es5/no-destructuring */
+/* eslint-disable es5/no-block-scoping */
+/* eslint-disable es5/no-shorthand-properties */
+/* eslint-disable es5/no-arrow-expression */
+/* eslint-disable es5/no-arrow-functions */
+/* eslint-disable es5/no-rest-parameters */
+/* eslint-disable es5/no-spread */
+/* eslint-disable es5/no-template-literals */
+/* eslint-disable es5/no-es6-methods */
 
 const { Assert, InSeries, InParallel, PassThrough, Logging, CatchError } = require('../');
 
@@ -10,14 +19,8 @@ describe('Assert', () => {
 	it('Assert 1',
 		InSeries(
 			(next) => next(null, true),
-			Logging(
-				(...args) => `args ${args}`
-			),
 			Assert(
-				(arg) => {
-					console.log('assert arg', arg);
-					return isBoolean(arg);
-				}
+				(arg) => isBoolean(arg)
 			)
 		)
 	);
