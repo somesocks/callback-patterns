@@ -1,0 +1,14 @@
+/** @namespace callback-patterns */
+
+module.exports = {
+	Assert: require('./Assert'),
+	CatchError: require('./CatchError'),
+	If: require('./If'),
+	InOrder: require('./InOrder'),
+	InParallel: require('./InParallel'),
+	InSeries: require('./InSeries'),
+	Logging: require('./Logging'),
+	PassThrough: require('./PassThrough'),
+	Race: require('./Race'),
+	While: require('./While'),
+};
