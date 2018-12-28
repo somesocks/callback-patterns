@@ -10,6 +10,8 @@ module.exports = {
 	InParallel: require('./InParallel'),
 	InSeries: require('./InSeries'),
 	Logging: require('./Logging'),
+	ParallelFilter: require('./ParallelFilter'),
+	ParallelMap: require('./ParallelMap'),
 	PassThrough: require('./PassThrough'),
 	Promisify: require('./Promisify'),
 	Race: require('./Race'),

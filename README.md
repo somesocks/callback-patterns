@@ -35,6 +35,8 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.InParallel(...tasks)](#callback-patterns.InParallel) ⇒ <code>taskFunction</code>
     * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
     * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
+    * [.ParallelFilter(filter)](#callback-patterns.ParallelFilter) ⇒ <code>taskFunction</code>
+    * [.ParallelMap(task)](#callback-patterns.ParallelMap) ⇒ <code>taskFunction</code>
     * [.Promisify(task)](#callback-patterns.Promisify) ⇒ <code>function</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
     * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>taskFunction</code>
@@ -354,6 +356,35 @@ It passes the arguments received into all the statements, collects the results, 
 **Params**
 
 - ...statements <code>function</code> - any number of logging values.  Functions are called with the calling arguments, everything else is passed directly to
+
+
+* * *
+
+<a name="callback-patterns.ParallelFilter"></a>
+
+### callback-patterns.ParallelFilter(filter) ⇒ <code>taskFunction</code>
+Builds a task that filters all of its arguments in parallel, and returns the results
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a filtering task  
+**Params**
+
+- filter <code>taskFunction</code> - an asynchronous filter function that returns true or false through its callback.
+
+
+* * *
+
+<a name="callback-patterns.ParallelMap"></a>
+
+### callback-patterns.ParallelMap(task) ⇒ <code>taskFunction</code>
+Builds a task wrapper that asynchronously maps each of its arguments to a result.
+Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a parallel map task  
+**Params**
+
+- task <code>taskFunction</code> - an asynchronous mapping function.
 
 
 * * *
