@@ -5,7 +5,7 @@ var PassThrough = require('./PassThrough');
 var Delay = require('./Delay');
 var InSeries = require('./InSeries');
 
-function ERROR(next) {
+function _error(next) {
 	return next(new Error('callback-patterns.TimeOut triggered'));
 }
 
@@ -35,7 +35,7 @@ function TimeOut(_1, _2) {
 
 	var timeout = InSeries(
 		Delay(ms),
-		ERROR
+		_error
 	);
 
 	return Race(timeout, task);

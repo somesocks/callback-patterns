@@ -9,49 +9,83 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { InSeries, CatchError } = require('./');
+const { Assert, InSeries, CatchError } = require('./');
 
 describe('CatchError', () => {
 	it('CatchError 1', (done) => {
-		const chain = CatchError(
+		const task = InSeries(
+			CatchError(
+				(next) => next()
+			),
+			Assert(
+				(err, res) => err == null
+			),
 			(next) => next()
 		);
 
-		chain(done);
+
+		task(done);
 	});
 
 	it('CatchError 2', (done) => {
-		const chain = CatchError(
-			(next) => next(new Error('error'))
+		const task = InSeries(
+			CatchError(
+				(next) => next(new Error('error'))
+			),
+			Assert(
+				(err, res) => err != null
+			),
+			Assert(
+				(err, res) => res == null
+			),
+			(next) => next()
 		);
 
-		chain(done);
+		task(done);
 	});
 
 	it('CatchError 3', (done) => {
-		const chain = CatchError(
-			(next) => { throw new Error('error'); }
+		const task = InSeries(
+			CatchError(
+				(next) => { throw new Error('error'); }
+			),
+			Assert(
+				(err, res) => err != null
+			),
+			Assert(
+				(err, res) => res == null
+			),
+			(next) => next()
 		);
 
-		chain(done);
+		task(done);
 	});
 
 	it('CatchError 4', (done) => {
-		const chain = CatchError(
-			(next) => next(new Error('error'), null)
+		const task = InSeries(
+			CatchError(
+				(next) => next(new Error('error'), null)
+			),
+			Assert(
+				(err, res) => err != null
+			),
+			Assert(
+				(err, res) => res == null
+			),
+			(next) => next()
 		);
 
-		chain(done);
+		task(done);
 	});
 
 	it('CatchError 5', (done) => {
-		const chain = InSeries(
+		const task = InSeries(
 			CatchError(
 				(next) => next(new Error('error'), null)
 			),
 			(next) => done()
 		);
 
-		chain(null);
+		task(null);
 	});
 });
