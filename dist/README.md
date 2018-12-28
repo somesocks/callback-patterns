@@ -1,10 +1,6 @@
 # callback-patterns
 
-`callback-patterns` is a collection of design patterns for callback-driven async code.
-
-The design patterns in this library are constructors that build callback-expecting functions.
-
-Each pattern is designed to be a stand-alone piece of code, tested for performance and robustness.
+`callback-patterns` is a collection of design patterns for callback-driven async code.  The design patterns in this library are constructors that build callback-expecting functions.  Each pattern is designed to be a stand-alone piece of code, tested for performance and robustness.
 
 # Design
 
