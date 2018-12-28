@@ -51,10 +51,10 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 
 ### callback-patterns.Assert(validator, message) ⇒ <code>taskFunction</code>
 ```javascript
-  const Assert = require('callback-patterns/Assert');
-  const InSeries = require('callback-patterns/InSeries');
+  let Assert = require('callback-patterns/Assert');
+  let InSeries = require('callback-patterns/InSeries');
 
-  const task = InSeries(
+  let task = InSeries(
     (next, num) => next(null, num),
     Assert(
       (num) => (num >= 0),
@@ -63,7 +63,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     (next, num) => next(null, num),
   );
 
-  const onDone = (err, result) => console.log(err, result);
+  let onDone = (err, result) => console.log(err, result);
 
   task(onDone, 1); // prints null 1, eventually
   task(onDone, -1); // prints '-1 is less than zero', eventually
@@ -86,6 +86,9 @@ Assert passes an error to its callback.
 
 ### callback-patterns.Callbackify(generator) ⇒ <code>taskFunction</code>
 ```javascript
+  let InSeries = require('callback-patterns/InSeries');
+  let Callbackify = require('callback-patterns/Callbackify');
+
   let task = InSeries(
     function(next, ...args) {...},
     Callbackify(
@@ -117,10 +120,10 @@ They always return immediately up the "stack",
 even if they occur inside nested InSeries or InParallel chains.
 
 ```javascript
-  const InSeries = require('callback-patterns/InSeries');
-  const CatchError = require('callback-patterns/CatchError');
+  let InSeries = require('callback-patterns/InSeries');
+  let CatchError = require('callback-patterns/CatchError');
 
-  const task = InSeries(
+  let task = InSeries(
     (next) => { console.log(1); next(); }
     InSeries(
       (next) => { console.log(2); next(); }
@@ -138,9 +141,9 @@ wrap a task in CatchError, which will return the error as the first argument
 to the next function.
 
 ```javascript
-  const InSeries = require('callback-patterns/InSeries');
-  const CatchError = require('callback-patterns/CatchError');
-  const task = InSeries(
+  let InSeries = require('callback-patterns/InSeries');
+  let CatchError = require('callback-patterns/CatchError');
+  let task = InSeries(
     (next) => { console.log(1); next();}
     CatchError(
       InSeries(
@@ -169,16 +172,16 @@ to the next function.
 
 ### callback-patterns.Delay(delay) ⇒ <code>taskFunction</code>
 ```javascript
-  const Delay = require('callback-patterns/Delay');
-  const InSeries = require('callback-patterns/InSeries');
+  let Delay = require('callback-patterns/Delay');
+  let InSeries = require('callback-patterns/InSeries');
 
-  const task = InSeries(
+  let task = InSeries(
     (next, num) => next(null, num),
     Delay(100),
     (next, num) => next(null, num + 1),
   );
 
-  const onDone = (err, result) => console.log(err, result);
+  let onDone = (err, result) => console.log(err, result);
 
   task(onDone, 1); // prints null 1, after a 100 ms delay
 ```
@@ -197,7 +200,7 @@ Delay acts like PassThrough, but inserts a delay in the call.
 
 ### callback-patterns.If(ifTask, thenTask, elseTask) ⇒ <code>taskFunction</code>
 ```javascript
-  const If = require('callback-patterns/If');
+  let If = require('callback-patterns/If');
 
   let logIfEven = If(
     (next, num) => next(null, num % 2 === 0)
@@ -230,9 +233,9 @@ but only the first is checked for truthiness
 
 ### callback-patterns.InOrder(...tasks) ⇒ <code>taskFunction</code>
 ```javascript
-  const InOrder = require('callback-patterns/InOrder');
+  let InOrder = require('callback-patterns/InOrder');
 
-  const task = InOrder(
+  let task = InOrder(
     function(next, ...args) {},
     function(next, ...args) {},
     ...
@@ -266,7 +269,7 @@ This is different from InSeries, where the output of each is task is passed as t
 
 ### callback-patterns.InParallel(...tasks) ⇒ <code>taskFunction</code>
 ```javascript
-  const InParallel = require('callback-patterns/InParallel');
+  let InParallel = require('callback-patterns/InParallel');
 
   let task = InParallel(
     function(next, ...args) {},
@@ -279,7 +282,7 @@ This is different from InSeries, where the output of each is task is passed as t
 InParallel accepts a number of functions, and returns a task function that executes all of its child tasks in parallel.
 
 ```javascript
-  const InParallel = require('callback-patterns/InParallel');
+  let InParallel = require('callback-patterns/InParallel');
 
   let task = InParallel(
     (next) => next(null, 1),
@@ -308,7 +311,7 @@ This includes an empty array for tasks that don't return results.
 
 ### callback-patterns.InSeries(...tasks) ⇒ <code>taskFunction</code>
 ```javascript
-  const InSeries = require('callback-patterns/InSeries');
+  let InSeries = require('callback-patterns/InSeries');
 
   let task = InSeries(
     function(next, ...args) {},
@@ -321,7 +324,7 @@ This includes an empty array for tasks that don't return results.
 Runs several tasks in series, and passes the results from one down to the next.
 This works similarly to the 'waterfall' method in caolan's async.
 ```javascript
-  const InSeries = require('callback-patterns/InSeries');
+  let InSeries = require('callback-patterns/InSeries');
 
   let chain = InSeries(
     (next) => { console.log(1); next();}
@@ -393,6 +396,8 @@ Note: even though the mapping function can return any number of results, Paralle
 
 ### callback-patterns.Promisify(task) ⇒ <code>function</code>
 ```javascript
+  let InSeries = require('callback-patterns/InSeries');
+  let Promisify = require('callback-patterns/Promisify');
 
   let task = Promisify(
     InSeries(
@@ -402,9 +407,8 @@ Note: even though the mapping function can return any number of results, Paralle
     )
   );
 
- Promise
-   .resolve()
-   .then(task)
+ task()
+   .then()
    ...
 
 ```
@@ -431,7 +435,7 @@ Promisify always resolves to the first result returned.
 
 ### callback-patterns.Race(...tasks) ⇒ <code>taskFunction</code>
 ```javascript
-  const Race = require('callback-patterns/Race');
+  let Race = require('callback-patterns/Race');
 
   let task = Race(
     function(next, ...args) {},
@@ -445,7 +449,7 @@ Promisify always resolves to the first result returned.
 Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 
 ```javascript
-  const Race = require('callback-patterns/Race');
+  let Race = require('callback-patterns/Race');
 
   let task = Race(
     (next) => next(null, 1),
@@ -487,6 +491,8 @@ Requests are queued up in an unbounded FIFO queue until they can be run.
 
 ### callback-patterns.TimeIn(task, ms) ⇒ <code>taskFunction</code>
 ```javascript
+  let TimeIn = require('callback-patterns/TimeIn');
+
   let task = TimeIn(
     function(next, ...args) {},
 			1000
@@ -511,6 +517,8 @@ TimeIn wraps a single task function, and returns a function that only returns af
 
 ### callback-patterns.TimeOut(task, ms) ⇒ <code>taskFunction</code>
 ```javascript
+  let TimeOut = require('callback-patterns/TimeOut');
+
   let chain = TimeOut(
     function(next, ...args) {},
 			1000
@@ -537,14 +545,14 @@ NOTE: the timeout being triggered will not cancel the original task.
 
 ### callback-patterns.While(conditionTask, loopTask) ⇒ <code>function</code>
 ```javascript
-  const While = require('callback-patterns/While');
+  let While = require('callback-patterns/While');
 
-  const task = While(
+  let task = While(
     (next, num) => next(null, num < 10),
     (next, num) => next(null, num + 1),
   );
 
-  const onDone = (err, result) => console.log(result);
+  let onDone = (err, result) => console.log(result);
 
   task(onDone, 1); // prints 9, eventually
 ```

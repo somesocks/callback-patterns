@@ -10,14 +10,14 @@ var _false = function _false(next) { return next(null, false); };
 
 /**
 * ```javascript
-*   const While = require('callback-patterns/While');
+*   let While = require('callback-patterns/While');
 *
-*   const task = While(
+*   let task = While(
 *     (next, num) => next(null, num < 10),
 *     (next, num) => next(null, num + 1),
 *   );
 *
-*   const onDone = (err, result) => console.log(result);
+*   let onDone = (err, result) => console.log(result);
 *
 *   task(onDone, 1); // prints 9, eventually
 * ```

@@ -24,7 +24,7 @@ var _callbackBuilder = function (context, index) {
 
 /**
 * ```javascript
-*   const InParallel = require('callback-patterns/InParallel');
+*   let InParallel = require('callback-patterns/InParallel');
 *
 *   let task = InParallel(
 *     function(next, ...args) {},
@@ -37,7 +37,7 @@ var _callbackBuilder = function (context, index) {
 * InParallel accepts a number of functions, and returns a task function that executes all of its child tasks in parallel.
 *
 * ```javascript
-*   const InParallel = require('callback-patterns/InParallel');
+*   let InParallel = require('callback-patterns/InParallel');
 *
 *   let task = InParallel(
 *     (next) => next(null, 1),

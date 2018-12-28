@@ -9,9 +9,9 @@ var EMPTY = function (next) { return (next || nullCallback)(); };
 
 /**
 * ```javascript
-*   const InOrder = require('callback-patterns/InOrder');
+*   let InOrder = require('callback-patterns/InOrder');
 *
-*   const task = InOrder(
+*   let task = InOrder(
 *     function(next, ...args) {},
 *     function(next, ...args) {},
 *     ...

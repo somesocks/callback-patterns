@@ -7,7 +7,7 @@ var PassThrough = require('./PassThrough');
 
 /**
 * ```javascript
-*   const If = require('callback-patterns/If');
+*   let If = require('callback-patterns/If');
 *
 *   let logIfEven = If(
 *     (next, num) => next(null, num % 2 === 0)

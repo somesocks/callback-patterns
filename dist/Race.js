@@ -9,7 +9,7 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 /**
 *
 * ```javascript
-*   const Race = require('callback-patterns/Race');
+*   let Race = require('callback-patterns/Race');
 *
 *   let task = Race(
 *     function(next, ...args) {},
@@ -23,7 +23,7 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 * Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 *
 * ```javascript
-*   const Race = require('callback-patterns/Race');
+*   let Race = require('callback-patterns/Race');
 *
 *   let task = Race(
 *     (next) => next(null, 1),

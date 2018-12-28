@@ -5,6 +5,9 @@ var PassThrough = require('./PassThrough');
 
 /**
 * ```javascript
+*   let InSeries = require('callback-patterns/InSeries');
+*   let Callbackify = require('callback-patterns/Callbackify');
+*
 *   let task = InSeries(
 *     function(next, ...args) {...},
 *     Callbackify(

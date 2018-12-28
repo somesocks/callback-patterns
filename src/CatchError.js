@@ -8,10 +8,10 @@ var _nullCallback = require('./_nullCallback');
 * even if they occur inside nested InSeries or InParallel chains.
 *
 * ```javascript
-*   const InSeries = require('callback-patterns/InSeries');
-*   const CatchError = require('callback-patterns/CatchError');
+*   let InSeries = require('callback-patterns/InSeries');
+*   let CatchError = require('callback-patterns/CatchError');
 *
-*   const task = InSeries(
+*   let task = InSeries(
 *     (next) => { console.log(1); next(); }
 *     InSeries(
 *       (next) => { console.log(2); next(); }
@@ -29,10 +29,10 @@ var _nullCallback = require('./_nullCallback');
 * to the next function.
 *
 * ```javascript
-*   const InSeries = require('callback-patterns/InSeries');
-*   const CatchError = require('callback-patterns/CatchError');
+*   let InSeries = require('callback-patterns/InSeries');
+*   let CatchError = require('callback-patterns/CatchError');
 
-*   const task = InSeries(
+*   let task = InSeries(
 *     (next) => { console.log(1); next();}
 *     CatchError(
 *       InSeries(

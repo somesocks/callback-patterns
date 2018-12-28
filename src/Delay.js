@@ -6,16 +6,16 @@ var _nullCallback = require('./_nullCallback');
 /**
 *
 * ```javascript
-*   const Delay = require('callback-patterns/Delay');
-*   const InSeries = require('callback-patterns/InSeries');
+*   let Delay = require('callback-patterns/Delay');
+*   let InSeries = require('callback-patterns/InSeries');
 *
-*   const task = InSeries(
+*   let task = InSeries(
 *     (next, num) => next(null, num),
 *     Delay(100),
 *     (next, num) => next(null, num + 1),
 *   );
 *
-*   const onDone = (err, result) => console.log(err, result);
+*   let onDone = (err, result) => console.log(err, result);
 *
 *   task(onDone, 1); // prints null 1, after a 100 ms delay
 * ```

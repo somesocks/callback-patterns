@@ -9,7 +9,7 @@ var EMPTY = function (next) { return (next || nullCallback)(); };
 
 /**
 * ```javascript
-*   const InSeries = require('callback-patterns/InSeries');
+*   let InSeries = require('callback-patterns/InSeries');
 *
 *   let task = InSeries(
 *     function(next, ...args) {},
@@ -22,7 +22,7 @@ var EMPTY = function (next) { return (next || nullCallback)(); };
 * Runs several tasks in series, and passes the results from one down to the next.
 * This works similarly to the 'waterfall' method in caolan's async.
 * ```javascript
-*   const InSeries = require('callback-patterns/InSeries');
+*   let InSeries = require('callback-patterns/InSeries');
 *
 *   let chain = InSeries(
 *     (next) => { console.log(1); next();}

@@ -12,6 +12,8 @@ function _error(next) {
 /**
 *
 * ```javascript
+*   let TimeOut = require('callback-patterns/TimeOut');
+*
 *   let chain = TimeOut(
 *     function(next, ...args) {},
 *			1000

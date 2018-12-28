@@ -9,10 +9,10 @@ var _default = function () { return true; };
 /**
 *
 * ```javascript
-*   const Assert = require('callback-patterns/Assert');
-*   const InSeries = require('callback-patterns/InSeries');
+*   let Assert = require('callback-patterns/Assert');
+*   let InSeries = require('callback-patterns/InSeries');
 *
-*   const task = InSeries(
+*   let task = InSeries(
 *     (next, num) => next(null, num),
 *     Assert(
 *       (num) => (num >= 0),
@@ -21,7 +21,7 @@ var _default = function () { return true; };
 *     (next, num) => next(null, num),
 *   );
 *
-*   const onDone = (err, result) => console.log(err, result);
+*   let onDone = (err, result) => console.log(err, result);
 *
 *   task(onDone, 1); // prints null 1, eventually
 *   task(onDone, -1); // prints '-1 is less than zero', eventually

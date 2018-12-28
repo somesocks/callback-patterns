@@ -9,7 +9,7 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { If } = require('./');
+const { Assert, InSeries, If } = require('./');
 
 describe('If', () => {
 	it('Function.length should be at least 1', () => {
@@ -33,4 +33,34 @@ describe('If', () => {
 			(next) => { throw new Error('error'); }
 		)((err, res) => done(err != null ? null : err));
 	});
+
+	it('then works',
+		InSeries(
+			(next) => next(null, 1),
+			If(
+				(next, i) => next(null, i > 0),
+				(next) => next(null, true),
+				(next) => next(null, false)
+			),
+			Assert(
+				(val) => val === true
+			)
+		)
+	);
+
+	it('else works',
+		InSeries(
+			(next) => next(null, -1),
+			If(
+				(next, i) => next(null, i > 0),
+				(next) => next(null, true),
+				(next) => next(null, false)
+			),
+			Assert(
+				(val) => val === false
+			)
+		)
+	);
+
+
 });

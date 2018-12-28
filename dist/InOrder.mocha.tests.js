@@ -9,7 +9,7 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { InOrder, InParallel, CatchError, PassThrough, Logging } = require('./');
+const { Assert, InSeries, InOrder, PassThrough } = require('./');
 
 describe('InOrder', () => {
 	it('Long Chain Performance', (done) => {
@@ -65,4 +65,33 @@ describe('InOrder', () => {
 		)(() => done(new Error('called')));
 		setTimeout(done, 500);
 	});
+
+	it('works 1',
+		InSeries(
+			(next) => next(null, 1),
+			InOrder(
+				(next, val) => next(null, val + 1),
+				(next, val) => next(null, val + 1),
+				(next, val) => next(null, val + 1)
+			),
+			Assert(
+				(val) => val === 1
+			)
+		)
+	);
+
+	it('works 2',
+		InSeries(
+			(next) => next(null, { a: 1 }),
+			InOrder(
+				(next, val) => { val.a++; next(); },
+				(next, val) => { val.a++; next(); },
+				(next, val) => { val.a++; next(); }
+			),
+			Assert(
+				(val) => val.a === 4
+			)
+		)
+	);
+
 });

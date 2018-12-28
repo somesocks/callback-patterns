@@ -22,6 +22,8 @@ function _results(next, r0, r1) {
 /**
 *
 * ```javascript
+*   let TimeIn = require('callback-patterns/TimeIn');
+*
 *   let task = TimeIn(
 *     function(next, ...args) {},
 *			1000

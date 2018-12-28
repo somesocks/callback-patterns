@@ -4,6 +4,8 @@ var PassThrough = require('./PassThrough');
 
 /**
 * ```javascript
+*   let InSeries = require('callback-patterns/InSeries');
+*   let Promisify = require('callback-patterns/Promisify');
 *
 *   let task = Promisify(
 *     InSeries(
@@ -13,9 +15,8 @@ var PassThrough = require('./PassThrough');
 *     )
 *   );
 *
-*  Promise
-*    .resolve()
-*    .then(task)
+*  task()
+*    .then()
 *    ...
 *
 * ```
