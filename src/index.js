@@ -18,5 +18,6 @@ module.exports = {
 	Throttle: require('./Throttle'),
 	TimeIn: require('./TimeIn'),
 	TimeOut: require('./TimeOut'),
+	Timer: require('./Timer'),
 	While: require('./While'),
 };

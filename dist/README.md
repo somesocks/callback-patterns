@@ -42,6 +42,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>taskFunction</code>
     * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>taskFunction</code>
     * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>taskFunction</code>
+    * [.Timer(task, label)](#callback-patterns.Timer) ⇒ <code>taskFunction</code>
     * [.While(conditionTask, loopTask)](#callback-patterns.While) ⇒ <code>function</code>
 
 
@@ -537,6 +538,21 @@ NOTE: the timeout being triggered will not cancel the original task.
 
 - task <code>taskFunction</code> - the task to wrap in a timeout.
 - ms <code>number</code> - the timeout in ms.
+
+
+* * *
+
+<a name="callback-patterns.Timer"></a>
+
+### callback-patterns.Timer(task, label) ⇒ <code>taskFunction</code>
+Wraps a task and logs how long it takes to finish, or fail.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task  
+**Params**
+
+- task <code>taskFunction</code> - the task to wrap.
+- label <code>string</code> - an optional label to log.
 
 
 * * *
