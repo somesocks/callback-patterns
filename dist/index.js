@@ -20,4 +20,5 @@ module.exports = {
 	TimeOut: require('./TimeOut'),
 	Timer: require('./Timer'),
 	While: require('./While'),
+	Retry: require('./Retry'),
 };

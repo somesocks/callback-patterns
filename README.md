@@ -39,6 +39,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.ParallelMap(task)](#callback-patterns.ParallelMap) ⇒ <code>taskFunction</code>
     * [.Promisify(task)](#callback-patterns.Promisify) ⇒ <code>function</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
+    * [.Retry(task, options)](#callback-patterns.Retry) ⇒ <code>taskFunction</code>
     * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>taskFunction</code>
     * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>taskFunction</code>
     * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>taskFunction</code>
@@ -468,6 +469,23 @@ Race accepts a number of functions, and returns a task function that executes al
 **Params**
 
 - ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+
+* * *
+
+<a name="callback-patterns.Retry"></a>
+
+### callback-patterns.Retry(task, options) ⇒ <code>taskFunction</code>
+Wraps a task and attempts to retry if it throws an error, with an exponential backoff.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task  
+**Params**
+
+- task <code>taskFunction</code> - the task to wrap.
+- options <code>object</code> - an optional set of retry options.
+    - .timeout <code>object</code> - maximum time to attempt retries.
+    - .retries <code>object</code> - maximum number of retries to attempt.
 
 
 * * *
