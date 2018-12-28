@@ -8,9 +8,19 @@ Each pattern is designed to be a stand-alone piece of code, tested for performan
 
 # Design
 
-There is one major difference between this package and many other callback-driven async libraries: *the callback comes first*.
+There is one major difference between this package and many other callback-driven async libraries: **the callback comes first**.
 
-This allows us to build powerful compositions of callback-driven async functions with almost no boilerplate code.
+```javascript
+
+// this
+function task(callback, arg1, arg2, ...) { }
+
+// not this
+function task(arg1, arg2, ..., callback) { }
+
+```
+
+This makes it easier to compose callback-driven functions in useful ways, with almost no boilerplate code.
 
 ## API
 
