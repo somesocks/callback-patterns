@@ -64,7 +64,7 @@ package-check:
 ##		make package-publish - publish the current dist dir
 ##
 package-publish:
-	cd ./dist && $(NPM) publish --dry-run
+	cd ./dist && $(NPM) publish
 
 ##
 ##
