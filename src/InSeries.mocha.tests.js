@@ -73,12 +73,17 @@ describe('InSeries tests', () => {
 		)
 	);
 
-	it('Long Chain Performance', (done) => {
-		const chain = InSeries(
-			...Array(100000).fill(PassThrough)
-		);
+	const SHORT_CHAIN = InSeries(
+		...Array(1000).fill(PassThrough)
+	);
 
-		chain(done, 1, 2, 3);
+	const LONG_CHAIN = InSeries(
+		...Array(1000).fill(SHORT_CHAIN)
+	);
+
+
+	it('Long Chain Performance', (done) => {
+		LONG_CHAIN(done, 1, 2, 3);
 	});
 
 });

@@ -52,28 +52,26 @@ var InSeries = function InSeries() {
 	}
 
 	return function _inSeriesInstance(_1) {
-		var args = arguments;
 		var next = onceWrapper(_1);
 		var index = 0;
 
 		var worker = function () {
-			var args = arguments;
-			if (args[0] != null) {
-				next.apply(undefined, args);
+			if (arguments[0] != null) {
+				next.apply(undefined, arguments);
 			} else if (index >= handlers.length) {
-				next.apply(undefined, args);
+				next.apply(undefined, arguments);
 			} else {
 				var handler = handlers[index++]
 					.bind(undefined, onceWrapper(worker));
 
-				args[0] = handler;
-				args.length = args.length || 1;
-				defer.apply(undefined, args);
+				arguments[0] = handler;
+				arguments.length = arguments.length || 1;
+				defer.apply(undefined, arguments);
 			}
 		};
 
-		args[0] = undefined;
-		worker.apply(undefined, args);
+		arguments[0] = undefined;
+		worker.apply(undefined, arguments);
 	};
 
 };

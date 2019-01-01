@@ -52,10 +52,8 @@ var InOrder = function InOrder() {
 		var index = 0;
 
 		var worker = function (err) {
-			var args2 = arguments;
 			if (err != null) {
-				args[0] = undefined;
-				next.apply(undefined, args2);
+				next.apply(undefined, arguments);
 			} else if (index >= handlers.length) {
 				args[0] = undefined;
 				next.apply(undefined, args);

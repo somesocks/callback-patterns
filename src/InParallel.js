@@ -13,7 +13,11 @@ var _callbackBuilder = function (context, index) {
 		if (err) {
 			context.next.apply(undefined, args);
 		} else {
-			context.results[index + 1] = Array.prototype.slice.call(args, 1);
+			context.results[index + 1] = args.length <= 1 ?
+				args[1] : Array.prototype.slice.call(args, 1);
+
+			// context.results[index + 1] = Array.prototype.slice.call(args, 1);
+
 			context.finished++;
 			if (context.finished === context.handlers.length) {
 				context.next.apply(undefined, context.results);
@@ -68,7 +72,6 @@ function InParallel() {
 	}
 
 	return function _inParallelInstance(_1) {
-		var args = arguments;
 
 		var context = {
 			next: _onceWrapper(_1),
@@ -84,10 +87,10 @@ function InParallel() {
 			var handler = handlers[i]
 				.bind(undefined, _onceWrapper(onDone));
 
-			args[0] = handler;
-			args.length = args.length || 1;
+			arguments[0] = handler;
+			arguments.length = arguments.length || 1;
 
-			_defer.apply(undefined, args);
+			_defer.apply(undefined, arguments);
 		}
 	};
 }
