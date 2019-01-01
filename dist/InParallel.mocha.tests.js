@@ -9,7 +9,7 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { InSeries, InParallel, PassThrough, CatchError, Logging } = require('./');
+const { Assert, InSeries, InParallel, PassThrough, CatchError, Logging } = require('./');
 
 describe('InParallel', () => {
 	const LONG_CHAIN = InParallel(
@@ -37,6 +37,33 @@ describe('InParallel', () => {
 	it('test with 0 handlers', (done) => {
 		InParallel()(done);
 	});
+
+	it('autoboxing works',
+		InSeries(
+			InParallel(
+				(next) => next(),
+				(next) => next(null),
+				(next) => next(null, 1),
+				(next) => next(null, 2, 3)
+			),
+			Assert(
+				(r0, r1, r2, r3) => r0 === undefined,
+				'autoboxing with empty results failed'
+			),
+			Assert(
+				(r0, r1, r2, r3) => r1 === undefined,
+				'autoboxing with 0 results failed'
+			),
+			Assert(
+				(r0, r1, r2, r3) => r2 === 1,
+				'autoboxing with 1 results failed'
+			),
+			Assert(
+				(r0, r1, r2, r3) => r3[0] === 2 && r3[1] === 3,
+				'autoboxing with 2 results failed'
+			)
+		)
+	);
 
 	it('test with null return', (done) => {
 		InParallel(

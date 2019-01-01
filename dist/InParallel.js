@@ -13,7 +13,7 @@ var _callbackBuilder = function (context, index) {
 		if (err) {
 			context.next.apply(undefined, args);
 		} else {
-			context.results[index + 1] = args.length <= 1 ?
+			context.results[index + 1] = args.length <= 2 ?
 				args[1] : Array.prototype.slice.call(args, 1);
 
 			// context.results[index + 1] = Array.prototype.slice.call(args, 1);
