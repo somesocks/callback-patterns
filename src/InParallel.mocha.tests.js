@@ -12,12 +12,12 @@
 const { InSeries, InParallel, PassThrough, CatchError, Logging } = require('./');
 
 describe('InParallel', () => {
-	it('Parallel Performance', (done) => {
-		const chain = InParallel(
-			...Array(10000).fill(PassThrough)
-		);
+	const LONG_CHAIN = InParallel(
+		...Array(20000).fill(PassThrough)
+	);
 
-		chain(done);
+	it('Parallel Performance', (done) => {
+		LONG_CHAIN(done);
 	});
 
 	it('Function.length should be at least 1', () => {

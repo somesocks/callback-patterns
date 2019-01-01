@@ -14,8 +14,8 @@ var _callbackBuilder = function (context, index) {
 			context.next.apply(undefined, args);
 		} else {
 			context.results[index + 1] = Array.prototype.slice.call(args, 1);
-			context.done++;
-			if (context.done === context.handlers.length) {
+			context.finished++;
+			if (context.finished === context.handlers.length) {
 				context.next.apply(undefined, context.results);
 			}
 		}
@@ -63,26 +63,29 @@ function InParallel() {
 		return EMPTY;
 	}
 
+	for (var i = 0; i < handlers.length; i++) {
+		handlers[i] = _catchWrapper(handlers[i]);
+	}
+
 	return function _inParallelInstance(_1) {
 		var args = arguments;
-		var next = _onceWrapper(_1);
 
 		var context = {
-			next: _onceWrapper(next),
+			next: _onceWrapper(_1),
 			handlers: handlers,
 			results: Array(handlers.length + 1),
-			done: 0,
+			finished: 0,
 		};
 
 		for (var i = 0; i < handlers.length; i++) {
 			// eslint-disable-next-line no-loop-func
 			var onDone = _callbackBuilder(context, i);
 
-			var handler = _catchWrapper(handlers[i])
+			var handler = handlers[i]
 				.bind(undefined, _onceWrapper(onDone));
 
 			args[0] = handler;
-			args.length = args.length > 1 ? args.length : 1;
+			args.length = args.length || 1;
 
 			_defer.apply(undefined, args);
 		}
