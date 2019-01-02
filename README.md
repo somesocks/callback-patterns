@@ -33,6 +33,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.If(ifTask, thenTask, elseTask)](#callback-patterns.If) ⇒ <code>taskFunction</code>
     * [.InOrder(...tasks)](#callback-patterns.InOrder) ⇒ <code>taskFunction</code>
     * [.InParallel(...tasks)](#callback-patterns.InParallel) ⇒ <code>taskFunction</code>
+        * [.Flatten(...tasks)](#callback-patterns.InParallel.Flatten) ⇒ <code>taskFunction</code>
     * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
     * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
     * [.ParallelFilter(filter)](#callback-patterns.ParallelFilter) ⇒ <code>taskFunction</code>
@@ -294,13 +295,56 @@ InParallel accepts a number of functions, and returns a task function that execu
 
   let onDone = (err, ...results) => console.log(results);
 
-  chain(onDone); // prints out [ 1 ] [ 2 ] [ 3, 4 ], eventually
+  chain(onDone); // prints [ [ 1 ], [ 2 ], [ 3, 4 ] ]
 ```
 note: because the callbacks can return any number of results,
 the results from each task are autoboxed into an array.
 This includes an empty array for tasks that don't return results.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
+**Params**
+
+- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+
+* * *
+
+<a name="callback-patterns.InParallel.Flatten"></a>
+
+#### InParallel.Flatten(...tasks) ⇒ <code>taskFunction</code>
+```javascript
+  let InParallel = require('callback-patterns/InParallel');
+
+  let task = InParallel.Flatten(
+    function(next, ...args) {},
+    function(next, ...args) {},
+    ...
+  );
+
+  task(next, ...args);
+```
+InParallel.Flatten is identical to InParallel, except tasks that return
+single results do not get autoboxed in arrays
+
+```javascript
+  let InParallel = require('callback-patterns/InParallel');
+
+  let task = InParallel.Flatten(
+    (next) => next(),
+    (next) => next(null, 1),
+    (next) => next(null, 2, 3),
+  );
+
+  let onDone = (err, ...results) => console.log(results);
+
+  chain(onDone); // prints [ undefined, 1, [ 2, 3 ] ]
+```
+note: because the callbacks can return any number of results,
+the results from each task are autoboxed into an array.
+This includes an empty array for tasks that don't return results.
+
+**Kind**: static method of [<code>InParallel</code>](#callback-patterns.InParallel)  
 **Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
 **Params**
 

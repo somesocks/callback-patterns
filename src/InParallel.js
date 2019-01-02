@@ -7,16 +7,13 @@ var _onceWrapper = require('./_onceWrapper');
 
 var EMPTY = function (next) { return (next || _nullCallback)(); };
 
-var _callbackBuilder = function (context, index) {
+var _callback = function (context, index) {
 	return function _ondone(err) {
 		var args = arguments;
 		if (err) {
 			context.next.apply(undefined, args);
 		} else {
-			context.results[index + 1] = args.length <= 2 ?
-				args[1] : Array.prototype.slice.call(args, 1);
-
-			// context.results[index + 1] = Array.prototype.slice.call(args, 1);
+			context.results[index + 1] = Array.prototype.slice.call(args, 1);
 
 			context.finished++;
 			if (context.finished === context.handlers.length) {
@@ -51,7 +48,7 @@ var _callbackBuilder = function (context, index) {
 *
 *   let onDone = (err, ...results) => console.log(results);
 *
-*   chain(onDone); // prints out [ 1 ] [ 2 ] [ 3, 4 ], eventually
+*   chain(onDone); // prints [ [ 1 ], [ 2 ], [ 3, 4 ] ]
 * ```
 * note: because the callbacks can return any number of results,
 * the results from each task are autoboxed into an array.
@@ -82,7 +79,96 @@ function InParallel() {
 
 		for (var i = 0; i < handlers.length; i++) {
 			// eslint-disable-next-line no-loop-func
-			var onDone = _callbackBuilder(context, i);
+			var onDone = _callback(context, i);
+
+			var handler = handlers[i]
+				.bind(undefined, _onceWrapper(onDone));
+
+			arguments[0] = handler;
+			arguments.length = arguments.length || 1;
+
+			_defer.apply(undefined, arguments);
+		}
+	};
+}
+
+
+
+var _callbackWithFlatten = function (context, index) {
+	return function _ondone(err) {
+		var args = arguments;
+		if (err) {
+			context.next.apply(undefined, args);
+		} else {
+			context.results[index + 1] = args.length <= 2 ?
+				args[1] : Array.prototype.slice.call(args, 1);
+
+			context.finished++;
+			if (context.finished === context.handlers.length) {
+				context.next.apply(undefined, context.results);
+			}
+		}
+	};
+};
+
+/**
+* ```javascript
+*   let InParallel = require('callback-patterns/InParallel');
+*
+*   let task = InParallel.Flatten(
+*     function(next, ...args) {},
+*     function(next, ...args) {},
+*     ...
+*   );
+*
+*   task(next, ...args);
+* ```
+* InParallel.Flatten is identical to InParallel, except tasks that return
+* single results do not get autoboxed in arrays
+*
+* ```javascript
+*   let InParallel = require('callback-patterns/InParallel');
+*
+*   let task = InParallel.Flatten(
+*     (next) => next(),
+*     (next) => next(null, 1),
+*     (next) => next(null, 2, 3),
+*   );
+*
+*   let onDone = (err, ...results) => console.log(results);
+*
+*   chain(onDone); // prints [ undefined, 1, [ 2, 3 ] ]
+* ```
+* note: because the callbacks can return any number of results,
+* the results from each task are autoboxed into an array.
+* This includes an empty array for tasks that don't return results.
+* @param {...taskFunction} tasks - any number of tasks to run in parallel.
+* @returns {taskFunction} a wrapper function that runs the tasks in parallel
+* @memberof callback-patterns.InParallel
+*/
+function Flatten() {
+	var handlers = arguments;
+
+	if (handlers.length === 0) {
+		return EMPTY;
+	}
+
+	for (var i = 0; i < handlers.length; i++) {
+		handlers[i] = _catchWrapper(handlers[i]);
+	}
+
+	return function _inParallelFlattenInstance(_1) {
+
+		var context = {
+			next: _onceWrapper(_1),
+			handlers: handlers,
+			results: Array(handlers.length + 1),
+			finished: 0,
+		};
+
+		for (var i = 0; i < handlers.length; i++) {
+			// eslint-disable-next-line no-loop-func
+			var onDone = _callbackWithFlatten(context, i);
 
 			var handler = handlers[i]
 				.bind(undefined, _onceWrapper(onDone));
@@ -97,5 +183,7 @@ function InParallel() {
 
 
 InParallel.default = InParallel;
+
+InParallel.Flatten = Flatten;
 
 module.exports = InParallel;
