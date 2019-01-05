@@ -35,10 +35,9 @@ var PassThrough = require('./PassThrough');
 * @memberof callback-patterns
 */
 function Promisify(_1) {
-	var task = _1 != null ? _catchWrapper(_1) : PassThrough;
+	var task = _1 || PassThrough;
 
-	var _promisifyInstance = function _promisifyInstance() {
-		var args = arguments;
+	var _promisifyInstance = function _promisifyInstance(request) {
 
 		var handler = function (resolve, reject) {
 			var callback = function (err, result) {
@@ -49,8 +48,11 @@ function Promisify(_1) {
 				}
 			};
 
-			args[0] = callback;
-			task.apply(null, args);
+			try {
+				task(callback, request);
+			} catch (err) {
+				callback(err);
+			}
 		};
 
 		return new Promise(handler);

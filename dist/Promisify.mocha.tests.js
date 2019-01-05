@@ -9,15 +9,25 @@
 /* eslint-disable es5/no-template-literals */
 /* eslint-disable es5/no-es6-methods */
 
-const { InSeries, Assert, CatchError, PassThrough, PromiseWrapper, Logging, Promisify } = require('../dist');
+const {
+	InSeries,
+	Assert,
+	CatchError,
+	PassThrough,
+	PromiseWrapper,
+	Logging,
+	Promisify,
+} = require('../dist');
 
 describe('Promisify', () => {
 	it('Promisify works', (done) => {
 		new Promise((resolve) => resolve())
 			.then(
-				Promisify((next) => next())
+				Promisify((next) => next(null, 1))
 			)
-			.then(() => done());
+			.then(
+				(val) => done(val !== 1 ? new Error('missing res') : null)
+			);
 	});
 
 	it('Promisify catches callback errors', (done) => {
