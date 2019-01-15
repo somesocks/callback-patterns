@@ -29,6 +29,18 @@ describe('Callbackify', () => {
 	);
 
 	it(
+		'Callbackify works on a function that doesnt return a promise',
+		InSeries(
+			(next) => next(null, 1),
+			Callbackify(
+				(val) => val + 1
+			),
+			Assert((val) => val === 2, 'Callbackify failed to resolve')
+		)
+	);
+
+
+	it(
 		'Callbackify.reject works',
 		InSeries(
 			(next) => next(null, 2),
@@ -54,7 +66,7 @@ describe('Callbackify', () => {
 					(val) => null
 				)
 			),
-			Assert((err) => err !== null, 'Callbackify failed to reject')
+			Assert((err) => err == null, 'Callbackify should have rejected null')
 		)
 	);
 });

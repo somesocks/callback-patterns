@@ -40,6 +40,8 @@ function Callbackify(promiseGenerator) {
 		}
 
 		var promise = promiseGenerator.apply(null, args);
+		promise = promise instanceof Promise ?
+			promise: Promise.resolve(promise);
 
 		var resolve = next.bind(null, null);
 		var reject = next;
