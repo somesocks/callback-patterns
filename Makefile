@@ -35,6 +35,7 @@ build-pack: build-src
 build-docs:
 	$(NPM) run cmd-build-docs
 	cp ./README.md ./dist
+	cp ./LICENSE ./dist
 
 
 ##		make build - build the package
@@ -58,7 +59,6 @@ test: test-cases test-eslint
 ##		make package-check - list the files that will be present in the package
 ##
 package-check:
-	cd ./dist && $(NPM) pack --dry-run
 	cd ./dist && $(NPM) publish --dry-run
 
 ##		make package-publish - publish the current dist dir
