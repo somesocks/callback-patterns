@@ -443,10 +443,13 @@ It passes the arguments received into all the statements, collects the results, 
 
 Memoize builds a wrapper function that caches results of previous executions.
 As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
+
 NOTE: As of now, there are no cache eviction mechanisms.
   You should try to use Memoized functions in a 'disposable' way as a result
+
 NOTE: Memoize is not 'thread-safe' currently.  If two calls are made for the same object currently,
   two calls to the wrapped function will be made
+
 NOTE: Memoize will cache errors as well as results.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
