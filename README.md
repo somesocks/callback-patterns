@@ -36,6 +36,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
         * [.Flatten(...tasks)](#callback-patterns.InParallel.Flatten) ⇒ <code>taskFunction</code>
     * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
     * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
+    * [.Memoize(taskFunction, [keyFunction], [cache])](#callback-patterns.Memoize) ⇒ <code>taskFunction</code>
     * [.ParallelFilter(filter)](#callback-patterns.ParallelFilter) ⇒ <code>taskFunction</code>
     * [.ParallelMap(task)](#callback-patterns.ParallelMap) ⇒ <code>taskFunction</code>
     * [.Promisify(task)](#callback-patterns.Promisify) ⇒ <code>function</code>
@@ -405,6 +406,55 @@ It passes the arguments received into all the statements, collects the results, 
 **Params**
 
 - ...statements <code>function</code> - any number of logging values.  Functions are called with the calling arguments, everything else is passed directly to
+
+
+* * *
+
+<a name="callback-patterns.Memoize"></a>
+
+### callback-patterns.Memoize(taskFunction, [keyFunction], [cache]) ⇒ <code>taskFunction</code>
+```javascript
+
+  let Delay = require('callback-patterns/Delay');
+  let InOrder = require('callback-patterns/InOrder');
+  let InSeries = require('callback-patterns/InSeries');
+  let Memoize = require('callback-patterns/Memoize');
+
+  let slowTask = InSeries(
+    (next, i) => {
+      console.log('task called with ', i);
+      next(null, i + 1);
+    },
+    Delay(1000)
+  );
+
+  let memoizedTask = Memoize(slowTask);
+
+  let test = InOrder(
+    memoizedTask,
+    memoizedTask,
+    memoizedTask
+  );
+
+
+  test(null, 1); // task is only called once, even though memoizedTask is called three times
+
+```
+
+Memoize builds a wrapper function that caches results of previous executions.
+As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
+NOTE: As of now, there are no cache eviction mechanisms.
+  You should try to use Memoized functions in a 'disposable' way as a result
+NOTE: Memoize is not 'thread-safe' currently.  If two calls are made for the same object currently,
+  two calls to the wrapped function will be made
+NOTE: Memoize will cache errors as well as results.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Params**
+
+- taskFunction <code>taskFunction</code> - the task function to memoize.
+- [keyFunction] <code>function</code> - a function that synchronously generates a key for a request.
+- [cache] <code>object</code> - a pre-filled cache to use
 
 
 * * *
