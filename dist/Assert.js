@@ -42,27 +42,18 @@ function Assert(_1, _2) {
 	return function _assertInstance(_1) {
 		var next = _1 || _nullCallback;
 		var args = arguments;
-		var i;
-
-		for (i = 0; i < args.length; i++) {
-			args[i] = args[i+1];
-		}
-		args.length = args.length > 0 ? args.length - 1 : 0;
-
 		var err;
 
+		args[0] = undefined;
+
 		try {
-			err = validator.apply(null, args) ?
-				null :
-				new Error(message.apply(null, args));
+			err = validator.call.apply(validator, args) ?
+				undefined :
+				new Error(message.call.apply(message, args));
 		} catch (e) {
 			err = e;
 		}
 
-		args.length++;
-		for (i = args.length - 1; i > 0; i--) {
-			args[i] = args[i - 1];
-		}
 		args[0] = err;
 
 		next.apply(null, args);

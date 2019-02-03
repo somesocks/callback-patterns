@@ -1,6 +1,6 @@
 {
   "name": "callback-patterns",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "A collection of design patterns for callback-driven async code",
   "main": "./index.js",
   "scripts": {
