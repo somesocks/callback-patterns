@@ -41,11 +41,25 @@ function Promisify(_1) {
 		var args = arguments;
 
 		var handler = function (resolve, reject) {
-			var callback = function (err, result) {
+			var callback = function (err) {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(result);
+					var args = arguments;
+
+					switch(args.length) {
+					case 0:
+					case 1:
+						resolve();
+						break;
+					case 2:
+						resolve(args[1]);
+						break;
+					default:
+						args = Array.prototype.slice.call(args, 1);
+						resolve(args);
+						break;
+					}
 				}
 			};
 

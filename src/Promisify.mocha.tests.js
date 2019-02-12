@@ -41,6 +41,33 @@ describe('Promisify', () => {
 			)
 	});
 
+	it('Promisify returns single argument correctly', (done) => {
+		const task = Promisify(
+			(next, a, b) => next(null, a)
+		);
+
+		task(1, 2)
+			.then(
+				(val) => done(
+					val !== 1 ? new Error(`bad results ${val}`) : null
+				)
+			);
+	});
+
+	it('Promisify returns multiple arguments correctly', (done) => {
+		const task = Promisify(
+			(next, a, b) => next(null, a, b)
+		);
+
+		task(1, 2)
+			.then(
+				(val) => done(
+					(val[0] !== 1 || val[1] !== 2) ? new Error(`missing arguments ${val}`) : null
+				)
+			);
+	});
+
+
 	it('Promisify catches callback errors', (done) => {
 		const onCatch = (err) => {
 			if (err == null) {
