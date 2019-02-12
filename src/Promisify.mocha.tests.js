@@ -30,6 +30,17 @@ describe('Promisify', () => {
 			);
 	});
 
+	it('Promisify accepts multiple arguments', (done) => {
+		const task = Promisify(
+			(next, a, b, c) => next(null, a + b + c)
+		);
+
+		task(1, 2, 3)
+			.then(
+				(val) => done(val !== 6 ? new Error('missing arguments') : null)
+			)
+	});
+
 	it('Promisify catches callback errors', (done) => {
 		const onCatch = (err) => {
 			if (err == null) {

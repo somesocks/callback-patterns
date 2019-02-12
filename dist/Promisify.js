@@ -37,7 +37,8 @@ var PassThrough = require('./PassThrough');
 function Promisify(_1) {
 	var task = _1 || PassThrough;
 
-	var _promisifyInstance = function _promisifyInstance(request) {
+	var _promisifyInstance = function _promisifyInstance() {
+		var args = arguments;
 
 		var handler = function (resolve, reject) {
 			var callback = function (err, result) {
@@ -49,7 +50,7 @@ function Promisify(_1) {
 			};
 
 			try {
-				task(callback, request);
+				task.bind(undefined, callback).apply(undefined, args);
 			} catch (err) {
 				callback(err);
 			}
