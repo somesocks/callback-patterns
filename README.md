@@ -26,6 +26,8 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 **Kind**: global namespace  
 
 * [callback-patterns](#callback-patterns) : <code>object</code>
+    * [.unstable](#callback-patterns.unstable) : <code>object</code>
+        * [.TraceError(task)](#callback-patterns.unstable.TraceError) ⇒ <code>taskFunction</code>
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>taskFunction</code>
     * [.Callbackify(generator)](#callback-patterns.Callbackify) ⇒ <code>taskFunction</code>
     * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>taskFunction</code>
@@ -47,6 +49,43 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>taskFunction</code>
     * [.Timer(task, label)](#callback-patterns.Timer) ⇒ <code>taskFunction</code>
     * [.While(conditionTask, loopTask)](#callback-patterns.While) ⇒ <code>function</code>
+
+
+* * *
+
+<a name="callback-patterns.unstable"></a>
+
+### callback-patterns.unstable : <code>object</code>
+**Kind**: static namespace of [<code>callback-patterns</code>](#callback-patterns)  
+
+* * *
+
+<a name="callback-patterns.unstable.TraceError"></a>
+
+#### unstable.TraceError(task) ⇒ <code>taskFunction</code>
+```javascript
+  let TraceError = require('callback-patterns/unstable/TraceError');
+  let InSeries = require('callback-patterns/InSeries');
+
+  let task = InSeries(
+    function(next, ...args) {},
+    function(next, ...args) {},
+    ...
+  );
+
+  task = TraceError(task);
+
+  task(next, ...args);
+```
+TraceError is an experimental wrapper that attempts to make errors more informative,
+It does this by appending extra information to the stack of any error thrown in the task,
+if the stack exists.
+
+**Kind**: static method of [<code>unstable</code>](#callback-patterns.unstable)  
+**Returns**: <code>taskFunction</code> - a wrapper function that modifies the stack trace of any errors thrown within  
+**Params**
+
+- task <code>taskFunction</code> - a task function to wrap
 
 
 * * *

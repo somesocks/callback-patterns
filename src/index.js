@@ -1,6 +1,9 @@
 /** @namespace callback-patterns */
 
 module.exports = {
+	
+	unstable: require('./unstable'),
+
 	Assert: require('./Assert'),
 	Callbackify: require('./Callbackify'),
 	CatchError: require('./CatchError'),
