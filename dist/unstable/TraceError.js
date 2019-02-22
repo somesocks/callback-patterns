@@ -6,13 +6,16 @@ var PassThrough = require('../PassThrough');
 
 function _stackWrapper(_1, _2) {
 	var callback = _1;
-	var source = _2|| new Error('called from');
+	var constructorStack = _2;
+	// var callStack = new Error('called from');
 
 	return function __stackWrapperInstance(_1) {
 		var err = _1;
 		if (err && err.stack) {
+			// err.stack += '\n\n ';
+			// err.stack += callStack.stack;
 			err.stack += '\n\n ';
-			err.stack += source.stack;
+			err.stack += constructorStack.stack;
 		}
 		callback.apply(undefined, arguments);
 	};
@@ -42,12 +45,15 @@ function _stackWrapper(_1, _2) {
 */
 var TraceError = function TraceError(_1) {
 	var task = _1 || PassThrough;
-	var constructorStack = new Error('called from');
+	var constructorStack = new Error('constructed at');
 
 	return function _TraceErrorInstance(_1) {
 		var next = _1 || _nullCallback;
 		next = _stackWrapper(next, constructorStack);
 		arguments[0] = next;
+		if (arguments.length < 1) {
+			arguments.length = 1;
+		}
 		task.apply(undefined, arguments);
 	};
 
