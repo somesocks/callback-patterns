@@ -77,9 +77,8 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 
   task(next, ...args);
 ```
-TraceError is an experimental wrapper that attempts to make errors more informative,
-It does this by appending extra information to the stack of any error thrown in the task,
-if the stack exists.
+TraceError is an experimental wrapper that attempts to make errors more informative.
+It does this by appending extra information to the stack of any error thrown in the task.
 
 **Kind**: static method of [<code>unstable</code>](#callback-patterns.unstable)  
 **Returns**: <code>taskFunction</code> - a wrapper function that modifies the stack trace of any errors thrown within  
