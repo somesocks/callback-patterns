@@ -29,7 +29,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.unstable](#callback-patterns.unstable) : <code>object</code>
         * [.TraceError(task)](#callback-patterns.unstable.TraceError) ⇒ <code>taskFunction</code>
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>taskFunction</code>
-    * [.Background()](#callback-patterns.Background)
+    * [.Background(backgroundTask)](#callback-patterns.Background) ⇒ <code>taskFunction</code>
     * [.Callbackify(generator)](#callback-patterns.Callbackify) ⇒ <code>taskFunction</code>
     * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>taskFunction</code>
     * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>taskFunction</code>
@@ -128,7 +128,7 @@ Assert passes an error to its callback.
 
 <a name="callback-patterns.Background"></a>
 
-### callback-patterns.Background()
+### callback-patterns.Background(backgroundTask) ⇒ <code>taskFunction</code>
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Background = require('callback-patterns/Background');
@@ -139,7 +139,7 @@ Assert passes an error to its callback.
   let saveReport = (next, ...args) => { ... }; // dump report into filesystem somewhere as a backup
 
   let fetchReport = InSeries(
-     Background(logRequest), // dont wait for the request to finish logging
+     Background(logRequest), // don't wait for the request to finish logging
      loadData,
      buildReport,
      Background(saveReport) // don't wait for the report to be saved before returning it
@@ -154,6 +154,11 @@ NOTE: any error a background task throws is caught and ignored.  If you need
 error handling in a background task, catch the error using `CatchError`
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a wrapper task that schedules backgroundTask to be run when called.  
+**Params**
+
+- backgroundTask <code>taskFunction</code> - a task function to be run in the background.
+
 
 * * *
 

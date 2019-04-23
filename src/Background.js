@@ -16,7 +16,7 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 *   let saveReport = (next, ...args) => { ... }; // dump report into filesystem somewhere as a backup
 *
 *   let fetchReport = InSeries(
-*      Background(logRequest), // dont wait for the request to finish logging
+*      Background(logRequest), // don't wait for the request to finish logging
 *      loadData,
 *      buildReport,
 *      Background(saveReport) // don't wait for the report to be saved before returning it
@@ -30,6 +30,8 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 * NOTE: any error a background task throws is caught and ignored.  If you need
 * error handling in a background task, catch the error using `CatchError`
 *
+* @param {taskFunction} backgroundTask - a task function to be run in the background.
+* @returns {taskFunction} a wrapper task that schedules backgroundTask to be run when called.
 * @memberof callback-patterns
 */
 function Background(_1) {
