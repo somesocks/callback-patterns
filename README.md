@@ -29,6 +29,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.unstable](#callback-patterns.unstable) : <code>object</code>
         * [.TraceError(task)](#callback-patterns.unstable.TraceError) ⇒ <code>taskFunction</code>
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>taskFunction</code>
+    * [.Background()](#callback-patterns.Background)
     * [.Callbackify(generator)](#callback-patterns.Callbackify) ⇒ <code>taskFunction</code>
     * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>taskFunction</code>
     * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>taskFunction</code>
@@ -41,6 +42,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.Memoize(taskFunction, [keyFunction], [cache])](#callback-patterns.Memoize) ⇒ <code>taskFunction</code>
     * [.ParallelFilter(filter)](#callback-patterns.ParallelFilter) ⇒ <code>taskFunction</code>
     * [.ParallelMap(task)](#callback-patterns.ParallelMap) ⇒ <code>taskFunction</code>
+    * [.PassThrough()](#callback-patterns.PassThrough)
     * [.Promisify(task)](#callback-patterns.Promisify) ⇒ <code>function</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
     * [.Retry(task, options)](#callback-patterns.Retry) ⇒ <code>taskFunction</code>
@@ -121,6 +123,37 @@ Assert passes an error to its callback.
 - validator <code>function</code> - a function that checks the arguments.
 - message <code>string</code> - an optional error message to throw if the assertion fails, or a message builder function.
 
+
+* * *
+
+<a name="callback-patterns.Background"></a>
+
+### callback-patterns.Background()
+```javascript
+  let InSeries = require('callback-patterns/InSeries');
+  let Background = require('callback-patterns/Background');
+
+  let logRequest = (next, ...args) => { ... }; // log a request in some logging service
+  let loadData = (next, ...args) => { ... }; // load some data for analysis
+  let buildReport = (next, ...args) => { ... }; // build aggregate statistics report on data
+  let saveReport = (next, ...args) => { ... }; // dump report into filesystem somewhere as a backup
+
+  let fetchReport = InSeries(
+     Background(logRequest), // dont wait for the request to finish logging
+     loadData,
+     buildReport,
+     Background(saveReport) // don't wait for the report to be saved before returning it
+  );
+
+```
+
+Background runs a task in the background.
+It acts like `PassThrough`, but also schedules the backround task to be called.
+
+NOTE: any error a background task throws is caught and ignored.  If you need
+error handling in a background task, catch the error using `CatchError`
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 
 * * *
 
@@ -526,6 +559,18 @@ Note: even though the mapping function can return any number of results, Paralle
 
 - task <code>taskFunction</code> - an asynchronous mapping function.
 
+
+* * *
+
+<a name="callback-patterns.PassThrough"></a>
+
+### callback-patterns.PassThrough()
+Sometimes, you need to pass previous arguments along with a new result.  The easiest way to do this is to use PassThrough, which is a convenience method for:
+```javascript
+ (next, ...args) => next(null, ...args),
+```
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 
 * * *
 

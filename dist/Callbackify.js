@@ -53,6 +53,4 @@ function Callbackify(promiseGenerator) {
 	return _catchWrapper(_callbackifyInstance);
 }
 
-Callbackify.default = Callbackify;
-
 module.exports = Callbackify;

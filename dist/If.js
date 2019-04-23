@@ -57,7 +57,4 @@ function If(_1, _2, _3) {
 	};
 }
 
-
-If.default = If;
-
 module.exports = If;

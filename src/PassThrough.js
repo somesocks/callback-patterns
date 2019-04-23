@@ -7,7 +7,7 @@ var _nullCallback = require('./_nullCallback');
 * ```javascript
 *  (next, ...args) => next(null, ...args),
 * ```
-* @memberof callback-params
+* @memberof callback-patterns
 */
 function PassThrough(_1) {
 	var next = _1 || _nullCallback;

@@ -1,13 +1,9 @@
 {
   "name": "callback-patterns",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "A collection of design patterns for callback-driven async code",
   "main": "./index.js",
   "scripts": {
-    "cmd-build-docs": "(find ./src -name *.js | sort -t/ -k2.2 -k2.1 | xargs jsdoc2md --separators --param-list-format list --property-list-format list --member-index-format list --template README.hbs --files) > README.md",
-    "cmd-build-src": "rsync --update --recursive --delete ./src/ ./dist",
-    "cmd-test-cases": "find ./dist -name '*mocha.tests.js' | xargs mocha --timeout 10000",
-    "cmd-test-eslint": "find ./dist -name '*.js' | xargs eslint --quiet"
   },
   "repository": {
     "type": "git",

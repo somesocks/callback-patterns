@@ -60,6 +60,4 @@ function Assert(_1, _2) {
 	};
 }
 
-Assert.default = Assert;
-
 module.exports = Assert;

@@ -181,9 +181,6 @@ function Flatten() {
 	};
 }
 
-
-InParallel.default = InParallel;
-
 InParallel.Flatten = Flatten;
 
 module.exports = InParallel;

@@ -1,10 +1,11 @@
 /** @namespace callback-patterns */
 
 module.exports = {
-	
+
 	unstable: require('./unstable'),
 
 	Assert: require('./Assert'),
+	Background: require('./Background'),
 	Callbackify: require('./Callbackify'),
 	CatchError: require('./CatchError'),
 	Delay: require('./Delay'),

@@ -52,6 +52,4 @@ function Logging(_1) {
 	};
 }
 
-Logging.default = Logging;
-
 module.exports = Logging;

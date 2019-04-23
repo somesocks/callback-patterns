@@ -1,11 +1,9 @@
+TASKS=./tasks
 
-NPM=pnpm
-
-.PHONY: default setup help
 
 ##
 ##
-##	callback-patterns
+##	vcallback-patterns
 ##		this is the base project makefile
 ##
 ##
@@ -20,51 +18,44 @@ default: help
 help:
 	@grep "^##.*" ./Makefile
 
-##		make setup - setup for local development
+
+##		make build - make a new build
 ##
-setup:
-	$(NPM) install
+build: build-src build-docs build-meta
+
 
 build-src:
-	$(NPM) run cmd-build-src
-
-build-pack: build-src
-	cp ./.npmignore ./dist
-	cp ./package.json ./dist
+	sh $(TASKS)/build-src.sh
 
 build-docs:
-	$(NPM) run cmd-build-docs
-	cp ./README.md ./dist
-	cp ./LICENSE ./dist
+	sh $(TASKS)/build-docs.sh
+
+build-meta: build-src build-docs
+	sh $(TASKS)/build-meta.sh
 
 
-##		make build - build the package
+
+##		make test - run the test cases against the build
 ##
-build: build-src build-pack build-docs
-
-
-
-test-cases:
-	$(NPM) run cmd-test-cases -- $(MOCHA)
+test: test-mocha test-eslint
 
 test-eslint:
-	$(NPM) run cmd-test-eslint -- $(ESLINT)
+	ESLINT="$(ESLINT)" sh $(TASKS)/test-eslint.sh
 
-##		make test - run test cases against the built package
-##
-test: test-cases test-eslint
-
+test-mocha:
+	MOCHA="$(MOCHA)" sh $(TASKS)/test-mocha.sh
 
 
-##		make package-check - list the files that will be present in the package
+
+##		make package-check - print out a pre-publish package check
 ##
 package-check:
-	cd ./dist && $(NPM) publish --dry-run
+	sh $(TASKS)/package-check.sh
 
-##		make package-publish - publish the current dist dir
+##		make package-publish - publish package on npm
 ##
 package-publish:
-	cd ./dist && $(NPM) publish
+	sh $(TASKS)/package-publish.sh
 
 ##
 ##

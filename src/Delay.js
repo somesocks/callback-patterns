@@ -42,6 +42,4 @@ function Delay(_1) {
 	};
 }
 
-Delay.default = Delay;
-
 module.exports = Delay;

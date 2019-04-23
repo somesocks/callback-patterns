@@ -73,6 +73,4 @@ var InOrder = function InOrder() {
 
 };
 
-InOrder.default = InOrder;
-
 module.exports = InOrder;

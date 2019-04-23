@@ -76,6 +76,4 @@ var InSeries = function InSeries() {
 
 };
 
-InSeries.default = InSeries;
-
 module.exports = InSeries;
