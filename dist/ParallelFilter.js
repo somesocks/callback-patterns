@@ -41,9 +41,9 @@ var _callbackBuilder = function (context, index) {
 *
 *   let task = InSeries(
 *     (next) => next(null, 1, 2, 3, 4, 5, 6),
-*			Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
+*     Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
 *     ParallelFilter(isEven),
-*			Logging((...args) => args), // logs [2, 4, 6]
+*     Logging((...args) => args), // logs [2, 4, 6]
 *     ...
 *   );
 *

@@ -566,9 +566,9 @@ NOTE: Memoize will cache errors as well as results.
 
   let task = InSeries(
     (next) => next(null, 1, 2, 3, 4, 5, 6),
-			Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
+    Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
     ParallelFilter(isEven),
-			Logging((...args) => args), // logs [2, 4, 6]
+    Logging((...args) => args), // logs [2, 4, 6]
     ...
   );
 
@@ -597,9 +597,9 @@ Builds a task that filters all of its arguments in parallel, and returns the res
 
   let task = InSeries(
     (next) => next(null, 1, 2, 3, 4, 5, 6),
-			Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
+    Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
     ParallelMap(addOne),
-			Logging((...args) => args), // logs [2, 3, 4, 5, 6, 7]
+    Logging((...args) => args), // logs [2, 3, 4, 5, 6, 7]
     ...
   );
 
@@ -620,7 +620,8 @@ Note: even though the mapping function can return any number of results, Paralle
 <a name="callback-patterns.PassThrough"></a>
 
 ### callback-patterns.PassThrough()
-let InSeries = require('callback-patterns/InSeries');
+```javascript
+  let InSeries = require('callback-patterns/InSeries');
   let Logging = require('callback-patterns/Logging');
   let PassThrough = require('callback-patterns/PassThrough');
 
@@ -633,6 +634,7 @@ let InSeries = require('callback-patterns/InSeries');
   );
 
   task(next, ...args);
+```
 
 Sometimes, you need to pass previous arguments along with a new result.  The easiest way to do this is to use PassThrough, which is a convenience method for:
 ```javascript
