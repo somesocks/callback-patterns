@@ -82,6 +82,9 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 TraceError is an experimental wrapper that attempts to make errors more informative.
 It does this by appending extra information to the stack of any error thrown in the task.
 
+NOTE: TraceError is marked as 'unstable' as stack traces in JS are not standardized,
+so it may not always provide useful information.
+
 **Kind**: static method of [<code>unstable</code>](#callback-patterns.unstable)  
 **Returns**: <code>taskFunction</code> - a wrapper function that modifies the stack trace of any errors thrown within  
 **Params**
