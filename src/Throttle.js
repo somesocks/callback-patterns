@@ -57,6 +57,4 @@ function Throttle(_1, _2) {
 
 Throttle.Queue = Queue;
 
-Throttle.default = Throttle;
-
 module.exports = Throttle;

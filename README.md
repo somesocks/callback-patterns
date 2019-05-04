@@ -474,6 +474,22 @@ This works similarly to the 'waterfall' method in caolan's async.
 <a name="callback-patterns.Logging"></a>
 
 ### callback-patterns.Logging(...statements) ⇒ <code>taskFunction</code>
+```javascript
+  let InSeries = require('callback-patterns/InSeries');
+  let Logging = require('callback-patterns/Logging');
+
+  let task = InSeries(
+    (next, ...args) => next(null, ...args),
+    Logging(
+      'log statement here'
+      (...args) => `args are ${args}`
+    ),
+    (next, ...args) => next(null, ...args),
+    ...
+  );
+
+  task(next, ...args);
+```
 A logging utility.
 It passes the arguments received into all the statements, collects the results, and joins them together with newlines to build the final log statement
 
@@ -541,6 +557,23 @@ NOTE: Memoize will cache errors as well as results.
 <a name="callback-patterns.ParallelFilter"></a>
 
 ### callback-patterns.ParallelFilter(filter) ⇒ <code>taskFunction</code>
+```javascript
+  let InSeries = require('callback-patterns/InSeries');
+  let Logging = require('callback-patterns/Logging');
+  let ParallelFilter = require('callback-patterns/ParallelFilter');
+
+  let isEven = (next, val) => next(null, val % 2 === 0);
+
+  let task = InSeries(
+    (next) => next(null, 1, 2, 3, 4, 5, 6),
+			Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
+    ParallelFilter(isEven),
+			Logging((...args) => args), // logs [2, 4, 6]
+    ...
+  );
+
+  task(next, ...args);
+```
 Builds a task that filters all of its arguments in parallel, and returns the results
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
@@ -555,6 +588,23 @@ Builds a task that filters all of its arguments in parallel, and returns the res
 <a name="callback-patterns.ParallelMap"></a>
 
 ### callback-patterns.ParallelMap(task) ⇒ <code>taskFunction</code>
+```javascript
+  let InSeries = require('callback-patterns/InSeries');
+  let Logging = require('callback-patterns/Logging');
+  let ParallelMap = require('callback-patterns/ParallelMap');
+
+  let addOne = (next, val) => next(null, val + 1);
+
+  let task = InSeries(
+    (next) => next(null, 1, 2, 3, 4, 5, 6),
+			Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
+    ParallelMap(addOne),
+			Logging((...args) => args), // logs [2, 3, 4, 5, 6, 7]
+    ...
+  );
+
+  task(next, ...args);
+```
 Builds a task wrapper that asynchronously maps each of its arguments to a result.
 Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
 
@@ -570,6 +620,20 @@ Note: even though the mapping function can return any number of results, Paralle
 <a name="callback-patterns.PassThrough"></a>
 
 ### callback-patterns.PassThrough()
+let InSeries = require('callback-patterns/InSeries');
+  let Logging = require('callback-patterns/Logging');
+  let PassThrough = require('callback-patterns/PassThrough');
+
+  let task = InSeries(
+    (next) => next(null, 1, 2, 3, 4, 5, 6),
+			Logging((...args) => args), // logs [1, 2, 3, 4, 5, 6]
+    PassThrough,
+			Logging((...args) => args), // logs [2, 3, 4, 5, 6, 7]
+    ...
+  );
+
+  task(next, ...args);
+
 Sometimes, you need to pass previous arguments along with a new result.  The easiest way to do this is to use PassThrough, which is a convenience method for:
 ```javascript
  (next, ...args) => next(null, ...args),

@@ -7,6 +7,22 @@ var DEFAULT = function () { return 'Logging [ ' + arguments + ' ]'; };
 
 
 /**
+* ```javascript
+*   let InSeries = require('callback-patterns/InSeries');
+*   let Logging = require('callback-patterns/Logging');
+*
+*   let task = InSeries(
+*     (next, ...args) => next(null, ...args),
+*     Logging(
+*       'log statement here'
+*       (...args) => `args are ${args}`
+*     ),
+*     (next, ...args) => next(null, ...args),
+*     ...
+*   );
+*
+*   task(next, ...args);
+* ```
 * A logging utility.
 * It passes the arguments received into all the statements, collects the results, and joins them together with newlines to build the final log statement
 * @param {...function} statements - any number of logging values.  Functions are called with the calling arguments, everything else is passed directly to

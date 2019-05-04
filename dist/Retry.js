@@ -50,5 +50,4 @@ function Retry(task, options) {
 	};
 }
 
-Retry.default = Retry;
 module.exports = Retry;

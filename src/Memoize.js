@@ -84,7 +84,4 @@ function Memoize(_1, _2, _3) {
 	};
 }
 
-
-Memoize.default = Memoize;
-
 module.exports = Memoize;

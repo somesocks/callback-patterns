@@ -76,7 +76,4 @@ function Promisify(_1) {
 	return _promisifyInstance;
 }
 
-
-Promisify.default = Promisify;
-
 module.exports = Promisify;

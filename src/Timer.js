@@ -38,6 +38,4 @@ function Timer(task, label) {
 	};
 }
 
-Timer.default = Timer;
-
 module.exports = Timer;

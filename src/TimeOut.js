@@ -43,5 +43,4 @@ function TimeOut(_1, _2) {
 	return Race(timeout, task);
 }
 
-TimeOut.default = TimeOut;
 module.exports = TimeOut;

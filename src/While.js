@@ -71,6 +71,4 @@ function While(_1, _2) {
 }
 
 
-While.default = While;
-
 module.exports = While;

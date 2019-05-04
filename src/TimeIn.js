@@ -57,5 +57,4 @@ function TimeIn(_1, _2) {
 	return timein;
 }
 
-TimeIn.default = TimeIn;
 module.exports = TimeIn;

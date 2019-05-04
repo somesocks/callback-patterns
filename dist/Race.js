@@ -63,5 +63,4 @@ function Race() {
 	};
 }
 
-Race.default = Race;
 module.exports = Race;
