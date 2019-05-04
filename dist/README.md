@@ -672,8 +672,8 @@ to make it easier to integrate task functions and promises.
 NOTE: callback-patterns does not come bundled with a promise library,
 it expects Promise to already exists in the global namespace.
 
-NOTE: even though callback-patterns can 'return' multiple values through the next callback,
-Promisify always resolves to the first result returned.
+NOTE: if a function 'returns' multiple values through the next callback,
+Promisify auto-boxes these into an array.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 **Returns**: <code>function</code> - a function that generates a Promise when called  
