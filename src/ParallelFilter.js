@@ -32,6 +32,11 @@ var _callbackBuilder = function (context, index) {
 };
 
 /**
+* Builds a task that filters all of its arguments in parallel, and returns the results
+* @param {taskFunction} filter - an asynchronous filter function that returns true or false through its callback.
+* @returns {taskFunction} a filtering task
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let InSeries = require('callback-patterns/InSeries');
 *   let Logging = require('callback-patterns/Logging');
@@ -49,10 +54,6 @@ var _callbackBuilder = function (context, index) {
 *
 *   task(next, ...args);
 * ```
-* Builds a task that filters all of its arguments in parallel, and returns the results
-* @param {taskFunction} filter - an asynchronous filter function that returns true or false through its callback.
-* @returns {taskFunction} a filtering task
-* @memberof callback-patterns
 */
 function ParallelFilter(_1) {
 	var mapper = _1 != null ? _catchWrapper(_1) : PassThrough;

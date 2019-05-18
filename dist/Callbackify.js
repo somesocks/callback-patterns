@@ -4,6 +4,12 @@ var _onceWrapper = require('./_onceWrapper');
 var PassThrough = require('./PassThrough');
 
 /**
+* Wraps around a promise generator function,
+* to make it easier to integrate with task functions.
+* @param {function} generator - a function that generates a promise from the args.
+* @returns {taskFunction} a task that wraps around the promise
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let InSeries = require('callback-patterns/InSeries');
 *   let Callbackify = require('callback-patterns/Callbackify');
@@ -19,11 +25,6 @@ var PassThrough = require('./PassThrough');
 *
 *   task(next, ...args);
 * ```
-* Wraps around a promise generator function,
-* to make it easier to integrate with task functions.
-* @param {function} generator - a function that generates a promise from the args.
-* @returns {taskFunction} a task that wraps around the promise
-* @memberof callback-patterns
 */
 function Callbackify(promiseGenerator) {
 	if (promiseGenerator == null) {

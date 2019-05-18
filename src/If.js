@@ -6,6 +6,17 @@ var _nullCallback = require('./_nullCallback');
 var PassThrough = require('./PassThrough');
 
 /**
+* `If` accepts up to three tasks,
+* an 'if' task, a 'then' task, and lastly an 'else' task
+* note: by default, the ifTask, thenTask, and elseTask are PassThrough
+* note: the ifTask can return multiple results,
+* but only the first is checked for truthiness
+* @param {taskFunction} ifTask - a condition task.
+* @param {taskFunction} thenTask - a task to run when ifTask returns a truthy value.
+* @param {taskFunction} elseTask - a task to run when ifTask returns a falsy value.
+* @returns {taskFunction}
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let If = require('callback-patterns/If');
 *
@@ -20,16 +31,6 @@ var PassThrough = require('./PassThrough');
 *   logIfEven(null, 1); // prints out 'is not even!' eventually
 *   logIfEven(null, 2); // prints out 'is even!' eventually
 * ```
-* If accepts up to three tasks,
-* an 'if' task, a 'then' task, and lastly an 'else' task
-* note: by default, the ifTask, thenTask, and elseTask are PassThrough
-* note: the ifTask can return multiple results,
-* but only the first is checked for truthiness
-* @param {taskFunction} ifTask - a condition task.
-* @param {taskFunction} thenTask - a task to run when ifTask returns a truthy value.
-* @param {taskFunction} elseTask - a task to run when ifTask returns a falsy value.
-* @returns {taskFunction}
-* @memberof callback-patterns
 */
 function If(_1, _2, _3) {
 	var conditionTask = _1 != null ? _catchWrapper(_1) : PassThrough;

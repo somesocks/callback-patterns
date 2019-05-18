@@ -20,7 +20,13 @@ function _results(next, r0, r1) {
 }
 
 /**
+* TimeIn wraps a single task function, and returns a function that only returns after X ms.
 *
+* @param {taskFunction} task - the task to wrap in a timeout.
+* @param {number} ms - the timein in ms.
+* @returns {taskFunction} a task
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let TimeIn = require('callback-patterns/TimeIn');
 *
@@ -31,13 +37,6 @@ function _results(next, r0, r1) {
 *
 *   task(next, ...args);
 * ```
-*
-* TimeIn wraps a single task function, and returns a function that only returns after X ms.
-*
-* @param {taskFunction} task - the task to wrap in a timeout.
-* @param {number} ms - the timein in ms.
-* @returns {taskFunction} a task
-* @memberof callback-patterns
 */
 function TimeIn(_1, _2) {
 	var task = _1 || PassThrough;

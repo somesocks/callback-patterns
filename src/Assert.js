@@ -7,7 +7,14 @@ var _default = function () { return true; };
 
 
 /**
-*
+* Builds an assertion task.  When called,
+* if the arguments do not match the validator functions,
+* Assert passes an error to its callback.
+* @param {function} validator - a function that checks the arguments.
+* @param {string} message - an optional error message to throw if the assertion fails, or a message builder function.
+* @returns {taskFunction} an assertion task
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let Assert = require('callback-patterns/Assert');
 *   let InSeries = require('callback-patterns/InSeries');
@@ -26,13 +33,6 @@ var _default = function () { return true; };
 *   task(onDone, 1); // prints null 1, eventually
 *   task(onDone, -1); // prints '-1 is less than zero', eventually
 * ```
-* Builds an async assertion task.  When called,
-* if the arguments do not match the validator functions,
-* Assert passes an error to its callback.
-* @param {function} validator - a function that checks the arguments.
-* @param {string} message - an optional error message to throw if the assertion fails, or a message builder function.
-* @returns {taskFunction} an assertion task
-* @memberof callback-patterns
 */
 function Assert(_1, _2) {
 	var validator = _1 || _default;

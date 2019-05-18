@@ -4,7 +4,11 @@ var _delay = require('./_delay');
 var _nullCallback = require('./_nullCallback');
 
 /**
-*
+* Delay acts like `PassThrough`, but inserts a delay in the call.
+* @param {number} delay - The time to delay, in ms.
+* @returns {taskFunction} a delay task
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let Delay = require('callback-patterns/Delay');
 *   let InSeries = require('callback-patterns/InSeries');
@@ -19,10 +23,6 @@ var _nullCallback = require('./_nullCallback');
 *
 *   task(onDone, 1); // prints null 1, after a 100 ms delay
 * ```
-* Delay acts like PassThrough, but inserts a delay in the call.
-* @param {number} delay - The time to delay, in ms.
-* @returns {taskFunction} a delay task
-* @memberof callback-patterns
 */
 function Delay(_1) {
 	var ms = _1 || 100;

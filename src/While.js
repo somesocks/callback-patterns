@@ -9,6 +9,12 @@ var PassThrough = require('./PassThrough');
 var _false = function _false(next) { return next(null, false); };
 
 /**
+* While accepts two tasks and returns a task that conditionally executes some number of times.
+* @param {function} conditionTask - a condition task.
+* @param {function} loopTask - a task to run if the condition returns a truthy value.
+* @returns {function}
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let While = require('callback-patterns/While');
 *
@@ -21,11 +27,6 @@ var _false = function _false(next) { return next(null, false); };
 *
 *   task(onDone, 1); // prints 9, eventually
 * ```
-* While accepts two tasks and returns a task that conditionally executes some number of times.
-* @param {function} conditionTask - a condition task.
-* @param {function} loopTask - a task to run if the condition returns a truthy value.
-* @returns {function}
-* @memberof callback-patterns
 */
 function While(_1, _2) {
 	var conditionTask = _1 != null ? _catchWrapper(_1) : _false;

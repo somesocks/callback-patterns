@@ -24,6 +24,12 @@ var _callbackBuilder = function (context, index) {
 };
 
 /**
+* Builds a task wrapper that asynchronously maps each of its arguments to a result.
+* Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
+* @param {taskFunction} task - an asynchronous mapping function.
+* @returns {taskFunction} a parallel map task
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let InSeries = require('callback-patterns/InSeries');
 *   let Logging = require('callback-patterns/Logging');
@@ -41,11 +47,6 @@ var _callbackBuilder = function (context, index) {
 *
 *   task(next, ...args);
 * ```
-* Builds a task wrapper that asynchronously maps each of its arguments to a result.
-* Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
-* @param {taskFunction} task - an asynchronous mapping function.
-* @returns {taskFunction} a parallel map task
-* @memberof callback-patterns
 */
 function ParallelMap(_1) {
 	var mapper = _1 != null ? _catchWrapper(_1) : PassThrough;

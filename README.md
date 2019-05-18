@@ -65,6 +65,19 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 <a name="callback-patterns.unstable.TraceError"></a>
 
 #### unstable.TraceError(task) ⇒ <code>taskFunction</code>
+TraceError is an experimental wrapper that attempts to make errors more informative.
+It does this by appending extra information to the stack of any error thrown in the task.
+
+NOTE: TraceError is marked as 'unstable' as stack traces in JS are not standardized,
+so it may not always provide useful information.
+
+**Kind**: static method of [<code>unstable</code>](#callback-patterns.unstable)  
+**Returns**: <code>taskFunction</code> - a wrapper function that modifies the stack trace of any errors thrown within  
+**Params**
+
+- task <code>taskFunction</code> - a task function to wrap
+
+**Example**  
 ```javascript
   let TraceError = require('callback-patterns/unstable/TraceError');
   let InSeries = require('callback-patterns/InSeries');
@@ -79,24 +92,24 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 
   task(next, ...args);
 ```
-TraceError is an experimental wrapper that attempts to make errors more informative.
-It does this by appending extra information to the stack of any error thrown in the task.
-
-NOTE: TraceError is marked as 'unstable' as stack traces in JS are not standardized,
-so it may not always provide useful information.
-
-**Kind**: static method of [<code>unstable</code>](#callback-patterns.unstable)  
-**Returns**: <code>taskFunction</code> - a wrapper function that modifies the stack trace of any errors thrown within  
-**Params**
-
-- task <code>taskFunction</code> - a task function to wrap
-
 
 * * *
 
 <a name="callback-patterns.Assert"></a>
 
 ### callback-patterns.Assert(validator, message) ⇒ <code>taskFunction</code>
+Builds an assertion task.  When called,
+if the arguments do not match the validator functions,
+Assert passes an error to its callback.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - an assertion task  
+**Params**
+
+- validator <code>function</code> - a function that checks the arguments.
+- message <code>string</code> - an optional error message to throw if the assertion fails, or a message builder function.
+
+**Example**  
 ```javascript
   let Assert = require('callback-patterns/Assert');
   let InSeries = require('callback-patterns/InSeries');
@@ -115,23 +128,25 @@ so it may not always provide useful information.
   task(onDone, 1); // prints null 1, eventually
   task(onDone, -1); // prints '-1 is less than zero', eventually
 ```
-Builds an async assertion task.  When called,
-if the arguments do not match the validator functions,
-Assert passes an error to its callback.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - an assertion task  
-**Params**
-
-- validator <code>function</code> - a function that checks the arguments.
-- message <code>string</code> - an optional error message to throw if the assertion fails, or a message builder function.
-
 
 * * *
 
 <a name="callback-patterns.Background"></a>
 
 ### callback-patterns.Background(backgroundTask) ⇒ <code>taskFunction</code>
+`Background` runs a task in the background.
+It acts like `PassThrough`, but also schedules the backround task to be called.
+
+NOTE: any error a background task throws is caught and ignored.  If you need
+error handling in a background task, catch the error using `CatchError`
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a wrapper task that schedules backgroundTask to be run when called.  
+**Params**
+
+- backgroundTask <code>taskFunction</code> - a task function to be run in the background.
+
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Background = require('callback-patterns/Background');
@@ -147,27 +162,23 @@ Assert passes an error to its callback.
      buildReport,
      Background(saveReport) // don't wait for the report to be saved before returning it
   );
-
 ```
-
-Background runs a task in the background.
-It acts like `PassThrough`, but also schedules the backround task to be called.
-
-NOTE: any error a background task throws is caught and ignored.  If you need
-error handling in a background task, catch the error using `CatchError`
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper task that schedules backgroundTask to be run when called.  
-**Params**
-
-- backgroundTask <code>taskFunction</code> - a task function to be run in the background.
-
 
 * * *
 
 <a name="callback-patterns.Callbackify"></a>
 
 ### callback-patterns.Callbackify(generator) ⇒ <code>taskFunction</code>
+Wraps around a promise generator function,
+to make it easier to integrate with task functions.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task that wraps around the promise  
+**Params**
+
+- generator <code>function</code> - a function that generates a promise from the args.
+
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Callbackify = require('callback-patterns/Callbackify');
@@ -183,15 +194,6 @@ error handling in a background task, catch the error using `CatchError`
 
   task(next, ...args);
 ```
-Wraps around a promise generator function,
-to make it easier to integrate with task functions.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task that wraps around the promise  
-**Params**
-
-- generator <code>function</code> - a function that generates a promise from the args.
-
 
 * * *
 
@@ -254,6 +256,15 @@ to the next function.
 <a name="callback-patterns.Delay"></a>
 
 ### callback-patterns.Delay(delay) ⇒ <code>taskFunction</code>
+Delay acts like `PassThrough`, but inserts a delay in the call.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a delay task  
+**Params**
+
+- delay <code>number</code> - The time to delay, in ms.
+
+**Example**  
 ```javascript
   let Delay = require('callback-patterns/Delay');
   let InSeries = require('callback-patterns/InSeries');
@@ -268,20 +279,26 @@ to the next function.
 
   task(onDone, 1); // prints null 1, after a 100 ms delay
 ```
-Delay acts like PassThrough, but inserts a delay in the call.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a delay task  
-**Params**
-
-- delay <code>number</code> - The time to delay, in ms.
-
 
 * * *
 
 <a name="callback-patterns.If"></a>
 
 ### callback-patterns.If(ifTask, thenTask, elseTask) ⇒ <code>taskFunction</code>
+`If` accepts up to three tasks,
+an 'if' task, a 'then' task, and lastly an 'else' task
+note: by default, the ifTask, thenTask, and elseTask are PassThrough
+note: the ifTask can return multiple results,
+but only the first is checked for truthiness
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Params**
+
+- ifTask <code>taskFunction</code> - a condition task.
+- thenTask <code>taskFunction</code> - a task to run when ifTask returns a truthy value.
+- elseTask <code>taskFunction</code> - a task to run when ifTask returns a falsy value.
+
+**Example**  
 ```javascript
   let If = require('callback-patterns/If');
 
@@ -296,19 +313,6 @@ Delay acts like PassThrough, but inserts a delay in the call.
   logIfEven(null, 1); // prints out 'is not even!' eventually
   logIfEven(null, 2); // prints out 'is even!' eventually
 ```
-If accepts up to three tasks,
-an 'if' task, a 'then' task, and lastly an 'else' task
-note: by default, the ifTask, thenTask, and elseTask are PassThrough
-note: the ifTask can return multiple results,
-but only the first is checked for truthiness
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Params**
-
-- ifTask <code>taskFunction</code> - a condition task.
-- thenTask <code>taskFunction</code> - a task to run when ifTask returns a truthy value.
-- elseTask <code>taskFunction</code> - a task to run when ifTask returns a falsy value.
-
 
 * * *
 
@@ -364,6 +368,17 @@ This is different from InSeries, where the output of each is task is passed as t
 ```
 InParallel accepts a number of functions, and returns a task function that executes all of its child tasks in parallel.
 
+note: because the callbacks can return any number of results,
+the results from each task are autoboxed into an array.
+This includes an empty array for tasks that don't return results.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
+**Params**
+
+- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+**Example**  
 ```javascript
   let InParallel = require('callback-patterns/InParallel');
 
@@ -377,16 +392,6 @@ InParallel accepts a number of functions, and returns a task function that execu
 
   chain(onDone); // prints [ [ 1 ], [ 2 ], [ 3, 4 ] ]
 ```
-note: because the callbacks can return any number of results,
-the results from each task are autoboxed into an array.
-This includes an empty array for tasks that don't return results.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
-**Params**
-
-- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
-
 
 * * *
 
@@ -407,6 +412,17 @@ This includes an empty array for tasks that don't return results.
 InParallel.Flatten is identical to InParallel, except tasks that return
 single results do not get autoboxed in arrays
 
+note: because the callbacks can return any number of results,
+the results from each task are autoboxed into an array.
+This includes an empty array for tasks that don't return results.
+
+**Kind**: static method of [<code>InParallel</code>](#callback-patterns.InParallel)  
+**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
+**Params**
+
+- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+**Example**  
 ```javascript
   let InParallel = require('callback-patterns/InParallel');
 
@@ -420,16 +436,6 @@ single results do not get autoboxed in arrays
 
   chain(onDone); // prints [ undefined, 1, [ 2, 3 ] ]
 ```
-note: because the callbacks can return any number of results,
-the results from each task are autoboxed into an array.
-This includes an empty array for tasks that don't return results.
-
-**Kind**: static method of [<code>InParallel</code>](#callback-patterns.InParallel)  
-**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
-**Params**
-
-- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
-
 
 * * *
 
@@ -449,6 +455,14 @@ This includes an empty array for tasks that don't return results.
 ```
 Runs several tasks in series, and passes the results from one down to the next.
 This works similarly to the 'waterfall' method in caolan's async.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in series  
+**Params**
+
+- ...tasks <code>taskFunction</code> - any number of tasks to run in series.
+
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
 
@@ -465,18 +479,21 @@ This works similarly to the 'waterfall' method in caolan's async.
   )(); // prints out 1 2 3 4 5, eventually
 ```
 
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in series  
-**Params**
-
-- ...tasks <code>taskFunction</code> - any number of tasks to run in series.
-
-
 * * *
 
 <a name="callback-patterns.Logging"></a>
 
 ### callback-patterns.Logging(...statements) ⇒ <code>taskFunction</code>
+A logging utility.
+It passes the arguments received into all the statements, collects the results, and joins them together with newlines to build the final log statement
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a logging task  
+**Params**
+
+- ...statements <code>function</code> - any number of logging values.  Functions are called with the calling arguments, everything else is passed directly to
+
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Logging = require('callback-patterns/Logging');
@@ -493,21 +510,31 @@ This works similarly to the 'waterfall' method in caolan's async.
 
   task(next, ...args);
 ```
-A logging utility.
-It passes the arguments received into all the statements, collects the results, and joins them together with newlines to build the final log statement
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a logging task  
-**Params**
-
-- ...statements <code>function</code> - any number of logging values.  Functions are called with the calling arguments, everything else is passed directly to
-
 
 * * *
 
 <a name="callback-patterns.Memoize"></a>
 
 ### callback-patterns.Memoize(taskFunction, [keyFunction], [cache]) ⇒ <code>taskFunction</code>
+Memoize builds a wrapper function that caches results of previous executions.
+As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
+
+NOTE: As of now, there are no cache eviction mechanisms.
+  You should try to use Memoized functions in a 'disposable' way as a result
+
+NOTE: Memoize is not 'thread-safe' currently.  If two calls are made for the same object currently,
+  two calls to the wrapped function will be made
+
+NOTE: Memoize will cache errors as well as results.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Params**
+
+- taskFunction <code>taskFunction</code> - the task function to memoize.
+- [keyFunction] <code>function</code> - a function that synchronously generates a key for a request.
+- [cache] <code>object</code> - a pre-filled cache to use
+
+**Example**  
 ```javascript
 
   let Delay = require('callback-patterns/Delay');
@@ -533,33 +560,22 @@ It passes the arguments received into all the statements, collects the results, 
 
 
   test(null, 1); // task is only called once, even though memoizedTask is called three times
-
 ```
-
-Memoize builds a wrapper function that caches results of previous executions.
-As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
-
-NOTE: As of now, there are no cache eviction mechanisms.
-  You should try to use Memoized functions in a 'disposable' way as a result
-
-NOTE: Memoize is not 'thread-safe' currently.  If two calls are made for the same object currently,
-  two calls to the wrapped function will be made
-
-NOTE: Memoize will cache errors as well as results.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Params**
-
-- taskFunction <code>taskFunction</code> - the task function to memoize.
-- [keyFunction] <code>function</code> - a function that synchronously generates a key for a request.
-- [cache] <code>object</code> - a pre-filled cache to use
-
 
 * * *
 
 <a name="callback-patterns.ParallelFilter"></a>
 
 ### callback-patterns.ParallelFilter(filter) ⇒ <code>taskFunction</code>
+Builds a task that filters all of its arguments in parallel, and returns the results
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a filtering task  
+**Params**
+
+- filter <code>taskFunction</code> - an asynchronous filter function that returns true or false through its callback.
+
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Logging = require('callback-patterns/Logging');
@@ -577,20 +593,22 @@ NOTE: Memoize will cache errors as well as results.
 
   task(next, ...args);
 ```
-Builds a task that filters all of its arguments in parallel, and returns the results
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a filtering task  
-**Params**
-
-- filter <code>taskFunction</code> - an asynchronous filter function that returns true or false through its callback.
-
 
 * * *
 
 <a name="callback-patterns.ParallelMap"></a>
 
 ### callback-patterns.ParallelMap(task) ⇒ <code>taskFunction</code>
+Builds a task wrapper that asynchronously maps each of its arguments to a result.
+Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a parallel map task  
+**Params**
+
+- task <code>taskFunction</code> - an asynchronous mapping function.
+
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Logging = require('callback-patterns/Logging');
@@ -608,21 +626,19 @@ Builds a task that filters all of its arguments in parallel, and returns the res
 
   task(next, ...args);
 ```
-Builds a task wrapper that asynchronously maps each of its arguments to a result.
-Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a parallel map task  
-**Params**
-
-- task <code>taskFunction</code> - an asynchronous mapping function.
-
 
 * * *
 
 <a name="callback-patterns.PassThrough"></a>
 
 ### callback-patterns.PassThrough()
+Sometimes, you need to pass previous arguments along with a new result.  The easiest way to do this is to use PassThrough, which is a convenience method for:
+```javascript
+ (next, ...args) => next(null, ...args),
+```
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Logging = require('callback-patterns/Logging');
@@ -639,18 +655,27 @@ Note: even though the mapping function can return any number of results, Paralle
   task(next, ...args);
 ```
 
-Sometimes, you need to pass previous arguments along with a new result.  The easiest way to do this is to use PassThrough, which is a convenience method for:
-```javascript
- (next, ...args) => next(null, ...args),
-```
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-
 * * *
 
 <a name="callback-patterns.Promisify"></a>
 
 ### callback-patterns.Promisify(task) ⇒ <code>function</code>
+Wraps around a task function and greates a promise generator,
+to make it easier to integrate task functions and promises.
+
+NOTE: callback-patterns does not come bundled with a promise library,
+it expects Promise to already exists in the global namespace.
+
+NOTE: if a function 'returns' multiple values through the next callback,
+Promisify auto-boxes these into an array.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>function</code> - a function that generates a Promise when called  
+**Params**
+
+- task <code>function</code> - a function that generates a promise from the args.
+
+**Example**  
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
   let Promisify = require('callback-patterns/Promisify');
@@ -669,41 +694,20 @@ Sometimes, you need to pass previous arguments along with a new result.  The eas
 
 ```
 
-Wraps around a task function and greates a promise generator,
-to make it easier to integrate task functions and promises.
-
-NOTE: callback-patterns does not come bundled with a promise library,
-it expects Promise to already exists in the global namespace.
-
-NOTE: if a function 'returns' multiple values through the next callback,
-Promisify auto-boxes these into an array.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>function</code> - a function that generates a Promise when called  
-**Params**
-
-- task <code>function</code> - a function that generates a promise from the args.
-
-
 * * *
 
 <a name="callback-patterns.Race"></a>
 
 ### callback-patterns.Race(...tasks) ⇒ <code>taskFunction</code>
-```javascript
-  let Race = require('callback-patterns/Race');
-
-  let task = Race(
-    function(next, ...args) {},
-    function(next, ...args) {},
-    ...
-  );
-
-  task(next, ...args);
-```
-
 Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task  
+**Params**
+
+- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+
+**Example**  
 ```javascript
   let Race = require('callback-patterns/Race');
 
@@ -717,13 +721,6 @@ Race accepts a number of functions, and returns a task function that executes al
 
   task(onDone); // prints out [ 1 ], eventually
 ```
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
-**Params**
-
-- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
-
 
 * * *
 
@@ -763,6 +760,16 @@ Requests are queued up in an unbounded FIFO queue until they can be run.
 <a name="callback-patterns.TimeIn"></a>
 
 ### callback-patterns.TimeIn(task, ms) ⇒ <code>taskFunction</code>
+TimeIn wraps a single task function, and returns a function that only returns after X ms.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>taskFunction</code> - a task  
+**Params**
+
+- task <code>taskFunction</code> - the task to wrap in a timeout.
+- ms <code>number</code> - the timein in ms.
+
+**Example**  
 ```javascript
   let TimeIn = require('callback-patterns/TimeIn');
 
@@ -774,32 +781,11 @@ Requests are queued up in an unbounded FIFO queue until they can be run.
   task(next, ...args);
 ```
 
-TimeIn wraps a single task function, and returns a function that only returns after X ms.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
-**Params**
-
-- task <code>taskFunction</code> - the task to wrap in a timeout.
-- ms <code>number</code> - the timein in ms.
-
-
 * * *
 
 <a name="callback-patterns.TimeOut"></a>
 
 ### callback-patterns.TimeOut(task, ms) ⇒ <code>taskFunction</code>
-```javascript
-  let TimeOut = require('callback-patterns/TimeOut');
-
-  let chain = TimeOut(
-    function(next, ...args) {},
-			1000
-  );
-
-  chain(next, ...args);
-```
-
 TimeOut wraps a single task function, and returns a function that returns early if the task fails to complete before the timeout triggers.
 
 NOTE: the timeout being triggered will not cancel the original task.
@@ -811,6 +797,17 @@ NOTE: the timeout being triggered will not cancel the original task.
 - task <code>taskFunction</code> - the task to wrap in a timeout.
 - ms <code>number</code> - the timeout in ms.
 
+**Example**  
+```javascript
+  let TimeOut = require('callback-patterns/TimeOut');
+
+  let chain = TimeOut(
+    function(next, ...args) {},
+			1000
+  );
+
+  chain(next, ...args);
+```
 
 * * *
 
@@ -832,6 +829,15 @@ Wraps a task and logs how long it takes to finish, or fail.
 <a name="callback-patterns.While"></a>
 
 ### callback-patterns.While(conditionTask, loopTask) ⇒ <code>function</code>
+While accepts two tasks and returns a task that conditionally executes some number of times.
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Params**
+
+- conditionTask <code>function</code> - a condition task.
+- loopTask <code>function</code> - a task to run if the condition returns a truthy value.
+
+**Example**  
 ```javascript
   let While = require('callback-patterns/While');
 
@@ -844,14 +850,6 @@ Wraps a task and logs how long it takes to finish, or fail.
 
   task(onDone, 1); // prints 9, eventually
 ```
-While accepts two tasks and returns a task that conditionally executes some number of times.
-
-**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Params**
-
-- conditionTask <code>function</code> - a condition task.
-- loopTask <code>function</code> - a task to run if the condition returns a truthy value.
-
 
 * * *
 

@@ -6,6 +6,16 @@ var _catchWrapper = require('./_catchWrapper');
 var EMPTY = function (next) { return (next || _nullCallback)(); };
 
 /**
+* `Background` runs a task in the background.
+* It acts like `PassThrough`, but also schedules the backround task to be called.
+*
+* NOTE: any error a background task throws is caught and ignored.  If you need
+* error handling in a background task, catch the error using `CatchError`
+*
+* @param {taskFunction} backgroundTask - a task function to be run in the background.
+* @returns {taskFunction} a wrapper task that schedules backgroundTask to be run when called.
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let InSeries = require('callback-patterns/InSeries');
 *   let Background = require('callback-patterns/Background');
@@ -21,18 +31,7 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 *      buildReport,
 *      Background(saveReport) // don't wait for the report to be saved before returning it
 *   );
-*
 * ```
-*
-* Background runs a task in the background.
-* It acts like `PassThrough`, but also schedules the backround task to be called.
-*
-* NOTE: any error a background task throws is caught and ignored.  If you need
-* error handling in a background task, catch the error using `CatchError`
-*
-* @param {taskFunction} backgroundTask - a task function to be run in the background.
-* @returns {taskFunction} a wrapper task that schedules backgroundTask to be run when called.
-* @memberof callback-patterns
 */
 function Background(_1) {
 	var task = _1 ? _catchWrapper(_1) : EMPTY;

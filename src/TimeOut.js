@@ -10,7 +10,15 @@ function _error(next) {
 }
 
 /**
+* TimeOut wraps a single task function, and returns a function that returns early if the task fails to complete before the timeout triggers.
 *
+* NOTE: the timeout being triggered will not cancel the original task.
+*
+* @param {taskFunction} task - the task to wrap in a timeout.
+* @param {number} ms - the timeout in ms.
+* @returns {taskFunction} a task
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let TimeOut = require('callback-patterns/TimeOut');
 *
@@ -21,15 +29,6 @@ function _error(next) {
 *
 *   chain(next, ...args);
 * ```
-*
-* TimeOut wraps a single task function, and returns a function that returns early if the task fails to complete before the timeout triggers.
-*
-* NOTE: the timeout being triggered will not cancel the original task.
-*
-* @param {taskFunction} task - the task to wrap in a timeout.
-* @param {number} ms - the timeout in ms.
-* @returns {taskFunction} a task
-* @memberof callback-patterns
 */
 function TimeOut(_1, _2) {
 	var task = _1 || PassThrough;

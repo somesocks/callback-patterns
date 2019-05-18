@@ -7,21 +7,12 @@ var _onceWrapper = require('./_onceWrapper');
 var EMPTY = function (next) { return (next || _nullCallback)(); };
 
 /**
-*
-* ```javascript
-*   let Race = require('callback-patterns/Race');
-*
-*   let task = Race(
-*     function(next, ...args) {},
-*     function(next, ...args) {},
-*     ...
-*   );
-*
-*   task(next, ...args);
-* ```
-*
 * Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 *
+* @param {...taskFunction} tasks - any number of tasks to run in parallel.
+* @returns {taskFunction} a task
+* @memberof callback-patterns
+* @example
 * ```javascript
 *   let Race = require('callback-patterns/Race');
 *
@@ -35,10 +26,6 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 *
 *   task(onDone); // prints out [ 1 ], eventually
 * ```
-*
-* @param {...taskFunction} tasks - any number of tasks to run in parallel.
-* @returns {taskFunction} a task
-* @memberof callback-patterns
 */
 function Race() {
 	var tasks = arguments;

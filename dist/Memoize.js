@@ -12,6 +12,23 @@ var DEFAULT_KEY_FUNCTION = function () {
 };
 
 /**
+* Memoize builds a wrapper function that caches results of previous executions.
+* As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
+*
+* NOTE: As of now, there are no cache eviction mechanisms.
+*   You should try to use Memoized functions in a 'disposable' way as a result
+*
+* NOTE: Memoize is not 'thread-safe' currently.  If two calls are made for the same object currently,
+*   two calls to the wrapped function will be made
+*
+* NOTE: Memoize will cache errors as well as results.
+*
+* @param {taskFunction} taskFunction - the task function to memoize.
+* @param {function=} keyFunction - a function that synchronously generates a key for a request.
+* @param {object=} cache - a pre-filled cache to use
+* @returns {taskFunction}
+* @memberof callback-patterns
+* @example
 * ```javascript
 *
 *   let Delay = require('callback-patterns/Delay');
@@ -37,25 +54,7 @@ var DEFAULT_KEY_FUNCTION = function () {
 *
 *
 *   test(null, 1); // task is only called once, even though memoizedTask is called three times
-*
 * ```
-*
-* Memoize builds a wrapper function that caches results of previous executions.
-* As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
-*
-* NOTE: As of now, there are no cache eviction mechanisms.
-*   You should try to use Memoized functions in a 'disposable' way as a result
-*
-* NOTE: Memoize is not 'thread-safe' currently.  If two calls are made for the same object currently,
-*   two calls to the wrapped function will be made
-*
-* NOTE: Memoize will cache errors as well as results.
-*
-* @param {taskFunction} taskFunction - the task function to memoize.
-* @param {function=} keyFunction - a function that synchronously generates a key for a request.
-* @param {object=} cache - a pre-filled cache to use
-* @returns {taskFunction}
-* @memberof callback-patterns
 */
 function Memoize(_1, _2, _3) {
 	var task = _1 != null ? _catchWrapper(_1) : PassThrough;
