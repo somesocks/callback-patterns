@@ -22,9 +22,9 @@ function _results(next, r0, r1) {
 /**
 * TimeIn wraps a single task function, and returns a function that only returns after X ms.
 *
-* @param {taskFunction} task - the task to wrap in a timeout.
+* @param {CallbackTask} task - the task to wrap in a timeout.
 * @param {number} ms - the timein in ms.
-* @returns {taskFunction} a task
+* @returns {CallbackTask} a task
 * @memberof callback-patterns
 * @example
 * ```javascript

@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * TraceError is an experimental wrapper that attempts to make errors more informative.
@@ -14,8 +10,8 @@ type task = (next ?: callback, ...args: any[]) => void;
 * NOTE: TraceError is marked as 'unstable' as stack traces in JS are not standardized,
 * so it may not always provide useful information.
 *
-* @param {taskFunction} task - a task function to wrap
-* @returns {taskFunction} a wrapper function that modifies the stack trace of any errors thrown within
+* @param {CallbackTask} task - a task function to wrap
+* @returns {CallbackTask} a wrapper function that modifies the stack trace of any errors thrown within
 * @memberof callback-patterns.unstable
 * @example
 * ```javascript
@@ -33,6 +29,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function TraceError(task : task) : task;
+declare function TraceError(task : CallbackTask) : CallbackTask;
 
 export default TraceError;

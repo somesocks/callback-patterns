@@ -7,9 +7,9 @@ var EMPTY_TASK = function (next) { next(); }
 
 /**
 * Wraps a task and logs how long it takes to finish, or fail.
-* @param {taskFunction} task - the task to wrap.
+* @param {CallbackTask} task - the task to wrap.
 * @param {string} label - an optional label to log.
-* @returns {taskFunction} a task
+* @returns {CallbackTask} a task
 * @memberof callback-patterns
 */
 function Timer(task, label) {

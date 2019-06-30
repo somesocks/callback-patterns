@@ -1,16 +1,12 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type key = (...args : any[]) => string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Builds a task that filters all of its arguments in parallel, and returns the results
-* @param {taskFunction} filter - an asynchronous filter function that returns true or false through its callback.
-* @returns {taskFunction} a filtering task
+* @param {CallbackTask} filter - an asynchronous filter function that returns true or false through its callback.
+* @returns {CallbackTask} a filtering task
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -31,6 +27,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function ParallelFilter(filter : task) : task;
+declare function ParallelFilter(filter : CallbackTask) : CallbackTask;
 
 export default ParallelFilter;

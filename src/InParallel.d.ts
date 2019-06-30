@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * ```javascript
@@ -24,8 +20,8 @@ type task = (next ?: callback, ...args: any[]) => void;
 * note: because the callbacks can return any number of results,
 * the results from each task are autoboxed into an array.
 * This includes an empty array for tasks that don't return results.
-* @param {...taskFunction} tasks - any number of tasks to run in parallel.
-* @returns {taskFunction} a wrapper function that runs the tasks in parallel
+* @param {...CallbackTask} tasks - any number of tasks to run in parallel.
+* @returns {CallbackTask} a wrapper function that runs the tasks in parallel
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -42,7 +38,7 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   chain(onDone); // prints [ [ 1 ], [ 2 ], [ 3, 4 ] ]
 * ```
 */
-declare function InParallel(...tasks: task[]) : task;
+declare function InParallel(...tasks: CallbackTask[]) : CallbackTask;
 
 declare namespace InParallel {
 
@@ -64,8 +60,8 @@ declare namespace InParallel {
 	* note: because the callbacks can return any number of results,
 	* the results from each task are autoboxed into an array.
 	* This includes an empty array for tasks that don't return results.
-	* @param {...taskFunction} tasks - any number of tasks to run in parallel.
-	* @returns {taskFunction} a wrapper function that runs the tasks in parallel
+	* @param {...CallbackTask} tasks - any number of tasks to run in parallel.
+	* @returns {CallbackTask} a wrapper function that runs the tasks in parallel
 	* @memberof callback-patterns.InParallel
 	* @example
 	* ```javascript
@@ -82,7 +78,7 @@ declare namespace InParallel {
 	*   chain(onDone); // prints [ undefined, 1, [ 2, 3 ] ]
 	* ```
 	*/
-	function Flatten(...tasks: task[]) : task;
+	function Flatten(...tasks: CallbackTask[]) : CallbackTask;
 
 }
 

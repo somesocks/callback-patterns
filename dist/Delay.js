@@ -6,7 +6,7 @@ var _nullCallback = require('./_nullCallback');
 /**
 * Delay acts like `PassThrough`, but inserts a delay in the call.
 * @param {number} delay - The time to delay, in ms.
-* @returns {taskFunction} a delay task
+* @returns {CallbackTask} a delay task
 * @memberof callback-patterns
 * @example
 * ```javascript

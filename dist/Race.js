@@ -9,8 +9,8 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 /**
 * Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 *
-* @param {...taskFunction} tasks - any number of tasks to run in parallel.
-* @returns {taskFunction} a task
+* @param {...CallbackTask} tasks - any number of tasks to run in parallel.
+* @returns {CallbackTask} a task
 * @memberof callback-patterns
 * @example
 * ```javascript

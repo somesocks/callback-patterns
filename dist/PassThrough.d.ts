@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type key = (...args : any[]) => string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Sometimes, you need to pass previous arguments along with a new result.  The easiest way to do this is to use PassThrough, which is a convenience method for:
@@ -30,6 +26,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function PassThrough(next ?: callback, ...args: any[]) : void;
+declare function PassThrough(next ?: Callback, ...args: any[]) : void;
 
 export default PassThrough;

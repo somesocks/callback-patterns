@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Errors bypass the normal flow of execution.
@@ -53,10 +49,10 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   )(console.log); // prints out 1 2 3 Error Caught 4 5, eventually
 * ```
 *
-* @param {taskFunction} task - a function that checks the arguments.
-* @returns {taskFunction} a wrapper function around the task
+* @param {CallbackTask} task - a function that checks the arguments.
+* @returns {CallbackTask} a wrapper function around the task
 * @memberof callback-patterns
 */
-declare function CatchError(task : task) : task;
+declare function CatchError(task : CallbackTask) : CallbackTask;
 
 export default CatchError;

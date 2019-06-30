@@ -28,8 +28,8 @@ function _stackWrapper(_1, _2) {
 * NOTE: TraceError is marked as 'unstable' as stack traces in JS are not standardized,
 * so it may not always provide useful information.
 *
-* @param {taskFunction} task - a task function to wrap
-* @returns {taskFunction} a wrapper function that modifies the stack trace of any errors thrown within
+* @param {CallbackTask} task - a task function to wrap
+* @returns {CallbackTask} a wrapper function that modifies the stack trace of any errors thrown within
 * @memberof callback-patterns.unstable
 * @example
 * ```javascript

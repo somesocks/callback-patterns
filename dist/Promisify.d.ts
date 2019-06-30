@@ -1,13 +1,9 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
-
-type asyncTask = (...args: any[]) => Promise<any>;
+type AsyncTask = (...args: any[]) => Promise<any>;
 
 /**
 * Wraps around a task function and greates a promise generator,
@@ -41,6 +37,6 @@ type asyncTask = (...args: any[]) => Promise<any>;
 *
 * ```
 */
-declare function Promisify(task : task) : asyncTask;
+declare function Promisify(task : CallbackTask) : AsyncTask;
 
 export default Promisify;

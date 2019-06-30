@@ -1,20 +1,16 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * TimeOut wraps a single task function, and returns a function that returns early if the task fails to complete before the timeout triggers.
 *
 * NOTE: the timeout being triggered will not cancel the original task.
 *
-* @param {taskFunction} task - the task to wrap in a timeout.
+* @param {CallbackTask} task - the task to wrap in a timeout.
 * @param {number} ms - the timeout in ms.
-* @returns {taskFunction} a task
+* @returns {CallbackTask} a task
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -28,6 +24,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   chain(next, ...args);
 * ```
 */
-declare function TimeOut(task: task, ms ?: number) : task;
+declare function TimeOut(task : CallbackTask, ms ?: number) : CallbackTask;
 
 export default TimeOut;

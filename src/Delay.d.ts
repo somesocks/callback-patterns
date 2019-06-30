@@ -1,16 +1,12 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Delay acts like `PassThrough`, but inserts a delay in the call.
 * @param {number} delay - The time to delay, in ms.
-* @returns {taskFunction} a delay task
+* @returns {CallbackTask} a delay task
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -28,6 +24,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(onDone, 1); // prints null 1, after a 100 ms delay
 * ```
 */
-declare function Delay(ms : number) : task;
+declare function Delay(ms : number) : CallbackTask;
 
 export default Delay;

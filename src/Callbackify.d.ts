@@ -1,17 +1,13 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Wraps around a promise generating function,
 * to make it easier to integrate with task functions.
 * @param {function} generator - a function that generates a promise from the args.
-* @returns {taskFunction} a task that wraps around the promise
+* @returns {CallbackTask} a task that wraps around the promise
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -30,6 +26,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function Callbackify(task : Promise<any> | any) : task;
+declare function Callbackify(task : Promise<any> | any) : CallbackTask;
 
 export default Callbackify;

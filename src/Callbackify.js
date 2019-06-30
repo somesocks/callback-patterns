@@ -7,7 +7,7 @@ var PassThrough = require('./PassThrough');
 * Wraps around a promise generator function,
 * to make it easier to integrate with task functions.
 * @param {function} generator - a function that generates a promise from the args.
-* @returns {taskFunction} a task that wraps around the promise
+* @returns {CallbackTask} a task that wraps around the promise
 * @memberof callback-patterns
 * @example
 * ```javascript

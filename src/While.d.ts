@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * While accepts two tasks and returns a task that conditionally executes some number of times.
@@ -27,6 +23,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(onDone, 1); // prints 9, eventually
 * ```
 */
-declare function While(_if : task, _then : task, _else ?: task) : task;
+declare function While(_if : CallbackTask, _then : CallbackTask) : CallbackTask;
 
 export default While;

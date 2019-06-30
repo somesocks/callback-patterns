@@ -23,10 +23,10 @@ var DEFAULT_KEY_FUNCTION = function () {
 *
 * NOTE: Memoize will cache errors as well as results.
 *
-* @param {taskFunction} taskFunction - the task function to memoize.
+* @param {CallbackTask} CallbackTask - the task function to memoize.
 * @param {function=} keyFunction - a function that synchronously generates a key for a request.
 * @param {object=} cache - a pre-filled cache to use
-* @returns {taskFunction}
+* @returns {CallbackTask}
 * @memberof callback-patterns
 * @example
 * ```javascript

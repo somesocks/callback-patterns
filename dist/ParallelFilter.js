@@ -33,8 +33,8 @@ var _callbackBuilder = function (context, index) {
 
 /**
 * Builds a task that filters all of its arguments in parallel, and returns the results
-* @param {taskFunction} filter - an asynchronous filter function that returns true or false through its callback.
-* @returns {taskFunction} a filtering task
+* @param {CallbackTask} filter - an asynchronous filter function that returns true or false through its callback.
+* @returns {CallbackTask} a filtering task
 * @memberof callback-patterns
 * @example
 * ```javascript

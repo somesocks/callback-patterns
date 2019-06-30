@@ -11,10 +11,10 @@ var PassThrough = require('./PassThrough');
 * note: by default, the ifTask, thenTask, and elseTask are PassThrough
 * note: the ifTask can return multiple results,
 * but only the first is checked for truthiness
-* @param {taskFunction} ifTask - a condition task.
-* @param {taskFunction} thenTask - a task to run when ifTask returns a truthy value.
-* @param {taskFunction} elseTask - a task to run when ifTask returns a falsy value.
-* @returns {taskFunction}
+* @param {CallbackTask} ifTask - a condition task.
+* @param {CallbackTask} thenTask - a task to run when ifTask returns a truthy value.
+* @param {CallbackTask} elseTask - a task to run when ifTask returns a falsy value.
+* @returns {CallbackTask}
 * @memberof callback-patterns
 * @example
 * ```javascript

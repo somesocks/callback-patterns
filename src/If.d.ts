@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * `If` accepts up to three tasks,
@@ -13,10 +9,10 @@ type task = (next ?: callback, ...args: any[]) => void;
 * note: by default, the ifTask, thenTask, and elseTask are PassThrough
 * note: the ifTask can return multiple results,
 * but only the first is checked for truthiness
-* @param {taskFunction} ifTask - a condition task.
-* @param {taskFunction} thenTask - a task to run when ifTask returns a truthy value.
-* @param {taskFunction} elseTask - a task to run when ifTask returns a falsy value.
-* @returns {taskFunction}
+* @param {CallbackTask} _if - a condition task.
+* @param {CallbackTask} _then - a task to run when ifTask returns a truthy value.
+* @param {CallbackTask} _else - a task to run when ifTask returns a falsy value.
+* @returns {CallbackTask}
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -34,6 +30,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   logIfEven(null, 2); // prints out 'is even!' eventually
 * ```
 */
-declare function If(_if : task, _then : task, _else ?: task) : task;
+declare function If(_if : CallbackTask, _then ?: CallbackTask, _else ?: CallbackTask) : CallbackTask;
 
 export default If;

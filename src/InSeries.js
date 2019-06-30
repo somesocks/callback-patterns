@@ -21,8 +21,8 @@ var EMPTY = function (next) { return (next || nullCallback)(); };
 * ```
 * Runs several tasks in series, and passes the results from one down to the next.
 * This works similarly to the 'waterfall' method in caolan's async.
-* @param {...taskFunction} tasks - any number of tasks to run in series.
-* @returns {taskFunction} a wrapper function that runs the tasks in series
+* @param {...CallbackTask} tasks - any number of tasks to run in series.
+* @returns {CallbackTask} a wrapper function that runs the tasks in series
 * @memberof callback-patterns
 * @example
 * ```javascript

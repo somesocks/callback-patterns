@@ -1,17 +1,13 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type key = (...args : any[]) => string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Builds a task wrapper that asynchronously maps each of its arguments to a result.
 * Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
-* @param {taskFunction} task - an asynchronous mapping function.
-* @returns {taskFunction} a parallel map task
+* @param {CallbackTask} task - an asynchronous mapping function.
+* @returns {CallbackTask} a parallel map task
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -32,6 +28,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function ParallelMap(map : task) : task;
+declare function ParallelMap(map : CallbackTask) : CallbackTask;
 
 export default ParallelMap;

@@ -11,9 +11,9 @@ var PassThrough = require('./PassThrough');
 /**
 * Wraps a task and ensures that only X number of instances of the task can be run in parallel.
 * Requests are queued up in an unbounded FIFO queue until they can be run.
-* @param {taskFunction} task - the task to throttle
+* @param {CallbackTask} task - the task to throttle
 * @param {number} limit - the number of instances that can run in parallel. default 1.
-* @returns {taskFunction} a task
+* @returns {CallbackTask} a task
 * @memberof callback-patterns
 */
 function Throttle(_1, _2) {

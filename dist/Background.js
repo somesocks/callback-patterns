@@ -12,8 +12,8 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 * NOTE: any error a background task throws is caught and ignored.  If you need
 * error handling in a background task, catch the error using `CatchError`
 *
-* @param {taskFunction} backgroundTask - a task function to be run in the background.
-* @returns {taskFunction} a wrapper task that schedules backgroundTask to be run when called.
+* @param {CallbackTask} backgroundTask - a task function to be run in the background.
+* @returns {CallbackTask} a wrapper task that schedules backgroundTask to be run when called.
 * @memberof callback-patterns
 * @example
 * ```javascript

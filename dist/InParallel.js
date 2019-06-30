@@ -40,8 +40,8 @@ var _callback = function (context, index) {
 * note: because the callbacks can return any number of results,
 * the results from each task are autoboxed into an array.
 * This includes an empty array for tasks that don't return results.
-* @param {...taskFunction} tasks - any number of tasks to run in parallel.
-* @returns {taskFunction} a wrapper function that runs the tasks in parallel
+* @param {...CallbackTask} tasks - any number of tasks to run in parallel.
+* @returns {CallbackTask} a wrapper function that runs the tasks in parallel
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -130,8 +130,8 @@ var _callbackWithFlatten = function (context, index) {
 * note: because the callbacks can return any number of results,
 * the results from each task are autoboxed into an array.
 * This includes an empty array for tasks that don't return results.
-* @param {...taskFunction} tasks - any number of tasks to run in parallel.
-* @returns {taskFunction} a wrapper function that runs the tasks in parallel
+* @param {...CallbackTask} tasks - any number of tasks to run in parallel.
+* @returns {CallbackTask} a wrapper function that runs the tasks in parallel
 * @memberof callback-patterns.InParallel
 * @example
 * ```javascript

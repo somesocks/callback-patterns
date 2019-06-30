@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Builds an assertion task.  When called,
@@ -13,7 +9,7 @@ type task = (next ?: callback, ...args: any[]) => void;
 * Assert passes an error to its callback.
 * @param {function} validator - a function that checks the arguments.
 * @param {string} message - an optional error message to throw if the assertion fails, or a message builder function.
-* @returns {taskFunction} an assertion task
+* @returns {CallbackTask} an assertion task
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -35,6 +31,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(onDone, -1); // prints '-1 is less than zero', eventually
 * ```
 */
-declare function Background(task : task) : task;
+declare function Background(task : CallbackTask) : CallbackTask;
 
 export default Background;

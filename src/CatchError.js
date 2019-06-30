@@ -48,8 +48,8 @@ var _nullCallback = require('./_nullCallback');
 *   )(console.log); // prints out 1 2 3 Error Caught 4 5, eventually
 * ```
 *
-* @param {taskFunction} task - a function that checks the arguments.
-* @returns {taskFunction} a wrapper function around the task
+* @param {CallbackTask} task - a function that checks the arguments.
+* @returns {CallbackTask} a wrapper function around the task
 * @memberof callback-patterns
 */
 var CatchError = function CatchError(_1) {

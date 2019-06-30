@@ -14,9 +14,9 @@ function _error(next) {
 *
 * NOTE: the timeout being triggered will not cancel the original task.
 *
-* @param {taskFunction} task - the task to wrap in a timeout.
+* @param {CallbackTask} task - the task to wrap in a timeout.
 * @param {number} ms - the timeout in ms.
-* @returns {taskFunction} a task
+* @returns {CallbackTask} a task
 * @memberof callback-patterns
 * @example
 * ```javascript

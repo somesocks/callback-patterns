@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * ```javascript
@@ -31,10 +27,10 @@ type task = (next ?: callback, ...args: any[]) => void;
 *     (next, a) => { a.val = 3; console.log(a.val); next();}
 *   )(null, {}); // prints out 1 2 3, eventually
 ```
-* @param {...taskFunction} tasks - any number of tasks to run in order.
-* @returns {taskFunction} a wrapper function that runs the tasks in order
+* @param {...CallbackTask} tasks - any number of tasks to run in order.
+* @returns {CallbackTask} a wrapper function that runs the tasks in order
 * @memberof callback-patterns
 */
-declare function InOrder(...tasks: task[]) : task;
+declare function InOrder(...tasks: CallbackTask[]) : CallbackTask;
 
 export default InOrder;

@@ -31,8 +31,8 @@ var EMPTY = function (next) { return (next || nullCallback)(); };
 *     (next, a) => { a.val = 3; console.log(a.val); next();}
 *   )(null, {}); // prints out 1 2 3, eventually
 ```
-* @param {...taskFunction} tasks - any number of tasks to run in order.
-* @returns {taskFunction} a wrapper function that runs the tasks in order
+* @param {...CallbackTask} tasks - any number of tasks to run in order.
+* @returns {CallbackTask} a wrapper function that runs the tasks in order
 * @memberof callback-patterns
 */
 var InOrder = function InOrder() {

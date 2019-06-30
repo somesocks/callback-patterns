@@ -12,7 +12,7 @@ var _default = function () { return true; };
 * Assert passes an error to its callback.
 * @param {function} validator - a function that checks the arguments.
 * @param {string} message - an optional error message to throw if the assertion fails, or a message builder function.
-* @returns {taskFunction} an assertion task
+* @returns {CallbackTask} an assertion task
 * @memberof callback-patterns
 * @example
 * ```javascript

@@ -1,17 +1,13 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 *
-* @param {...taskFunction} tasks - any number of tasks to run in parallel.
-* @returns {taskFunction} a task
+* @param {...CallbackTask} tasks - any number of tasks to run in parallel.
+* @returns {CallbackTask} a task
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -28,6 +24,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   task(onDone); // prints out [ 1 ], eventually
 * ```
 */
-declare function Race(...tasks: task[]) : task;
+declare function Race(...tasks: CallbackTask[]) : CallbackTask;
 
 export default Race;

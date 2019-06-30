@@ -1,11 +1,7 @@
 
-type validator = (...args : any[]) => boolean;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type message = ((...args : any[]) => string) | string;
-
-type callback = (err ?: Error, ...res: any[]) => void;
-
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * ```javascript
@@ -21,8 +17,8 @@ type task = (next ?: callback, ...args: any[]) => void;
 * ```
 * Runs several tasks in series, and passes the results from one down to the next.
 * This works similarly to the 'waterfall' method in caolan's async.
-* @param {...taskFunction} tasks - any number of tasks to run in series.
-* @returns {taskFunction} a wrapper function that runs the tasks in series
+* @param {...CallbackTask} tasks - any number of tasks to run in series.
+* @returns {CallbackTask} a wrapper function that runs the tasks in series
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -41,6 +37,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   )(); // prints out 1 2 3 4 5, eventually
 ```
 */
-declare function InSeries(...tasks: task[]) : task;
+declare function InSeries(...tasks : CallbackTask[]) : CallbackTask;
 
 export default InSeries;

@@ -27,29 +27,29 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 
 * [callback-patterns](#callback-patterns) : <code>object</code>
     * [.unstable](#callback-patterns.unstable) : <code>object</code>
-        * [.TraceError(task)](#callback-patterns.unstable.TraceError) ⇒ <code>taskFunction</code>
-    * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>taskFunction</code>
-    * [.Background(backgroundTask)](#callback-patterns.Background) ⇒ <code>taskFunction</code>
-    * [.Callbackify(generator)](#callback-patterns.Callbackify) ⇒ <code>taskFunction</code>
-    * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>taskFunction</code>
-    * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>taskFunction</code>
-    * [.If(ifTask, thenTask, elseTask)](#callback-patterns.If) ⇒ <code>taskFunction</code>
-    * [.InOrder(...tasks)](#callback-patterns.InOrder) ⇒ <code>taskFunction</code>
-    * [.InParallel(...tasks)](#callback-patterns.InParallel) ⇒ <code>taskFunction</code>
-        * [.Flatten(...tasks)](#callback-patterns.InParallel.Flatten) ⇒ <code>taskFunction</code>
-    * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>taskFunction</code>
-    * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>taskFunction</code>
-    * [.Memoize(taskFunction, [keyFunction], [cache])](#callback-patterns.Memoize) ⇒ <code>taskFunction</code>
-    * [.ParallelFilter(filter)](#callback-patterns.ParallelFilter) ⇒ <code>taskFunction</code>
-    * [.ParallelMap(task)](#callback-patterns.ParallelMap) ⇒ <code>taskFunction</code>
+        * [.TraceError(task)](#callback-patterns.unstable.TraceError) ⇒ <code>CallbackTask</code>
+    * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>CallbackTask</code>
+    * [.Background(backgroundTask)](#callback-patterns.Background) ⇒ <code>CallbackTask</code>
+    * [.Callbackify(generator)](#callback-patterns.Callbackify) ⇒ <code>CallbackTask</code>
+    * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>CallbackTask</code>
+    * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>CallbackTask</code>
+    * [.If(ifTask, thenTask, elseTask)](#callback-patterns.If) ⇒ <code>CallbackTask</code>
+    * [.InOrder(...tasks)](#callback-patterns.InOrder) ⇒ <code>CallbackTask</code>
+    * [.InParallel(...tasks)](#callback-patterns.InParallel) ⇒ <code>CallbackTask</code>
+        * [.Flatten(...tasks)](#callback-patterns.InParallel.Flatten) ⇒ <code>CallbackTask</code>
+    * [.InSeries(...tasks)](#callback-patterns.InSeries) ⇒ <code>CallbackTask</code>
+    * [.Logging(...statements)](#callback-patterns.Logging) ⇒ <code>CallbackTask</code>
+    * [.Memoize(CallbackTask, [keyFunction], [cache])](#callback-patterns.Memoize) ⇒ <code>CallbackTask</code>
+    * [.ParallelFilter(filter)](#callback-patterns.ParallelFilter) ⇒ <code>CallbackTask</code>
+    * [.ParallelMap(task)](#callback-patterns.ParallelMap) ⇒ <code>CallbackTask</code>
     * [.PassThrough()](#callback-patterns.PassThrough)
     * [.Promisify(task)](#callback-patterns.Promisify) ⇒ <code>function</code>
-    * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>taskFunction</code>
-    * [.Retry(task, options)](#callback-patterns.Retry) ⇒ <code>taskFunction</code>
-    * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>taskFunction</code>
-    * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>taskFunction</code>
-    * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>taskFunction</code>
-    * [.Timer(task, label)](#callback-patterns.Timer) ⇒ <code>taskFunction</code>
+    * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>CallbackTask</code>
+    * [.Retry(task, options)](#callback-patterns.Retry) ⇒ <code>CallbackTask</code>
+    * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>CallbackTask</code>
+    * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>CallbackTask</code>
+    * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>CallbackTask</code>
+    * [.Timer(task, label)](#callback-patterns.Timer) ⇒ <code>CallbackTask</code>
     * [.While(conditionTask, loopTask)](#callback-patterns.While) ⇒ <code>function</code>
 
 
@@ -64,7 +64,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 
 <a name="callback-patterns.unstable.TraceError"></a>
 
-#### unstable.TraceError(task) ⇒ <code>taskFunction</code>
+#### unstable.TraceError(task) ⇒ <code>CallbackTask</code>
 TraceError is an experimental wrapper that attempts to make errors more informative.
 It does this by appending extra information to the stack of any error thrown in the task.
 
@@ -72,10 +72,10 @@ NOTE: TraceError is marked as 'unstable' as stack traces in JS are not standardi
 so it may not always provide useful information.
 
 **Kind**: static method of [<code>unstable</code>](#callback-patterns.unstable)  
-**Returns**: <code>taskFunction</code> - a wrapper function that modifies the stack trace of any errors thrown within  
+**Returns**: <code>CallbackTask</code> - a wrapper function that modifies the stack trace of any errors thrown within  
 **Params**
 
-- task <code>taskFunction</code> - a task function to wrap
+- task <code>CallbackTask</code> - a task function to wrap
 
 **Example**  
 ```javascript
@@ -97,13 +97,13 @@ so it may not always provide useful information.
 
 <a name="callback-patterns.Assert"></a>
 
-### callback-patterns.Assert(validator, message) ⇒ <code>taskFunction</code>
+### callback-patterns.Assert(validator, message) ⇒ <code>CallbackTask</code>
 Builds an assertion task.  When called,
 if the arguments do not match the validator functions,
 Assert passes an error to its callback.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - an assertion task  
+**Returns**: <code>CallbackTask</code> - an assertion task  
 **Params**
 
 - validator <code>function</code> - a function that checks the arguments.
@@ -133,7 +133,7 @@ Assert passes an error to its callback.
 
 <a name="callback-patterns.Background"></a>
 
-### callback-patterns.Background(backgroundTask) ⇒ <code>taskFunction</code>
+### callback-patterns.Background(backgroundTask) ⇒ <code>CallbackTask</code>
 `Background` runs a task in the background.
 It acts like `PassThrough`, but also schedules the backround task to be called.
 
@@ -141,10 +141,10 @@ NOTE: any error a background task throws is caught and ignored.  If you need
 error handling in a background task, catch the error using `CatchError`
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper task that schedules backgroundTask to be run when called.  
+**Returns**: <code>CallbackTask</code> - a wrapper task that schedules backgroundTask to be run when called.  
 **Params**
 
-- backgroundTask <code>taskFunction</code> - a task function to be run in the background.
+- backgroundTask <code>CallbackTask</code> - a task function to be run in the background.
 
 **Example**  
 ```javascript
@@ -168,12 +168,12 @@ error handling in a background task, catch the error using `CatchError`
 
 <a name="callback-patterns.Callbackify"></a>
 
-### callback-patterns.Callbackify(generator) ⇒ <code>taskFunction</code>
+### callback-patterns.Callbackify(generator) ⇒ <code>CallbackTask</code>
 Wraps around a promise generator function,
 to make it easier to integrate with task functions.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task that wraps around the promise  
+**Returns**: <code>CallbackTask</code> - a task that wraps around the promise  
 **Params**
 
 - generator <code>function</code> - a function that generates a promise from the args.
@@ -199,7 +199,7 @@ to make it easier to integrate with task functions.
 
 <a name="callback-patterns.CatchError"></a>
 
-### callback-patterns.CatchError(task) ⇒ <code>taskFunction</code>
+### callback-patterns.CatchError(task) ⇒ <code>CallbackTask</code>
 Errors bypass the normal flow of execution.
 They always return immediately up the "stack",
 even if they occur inside nested InSeries or InParallel chains.
@@ -245,21 +245,21 @@ to the next function.
 ```
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper function around the task  
+**Returns**: <code>CallbackTask</code> - a wrapper function around the task  
 **Params**
 
-- task <code>taskFunction</code> - a function that checks the arguments.
+- task <code>CallbackTask</code> - a function that checks the arguments.
 
 
 * * *
 
 <a name="callback-patterns.Delay"></a>
 
-### callback-patterns.Delay(delay) ⇒ <code>taskFunction</code>
+### callback-patterns.Delay(delay) ⇒ <code>CallbackTask</code>
 Delay acts like `PassThrough`, but inserts a delay in the call.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a delay task  
+**Returns**: <code>CallbackTask</code> - a delay task  
 **Params**
 
 - delay <code>number</code> - The time to delay, in ms.
@@ -284,7 +284,7 @@ Delay acts like `PassThrough`, but inserts a delay in the call.
 
 <a name="callback-patterns.If"></a>
 
-### callback-patterns.If(ifTask, thenTask, elseTask) ⇒ <code>taskFunction</code>
+### callback-patterns.If(ifTask, thenTask, elseTask) ⇒ <code>CallbackTask</code>
 `If` accepts up to three tasks,
 an 'if' task, a 'then' task, and lastly an 'else' task
 note: by default, the ifTask, thenTask, and elseTask are PassThrough
@@ -294,9 +294,9 @@ but only the first is checked for truthiness
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 **Params**
 
-- ifTask <code>taskFunction</code> - a condition task.
-- thenTask <code>taskFunction</code> - a task to run when ifTask returns a truthy value.
-- elseTask <code>taskFunction</code> - a task to run when ifTask returns a falsy value.
+- ifTask <code>CallbackTask</code> - a condition task.
+- thenTask <code>CallbackTask</code> - a task to run when ifTask returns a truthy value.
+- elseTask <code>CallbackTask</code> - a task to run when ifTask returns a falsy value.
 
 **Example**  
 ```javascript
@@ -318,7 +318,7 @@ but only the first is checked for truthiness
 
 <a name="callback-patterns.InOrder"></a>
 
-### callback-patterns.InOrder(...tasks) ⇒ <code>taskFunction</code>
+### callback-patterns.InOrder(...tasks) ⇒ <code>CallbackTask</code>
 ```javascript
   let InOrder = require('callback-patterns/InOrder');
 
@@ -344,17 +344,17 @@ This is different from InSeries, where the output of each is task is passed as t
 ```
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in order  
+**Returns**: <code>CallbackTask</code> - a wrapper function that runs the tasks in order  
 **Params**
 
-- ...tasks <code>taskFunction</code> - any number of tasks to run in order.
+- ...tasks <code>CallbackTask</code> - any number of tasks to run in order.
 
 
 * * *
 
 <a name="callback-patterns.InParallel"></a>
 
-### callback-patterns.InParallel(...tasks) ⇒ <code>taskFunction</code>
+### callback-patterns.InParallel(...tasks) ⇒ <code>CallbackTask</code>
 ```javascript
   let InParallel = require('callback-patterns/InParallel');
 
@@ -373,10 +373,10 @@ the results from each task are autoboxed into an array.
 This includes an empty array for tasks that don't return results.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
+**Returns**: <code>CallbackTask</code> - a wrapper function that runs the tasks in parallel  
 **Params**
 
-- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+- ...tasks <code>CallbackTask</code> - any number of tasks to run in parallel.
 
 **Example**  
 ```javascript
@@ -397,7 +397,7 @@ This includes an empty array for tasks that don't return results.
 
 <a name="callback-patterns.InParallel.Flatten"></a>
 
-#### InParallel.Flatten(...tasks) ⇒ <code>taskFunction</code>
+#### InParallel.Flatten(...tasks) ⇒ <code>CallbackTask</code>
 ```javascript
   let InParallel = require('callback-patterns/InParallel');
 
@@ -417,10 +417,10 @@ the results from each task are autoboxed into an array.
 This includes an empty array for tasks that don't return results.
 
 **Kind**: static method of [<code>InParallel</code>](#callback-patterns.InParallel)  
-**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in parallel  
+**Returns**: <code>CallbackTask</code> - a wrapper function that runs the tasks in parallel  
 **Params**
 
-- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+- ...tasks <code>CallbackTask</code> - any number of tasks to run in parallel.
 
 **Example**  
 ```javascript
@@ -441,7 +441,7 @@ This includes an empty array for tasks that don't return results.
 
 <a name="callback-patterns.InSeries"></a>
 
-### callback-patterns.InSeries(...tasks) ⇒ <code>taskFunction</code>
+### callback-patterns.InSeries(...tasks) ⇒ <code>CallbackTask</code>
 ```javascript
   let InSeries = require('callback-patterns/InSeries');
 
@@ -457,10 +457,10 @@ Runs several tasks in series, and passes the results from one down to the next.
 This works similarly to the 'waterfall' method in caolan's async.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a wrapper function that runs the tasks in series  
+**Returns**: <code>CallbackTask</code> - a wrapper function that runs the tasks in series  
 **Params**
 
-- ...tasks <code>taskFunction</code> - any number of tasks to run in series.
+- ...tasks <code>CallbackTask</code> - any number of tasks to run in series.
 
 **Example**  
 ```javascript
@@ -483,12 +483,12 @@ This works similarly to the 'waterfall' method in caolan's async.
 
 <a name="callback-patterns.Logging"></a>
 
-### callback-patterns.Logging(...statements) ⇒ <code>taskFunction</code>
+### callback-patterns.Logging(...statements) ⇒ <code>CallbackTask</code>
 A logging utility.
 It passes the arguments received into all the statements, collects the results, and joins them together with newlines to build the final log statement
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a logging task  
+**Returns**: <code>CallbackTask</code> - a logging task  
 **Params**
 
 - ...statements <code>function</code> - any number of logging values.  Functions are called with the calling arguments, everything else is passed directly to
@@ -515,7 +515,7 @@ It passes the arguments received into all the statements, collects the results, 
 
 <a name="callback-patterns.Memoize"></a>
 
-### callback-patterns.Memoize(taskFunction, [keyFunction], [cache]) ⇒ <code>taskFunction</code>
+### callback-patterns.Memoize(CallbackTask, [keyFunction], [cache]) ⇒ <code>CallbackTask</code>
 Memoize builds a wrapper function that caches results of previous executions.
 As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
 
@@ -530,7 +530,7 @@ NOTE: Memoize will cache errors as well as results.
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 **Params**
 
-- taskFunction <code>taskFunction</code> - the task function to memoize.
+- CallbackTask <code>CallbackTask</code> - the task function to memoize.
 - [keyFunction] <code>function</code> - a function that synchronously generates a key for a request.
 - [cache] <code>object</code> - a pre-filled cache to use
 
@@ -566,14 +566,14 @@ NOTE: Memoize will cache errors as well as results.
 
 <a name="callback-patterns.ParallelFilter"></a>
 
-### callback-patterns.ParallelFilter(filter) ⇒ <code>taskFunction</code>
+### callback-patterns.ParallelFilter(filter) ⇒ <code>CallbackTask</code>
 Builds a task that filters all of its arguments in parallel, and returns the results
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a filtering task  
+**Returns**: <code>CallbackTask</code> - a filtering task  
 **Params**
 
-- filter <code>taskFunction</code> - an asynchronous filter function that returns true or false through its callback.
+- filter <code>CallbackTask</code> - an asynchronous filter function that returns true or false through its callback.
 
 **Example**  
 ```javascript
@@ -598,15 +598,15 @@ Builds a task that filters all of its arguments in parallel, and returns the res
 
 <a name="callback-patterns.ParallelMap"></a>
 
-### callback-patterns.ParallelMap(task) ⇒ <code>taskFunction</code>
+### callback-patterns.ParallelMap(task) ⇒ <code>CallbackTask</code>
 Builds a task wrapper that asynchronously maps each of its arguments to a result.
 Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a parallel map task  
+**Returns**: <code>CallbackTask</code> - a parallel map task  
 **Params**
 
-- task <code>taskFunction</code> - an asynchronous mapping function.
+- task <code>CallbackTask</code> - an asynchronous mapping function.
 
 **Example**  
 ```javascript
@@ -698,14 +698,14 @@ Promisify auto-boxes these into an array.
 
 <a name="callback-patterns.Race"></a>
 
-### callback-patterns.Race(...tasks) ⇒ <code>taskFunction</code>
+### callback-patterns.Race(...tasks) ⇒ <code>CallbackTask</code>
 Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
+**Returns**: <code>CallbackTask</code> - a task  
 **Params**
 
-- ...tasks <code>taskFunction</code> - any number of tasks to run in parallel.
+- ...tasks <code>CallbackTask</code> - any number of tasks to run in parallel.
 
 **Example**  
 ```javascript
@@ -726,14 +726,14 @@ Race accepts a number of functions, and returns a task function that executes al
 
 <a name="callback-patterns.Retry"></a>
 
-### callback-patterns.Retry(task, options) ⇒ <code>taskFunction</code>
+### callback-patterns.Retry(task, options) ⇒ <code>CallbackTask</code>
 Wraps a task and attempts to retry if it throws an error, with an exponential backoff.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
+**Returns**: <code>CallbackTask</code> - a task  
 **Params**
 
-- task <code>taskFunction</code> - the task to wrap.
+- task <code>CallbackTask</code> - the task to wrap.
 - options <code>object</code> - an optional set of retry options.
     - .timeout <code>object</code> - maximum time to attempt retries.
     - .retries <code>object</code> - maximum number of retries to attempt.
@@ -743,15 +743,15 @@ Wraps a task and attempts to retry if it throws an error, with an exponential ba
 
 <a name="callback-patterns.Throttle"></a>
 
-### callback-patterns.Throttle(task, limit) ⇒ <code>taskFunction</code>
+### callback-patterns.Throttle(task, limit) ⇒ <code>CallbackTask</code>
 Wraps a task and ensures that only X number of instances of the task can be run in parallel.
 Requests are queued up in an unbounded FIFO queue until they can be run.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
+**Returns**: <code>CallbackTask</code> - a task  
 **Params**
 
-- task <code>taskFunction</code> - the task to throttle
+- task <code>CallbackTask</code> - the task to throttle
 - limit <code>number</code> - the number of instances that can run in parallel. default 1.
 
 
@@ -759,14 +759,14 @@ Requests are queued up in an unbounded FIFO queue until they can be run.
 
 <a name="callback-patterns.TimeIn"></a>
 
-### callback-patterns.TimeIn(task, ms) ⇒ <code>taskFunction</code>
+### callback-patterns.TimeIn(task, ms) ⇒ <code>CallbackTask</code>
 TimeIn wraps a single task function, and returns a function that only returns after X ms.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
+**Returns**: <code>CallbackTask</code> - a task  
 **Params**
 
-- task <code>taskFunction</code> - the task to wrap in a timeout.
+- task <code>CallbackTask</code> - the task to wrap in a timeout.
 - ms <code>number</code> - the timein in ms.
 
 **Example**  
@@ -785,16 +785,16 @@ TimeIn wraps a single task function, and returns a function that only returns af
 
 <a name="callback-patterns.TimeOut"></a>
 
-### callback-patterns.TimeOut(task, ms) ⇒ <code>taskFunction</code>
+### callback-patterns.TimeOut(task, ms) ⇒ <code>CallbackTask</code>
 TimeOut wraps a single task function, and returns a function that returns early if the task fails to complete before the timeout triggers.
 
 NOTE: the timeout being triggered will not cancel the original task.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
+**Returns**: <code>CallbackTask</code> - a task  
 **Params**
 
-- task <code>taskFunction</code> - the task to wrap in a timeout.
+- task <code>CallbackTask</code> - the task to wrap in a timeout.
 - ms <code>number</code> - the timeout in ms.
 
 **Example**  
@@ -813,14 +813,14 @@ NOTE: the timeout being triggered will not cancel the original task.
 
 <a name="callback-patterns.Timer"></a>
 
-### callback-patterns.Timer(task, label) ⇒ <code>taskFunction</code>
+### callback-patterns.Timer(task, label) ⇒ <code>CallbackTask</code>
 Wraps a task and logs how long it takes to finish, or fail.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
-**Returns**: <code>taskFunction</code> - a task  
+**Returns**: <code>CallbackTask</code> - a task  
 **Params**
 
-- task <code>taskFunction</code> - the task to wrap.
+- task <code>CallbackTask</code> - the task to wrap.
 - label <code>string</code> - an optional label to log.
 
 

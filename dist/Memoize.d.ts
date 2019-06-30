@@ -1,11 +1,9 @@
 
-type validator = (...args : any[]) => boolean;
-
 type key = (...args : any[]) => string;
 
-type callback = (err ?: Error, ...res: any[]) => void;
+type Callback = (err : Error | null | undefined, ...res : any[]) => void;
 
-type task = (next ?: callback, ...args: any[]) => void;
+type CallbackTask = (next : Callback, ...args: any[]) => void;
 
 /**
 * Memoize builds a wrapper function that caches results of previous executions.
@@ -19,10 +17,10 @@ type task = (next ?: callback, ...args: any[]) => void;
 *
 * NOTE: Memoize will cache errors as well as results.
 *
-* @param {taskFunction} taskFunction - the task function to memoize.
+* @param {CallbackTask} CallbackTask - the task function to memoize.
 * @param {function=} keyFunction - a function that synchronously generates a key for a request.
 * @param {object=} cache - a pre-filled cache to use
-* @returns {taskFunction}
+* @returns {CallbackTask}
 * @memberof callback-patterns
 * @example
 * ```javascript
@@ -52,6 +50,6 @@ type task = (next ?: callback, ...args: any[]) => void;
 *   test(null, 1); // task is only called once, even though memoizedTask is called three times
 * ```
 */
-declare function Memoize(task : task, key ?: key) : task;
+declare function Memoize(task : CallbackTask, key ?: key) : CallbackTask;
 
 export default Memoize;
