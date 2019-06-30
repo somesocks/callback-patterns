@@ -1,7 +1,7 @@
 
 type Message = ((...args : any[]) => string) | string;
 
-type Callback = (err : Error | null | undefined, ...res : any[]) => void;
+type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
 
 type CallbackTask = (next : Callback, ...args: any[]) => void;
 
