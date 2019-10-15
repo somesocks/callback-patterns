@@ -183,19 +183,18 @@ This makes it easier to bridge the gap between callback-driven code and promise-
 
 **Example**  
 ```javascript
-  let InSeries = require('callback-patterns/InSeries');
-  let Callbackify = require('callback-patterns/Callbackify');
 
-  let task = InSeries(
+  let InSeries = require('callback-patterns/InSeries');
+  let Bridge = require('callback-patterns/Bridge');
+
+  let task = Bridge(
     function(next, ...args) {...},
-    Callbackify(
-      (...args) => new Promise((resolve, reject) => resolve(...args))
-    ),
-    function(next, ...args) {},
-    ...
   );
 
-  task(next, ...args);
+  task(next, ...args); // this works
+
+  task(...args).then(...); // this works too
+
 ```
 
 * * *
