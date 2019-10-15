@@ -15,7 +15,7 @@ var EMPTY_TASK = function (next) { next(); }
 * @returns {CallbackTask} a task
 * @memberof callback-patterns
 */
-function Timer(task : Task, label) : Task {
+function Timer(task : Task, label ?: string) : Task {
 	task = _catchWrapper(task || EMPTY_TASK);
 	label = label || task.name || 'task';
 

@@ -6,5 +6,5 @@ import Task from './types/Task';
 * @returns {CallbackTask} a task
 * @memberof callback-patterns
 */
-declare function Timer(task: Task, label: any): Task;
+declare function Timer(task: Task, label?: string): Task;
 export = Timer;
