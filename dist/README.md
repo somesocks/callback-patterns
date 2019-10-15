@@ -175,6 +175,9 @@ and returns a function that can be called either with a callback,
 or as an async function that returns a promise.
 This makes it easier to bridge the gap between callback-driven code and promise-driven code
 
+NOTE: Bridge works by checking if the first argument is a function, and assuming its a callback if so.
+You should take care to not use the Bridge wrapper if your task expects the first argument to be a function.
+
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 **Returns**: <code>function</code> - a task that can either be passed a callback, or awaited  
 **Params**
