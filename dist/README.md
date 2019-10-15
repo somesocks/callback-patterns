@@ -30,6 +30,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
         * [.TraceError(task)](#callback-patterns.unstable.TraceError) ⇒ <code>CallbackTask</code>
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>CallbackTask</code>
     * [.Background(backgroundTask)](#callback-patterns.Background) ⇒ <code>CallbackTask</code>
+    * [.Bridge(task)](#callback-patterns.Bridge) ⇒ <code>function</code>
     * [.Callbackify(generator)](#callback-patterns.Callbackify) ⇒ <code>CallbackTask</code>
     * [.CatchError(task)](#callback-patterns.CatchError) ⇒ <code>CallbackTask</code>
     * [.Delay(delay)](#callback-patterns.Delay) ⇒ <code>CallbackTask</code>
@@ -162,6 +163,39 @@ error handling in a background task, catch the error using `CatchError`
      buildReport,
      Background(saveReport) // don't wait for the report to be saved before returning it
   );
+```
+
+* * *
+
+<a name="callback-patterns.Bridge"></a>
+
+### callback-patterns.Bridge(task) ⇒ <code>function</code>
+Wraps around a callback-driven function,
+and returns a function that can be called either with a callback,
+or as an async function that returns a promise.
+This makes it easier to bridge the gap between callback-driven code and promise-driven code
+
+**Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
+**Returns**: <code>function</code> - a task that can either be passed a callback, or awaited  
+**Params**
+
+- task <code>function</code> - a callback-driven task.
+
+**Example**  
+```javascript
+  let InSeries = require('callback-patterns/InSeries');
+  let Callbackify = require('callback-patterns/Callbackify');
+
+  let task = InSeries(
+    function(next, ...args) {...},
+    Callbackify(
+      (...args) => new Promise((resolve, reject) => resolve(...args))
+    ),
+    function(next, ...args) {},
+    ...
+  );
+
+  task(next, ...args);
 ```
 
 * * *

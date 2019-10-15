@@ -6,6 +6,7 @@ module.exports = {
 
 	Assert: require('./Assert'),
 	Background: require('./Background'),
+	Bridge: require('./Bridge'),
 	Callbackify: require('./Callbackify'),
 	CatchError: require('./CatchError'),
 	Delay: require('./Delay'),
