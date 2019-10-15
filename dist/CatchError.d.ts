@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Errors bypass the normal flow of execution.
 * They always return immediately up the "stack",
@@ -53,6 +49,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 * @returns {CallbackTask} a wrapper function around the task
 * @memberof callback-patterns
 */
-declare function CatchError(task : CallbackTask) : CallbackTask;
-
-export default CatchError;
+declare var CatchError: (_1: any) => Task;
+export = CatchError;

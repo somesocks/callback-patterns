@@ -1,10 +1,5 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
-type AsyncTask = (...args: any[]) => Promise<any>;
-
+import Task from './types/Task';
+import AsyncTask from './types/AsyncTask';
 /**
 * Wraps around a task function and greates a promise generator,
 * to make it easier to integrate task functions and promises.
@@ -37,6 +32,5 @@ type AsyncTask = (...args: any[]) => Promise<any>;
 *
 * ```
 */
-declare function Promisify(task : CallbackTask) : AsyncTask;
-
-export default Promisify;
+declare function Promisify(_1: Task): AsyncTask;
+export = Promisify;

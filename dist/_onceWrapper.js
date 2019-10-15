@@ -1,18 +1,17 @@
-
-var _nullCallback = require('./_nullCallback');
-
-function _onceWrapper(_1) {
-	var func = _1;
-
-	return function _onceWrapperInstance() {
-		var temp = func || _nullCallback;
-		func = undefined;
-		temp.apply(undefined, arguments);
-	};
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
+function onceWrapper(func) {
+    var wrapper = function _onceWrapperInstance() {
+        var temp = func || _nullCallback_1.default;
+        func = undefined;
+        temp.apply(undefined, arguments);
+    };
+    return wrapper;
 }
-
-module.exports = _onceWrapper;
-
+module.exports = onceWrapper;
 //
 //
 // const once = function (func) {

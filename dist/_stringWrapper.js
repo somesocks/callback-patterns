@@ -1,18 +1,20 @@
-var isString = require('./_isString');
-var isFunction = require('./_isFunction');
-
-function _emptyStringWrapper () { return ''; }
-
-function _stringWrapper(_1) {
-	var log = _1;
-
-	if (isFunction(log)) {
-		return log;
-	} else if (isString(log)) {
-		return function _stringWrapperInstance() { return log; };
-	} else {
-		return _emptyStringWrapper;
-	}
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _isString_1 = __importDefault(require("./_isString"));
+var _isFunction_1 = __importDefault(require("./_isFunction"));
+function emptyStringWrapper() { return ''; }
+function stringWrapper(_1) {
+    var log = _1;
+    if (_isFunction_1.default(log)) {
+        return log;
+    }
+    else if (_isString_1.default(log)) {
+        return function _stringWrapperInstance() { return log; };
+    }
+    else {
+        return emptyStringWrapper;
+    }
 }
-
-module.exports = _stringWrapper;
+module.exports = stringWrapper;

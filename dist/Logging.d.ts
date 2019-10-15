@@ -1,10 +1,4 @@
-
-type Message = ((...args : any[]) => string) | string;
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * A logging utility.
 * It passes the arguments received into all the statements, collects the results, and joins them together with newlines to build the final log statement
@@ -29,6 +23,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function Logging(...messages : Message[]) : CallbackTask;
-
-export default Logging;
+declare function Logging(_1?: any, ...rest: any[]): Task;
+export = Logging;

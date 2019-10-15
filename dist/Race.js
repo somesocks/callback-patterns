@@ -1,11 +1,12 @@
-
-var _nullCallback = require('./_nullCallback');
-var _defer = require('./_defer');
-var _catchWrapper = require('./_catchWrapper');
-var _onceWrapper = require('./_onceWrapper');
-
-var EMPTY = function (next) { return (next || _nullCallback)(); };
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
+var _defer_1 = __importDefault(require("./_defer"));
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var _onceWrapper_1 = __importDefault(require("./_onceWrapper"));
+var EMPTY = function (next) { return (next || _nullCallback_1.default)(); };
 /**
 * Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 *
@@ -28,26 +29,25 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 * ```
 */
 function Race() {
-	var tasks = arguments;
-
-	if (tasks.length === 0) {
-		return EMPTY;
-	}
-
-	for (var i = 0; i < tasks.length; i++) {
-		tasks[i] = _catchWrapper(tasks[i]);
-		tasks[i] = _defer.bind(null, tasks[i]);
-	}
-
-	return function _raceInstance(_1) {
-		var next = _onceWrapper(_1);
-		var args = arguments;
-		args[0] = next;
-
-		for (var i = 0; i < tasks.length; i++) {
-			tasks[i].apply(null, args);
-		}
-	};
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    var tasks = arguments;
+    if (tasks.length === 0) {
+        return EMPTY;
+    }
+    for (var i = 0; i < tasks.length; i++) {
+        tasks[i] = _catchWrapper_1.default(tasks[i]);
+        tasks[i] = _defer_1.default.bind(null, tasks[i]);
+    }
+    return function _raceInstance(_1) {
+        var next = _onceWrapper_1.default(_1);
+        var args = arguments;
+        args[0] = next;
+        for (var i = 0; i < tasks.length; i++) {
+            tasks[i].apply(null, args);
+        }
+    };
 }
-
 module.exports = Race;

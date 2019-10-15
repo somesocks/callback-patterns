@@ -1,28 +1,27 @@
-
-var _catchWrapper = require('./_catchWrapper');
-var _defer = require('./_defer');
-var _nullCallback = require('./_nullCallback');
-var _onceWrapper = require('./_onceWrapper');
-
-
-var EMPTY = function (next) { return (next || _nullCallback)(); };
-
-var _callback = function (context, index) {
-	return function _ondone(err) {
-		var args = arguments;
-		if (err) {
-			context.next.apply(undefined, args);
-		} else {
-			context.results[index + 1] = Array.prototype.slice.call(args, 1);
-
-			context.finished++;
-			if (context.finished === context.handlers.length) {
-				context.next.apply(undefined, context.results);
-			}
-		}
-	};
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var _defer_1 = __importDefault(require("./_defer"));
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
+var _onceWrapper_1 = __importDefault(require("./_onceWrapper"));
+var EMPTY = function (next) { return (next || _nullCallback_1.default)(); };
+var _callback = function (context, index) {
+    return function _ondone(err) {
+        var args = arguments;
+        if (err) {
+            context.next.apply(undefined, args);
+        }
+        else {
+            context.results[index + 1] = Array.prototype.slice.call(args, 1);
+            context.finished++;
+            if (context.finished === context.handlers.length) {
+                context.next.apply(undefined, context.results);
+            }
+        }
+    };
+};
 /**
 * ```javascript
 *   let InParallel = require('callback-patterns/InParallel');
@@ -59,59 +58,51 @@ var _callback = function (context, index) {
 * ```
 */
 function InParallel() {
-	var handlers = arguments;
-
-	if (handlers.length === 0) {
-		return EMPTY;
-	}
-
-	for (var i = 0; i < handlers.length; i++) {
-		handlers[i] = _catchWrapper(handlers[i]);
-	}
-
-	return function _inParallelInstance(_1) {
-
-		var context = {
-			next: _onceWrapper(_1),
-			handlers: handlers,
-			results: Array(handlers.length + 1),
-			finished: 0,
-		};
-
-		for (var i = 0; i < handlers.length; i++) {
-			// eslint-disable-next-line no-loop-func
-			var onDone = _callback(context, i);
-
-			var handler = handlers[i]
-				.bind(undefined, _onceWrapper(onDone));
-
-			arguments[0] = handler;
-			arguments.length = arguments.length || 1;
-
-			_defer.apply(undefined, arguments);
-		}
-	};
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    var handlers = arguments;
+    if (handlers.length === 0) {
+        return EMPTY;
+    }
+    for (var i = 0; i < handlers.length; i++) {
+        handlers[i] = _catchWrapper_1.default(handlers[i]);
+    }
+    return function _inParallelInstance(_1) {
+        var context = {
+            next: _onceWrapper_1.default(_1),
+            handlers: handlers,
+            results: Array(handlers.length + 1),
+            finished: 0,
+        };
+        for (var i = 0; i < handlers.length; i++) {
+            // eslint-disable-next-line no-loop-func
+            var onDone = _callback(context, i);
+            var handler = handlers[i]
+                .bind(undefined, _onceWrapper_1.default(onDone));
+            arguments[0] = handler;
+            arguments.length = arguments.length || 1;
+            _defer_1.default.apply(undefined, arguments);
+        }
+    };
 }
-
-
-
 var _callbackWithFlatten = function (context, index) {
-	return function _ondone(err) {
-		var args = arguments;
-		if (err) {
-			context.next.apply(undefined, args);
-		} else {
-			context.results[index + 1] = args.length <= 2 ?
-				args[1] : Array.prototype.slice.call(args, 1);
-
-			context.finished++;
-			if (context.finished === context.handlers.length) {
-				context.next.apply(undefined, context.results);
-			}
-		}
-	};
+    return function _ondone(err) {
+        var args = arguments;
+        if (err) {
+            context.next.apply(undefined, args);
+        }
+        else {
+            context.results[index + 1] = args.length <= 2 ?
+                args[1] : Array.prototype.slice.call(args, 1);
+            context.finished++;
+            if (context.finished === context.handlers.length) {
+                context.next.apply(undefined, context.results);
+            }
+        }
+    };
 };
-
 /**
 * ```javascript
 *   let InParallel = require('callback-patterns/InParallel');
@@ -149,40 +140,34 @@ var _callbackWithFlatten = function (context, index) {
 * ```
 */
 function Flatten() {
-	var handlers = arguments;
-
-	if (handlers.length === 0) {
-		return EMPTY;
-	}
-
-	for (var i = 0; i < handlers.length; i++) {
-		handlers[i] = _catchWrapper(handlers[i]);
-	}
-
-	return function _inParallelFlattenInstance(_1) {
-
-		var context = {
-			next: _onceWrapper(_1),
-			handlers: handlers,
-			results: Array(handlers.length + 1),
-			finished: 0,
-		};
-
-		for (var i = 0; i < handlers.length; i++) {
-			// eslint-disable-next-line no-loop-func
-			var onDone = _callbackWithFlatten(context, i);
-
-			var handler = handlers[i]
-				.bind(undefined, _onceWrapper(onDone));
-
-			arguments[0] = handler;
-			arguments.length = arguments.length || 1;
-
-			_defer.apply(undefined, arguments);
-		}
-	};
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    var handlers = arguments;
+    if (handlers.length === 0) {
+        return EMPTY;
+    }
+    for (var i = 0; i < handlers.length; i++) {
+        handlers[i] = _catchWrapper_1.default(handlers[i]);
+    }
+    return function _inParallelFlattenInstance(_1) {
+        var context = {
+            next: _onceWrapper_1.default(_1),
+            handlers: handlers,
+            results: Array(handlers.length + 1),
+            finished: 0,
+        };
+        for (var i = 0; i < handlers.length; i++) {
+            // eslint-disable-next-line no-loop-func
+            var onDone = _callbackWithFlatten(context, i);
+            var handler = handlers[i]
+                .bind(undefined, _onceWrapper_1.default(onDone));
+            arguments[0] = handler;
+            arguments.length = arguments.length || 1;
+            _defer_1.default.apply(undefined, arguments);
+        }
+    };
 }
-
 InParallel.Flatten = Flatten;
-
 module.exports = InParallel;

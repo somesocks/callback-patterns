@@ -1,7 +1,9 @@
-
-var _catchWrapper = require('./_catchWrapper');
-var _nullCallback = require('./_nullCallback');
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
 /**
 * Errors bypass the normal flow of execution.
 * They always return immediately up the "stack",
@@ -53,25 +55,19 @@ var _nullCallback = require('./_nullCallback');
 * @memberof callback-patterns
 */
 var CatchError = function CatchError(_1) {
-	var task = _catchWrapper(_1);
-
-	return function _catchErrorInstance(_1) {
-		var next = _1 || _nullCallback;
-
-		arguments[0] = function _wrapper() {
-			var args = arguments;
-
-			args.length++;
-			for (var i = args.length - 1; i > 0; i--) {
-				args[i] = args[i - 1];
-			}
-			args[0] = null;
-
-			next.apply(null, arguments);
-		};
-
-		task.apply(null, arguments);
-	};
+    var task = _catchWrapper_1.default(_1);
+    return function _catchErrorInstance(_1) {
+        var next = _1 || _nullCallback_1.default;
+        arguments[0] = function _wrapper() {
+            var args = arguments;
+            args.length++;
+            for (var i = args.length - 1; i > 0; i--) {
+                args[i] = args[i - 1];
+            }
+            args[0] = null;
+            next.apply(null, arguments);
+        };
+        task.apply(null, arguments);
+    };
 };
-
 module.exports = CatchError;

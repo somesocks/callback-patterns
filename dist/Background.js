@@ -1,10 +1,11 @@
-
-var _nullCallback = require('./_nullCallback');
-var _defer = require('./_defer');
-var _catchWrapper = require('./_catchWrapper');
-
-var EMPTY = function (next) { return (next || _nullCallback)(); };
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
+var _defer_1 = __importDefault(require("./_defer"));
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var EMPTY = function (next) { return (next || _nullCallback_1.default)(); };
 /**
 * `Background` runs a task in the background.
 * It acts like `PassThrough`, but also schedules the backround task to be called.
@@ -34,19 +35,14 @@ var EMPTY = function (next) { return (next || _nullCallback)(); };
 * ```
 */
 function Background(_1) {
-	var task = _1 ? _catchWrapper(_1) : EMPTY;
-	task = _defer.bind(null, task);
-
-	return function _backgroundInstance(_1) {
-		var next = _1 || _nullCallback;
-
-		arguments[0] = _nullCallback;
-		task.apply(undefined, arguments);
-
-		arguments[0] = undefined;
-		next.apply(undefined, arguments);
-	};
+    var task = _1 ? _catchWrapper_1.default(_1) : EMPTY;
+    task = _defer_1.default.bind(null, task);
+    return function _backgroundInstance(_1) {
+        var next = _1 || _nullCallback_1.default;
+        arguments[0] = _nullCallback_1.default;
+        task.apply(undefined, arguments);
+        arguments[0] = undefined;
+        next.apply(undefined, arguments);
+    };
 }
-
-
 module.exports = Background;

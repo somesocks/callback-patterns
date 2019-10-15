@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * TimeOut wraps a single task function, and returns a function that returns early if the task fails to complete before the timeout triggers.
 *
@@ -24,6 +20,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   chain(next, ...args);
 * ```
 */
-declare function TimeOut(task : CallbackTask, ms ?: number) : CallbackTask;
-
-export default TimeOut;
+declare function TimeOut(_1?: Task, _2?: number): Task;
+export = TimeOut;

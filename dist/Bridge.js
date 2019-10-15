@@ -1,9 +1,10 @@
-
-var _catchWrapper = require('./_catchWrapper');
-var _onceWrapper = require('./_onceWrapper');
-var PassThrough = require('./PassThrough');
-var Promisify = require('./Promisify');
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var PassThrough_1 = __importDefault(require("./PassThrough"));
+var Promisify_1 = __importDefault(require("./Promisify"));
 /**
 * Wraps around a callback-driven function,
 * and returns a function that can be called either with a callback,
@@ -33,21 +34,19 @@ var Promisify = require('./Promisify');
 * ```
 */
 function Bridge(task) {
-	task = task || PassThrough;
-	var callbackForm = _catchWrapper(task);
-	var promiseForm = Promisify(callbackForm);
-
-	var _bridgeInstance = function _bridgeInstance(_1) {
-		if (typeof _1 === 'function') { // callback mode
-			// eslint-disable-next-line no-invalid-this
-			return callbackForm.apply(this, arguments);
-		} else { // promise mode
-			// eslint-disable-next-line no-invalid-this
-			return promiseForm.apply(this, arguments);
-		}
-	};
-
-	return _bridgeInstance;
+    task = task || PassThrough_1.default;
+    var callbackForm = _catchWrapper_1.default(task);
+    var promiseForm = Promisify_1.default(callbackForm);
+    var _bridgeInstance = function _bridgeInstance(_1) {
+        if (typeof _1 === 'function') { // callback mode
+            // eslint-disable-next-line no-invalid-this
+            return callbackForm.apply(this, arguments);
+        }
+        else { // promise mode
+            // eslint-disable-next-line no-invalid-this
+            return promiseForm.apply(this, arguments);
+        }
+    };
+    return _bridgeInstance;
 }
-
 module.exports = Bridge;

@@ -1,97 +1,55 @@
-/* eslint-env mocha, node */
-/* eslint-disable es5/no-destructuring */
-/* eslint-disable es5/no-block-scoping */
-/* eslint-disable es5/no-shorthand-properties */
-/* eslint-disable es5/no-arrow-expression */
-/* eslint-disable es5/no-arrow-functions */
-/* eslint-disable es5/no-rest-parameters */
-/* eslint-disable es5/no-spread */
-/* eslint-disable es5/no-template-literals */
-/* eslint-disable es5/no-es6-methods */
-
-const { Assert, InSeries, InOrder, PassThrough } = require('./');
-
-describe('InOrder', () => {
-	it('Long Chain Performance', (done) => {
-		const chain = InOrder(
-			...Array(100000).fill(PassThrough)
-		);
-
-		chain(done, 1, 2, 3);
-	});
-
-	it('Function.length should be at least 1', () => {
-		if (InOrder().length < 1) { throw new Error(); }
-		if (InOrder(() => {}).length < 1) { throw new Error(); }
-		if (InOrder(() => {}, () => {}).length < 1) { throw new Error(); }
-	});
-
-	it('test with 0 handlers', (done) => {
-		InOrder()(done);
-	});
-
-	it('test with null return', (done) => {
-		InOrder(
-			(next) => next(),
-			(next) => next()
-		)(done);
-	});
-
-	it('test with null callback', (done) => {
-		InOrder(
-			(next) => next(),
-			(next) => next()
-		)();
-		setTimeout(done, 16);
-	});
-
-	it('catches errors', (done) => {
-		InOrder(
-			(next) => next(),
-			(next) => { throw new Error('error'); }
-		)((err, res) => done(err != null ? null : err));
-	});
-
-	it('catches errors 2', (done) => {
-		InOrder(
-			(next) => next(),
-			(next) => { throw new Error('error'); }
-		)((err, res) => done(err != null ? null : err));
-	});
-
-	it('callback shouldnt get called', (done) => {
-		InOrder(
-			(next) => {}
-		)(() => done(new Error('called')));
-		setTimeout(done, 500);
-	});
-
-	it('works 1',
-		InSeries(
-			(next) => next(null, 1),
-			InOrder(
-				(next, val) => next(null, val + 1),
-				(next, val) => next(null, val + 1),
-				(next, val) => next(null, val + 1)
-			),
-			Assert(
-				(val) => val === 1
-			)
-		)
-	);
-
-	it('works 2',
-		InSeries(
-			(next) => next(null, { a: 1 }),
-			InOrder(
-				(next, val) => { val.a++; next(); },
-				(next, val) => { val.a++; next(); },
-				(next, val) => { val.a++; next(); }
-			),
-			Assert(
-				(val) => val.a === 4
-			)
-		)
-	);
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __importDefault(require("./Assert"));
+// import Background from './Background';
+// import Bridge from './Bridge';
+// import Callbackify from './Callbackify';
+// import CatchError from './CatchError';
+// import Delay from './Delay';
+// import If from './If';
+var InOrder_1 = __importDefault(require("./InOrder"));
+var InSeries_1 = __importDefault(require("./InSeries"));
+var PassThrough_1 = __importDefault(require("./PassThrough"));
+describe('InOrder', function () {
+    it('Long Chain Performance', function (done) {
+        var chain = InOrder_1.default.apply(void 0, Array(100000).fill(PassThrough_1.default));
+        chain(done, 1, 2, 3);
+    });
+    it('Function.length should be at least 1', function () {
+        if (InOrder_1.default().length < 1) {
+            throw new Error();
+        }
+        if (InOrder_1.default(function () { }).length < 1) {
+            throw new Error();
+        }
+        if (InOrder_1.default(function () { }, function () { }).length < 1) {
+            throw new Error();
+        }
+    });
+    it('test with 0 handlers', function (done) {
+        InOrder_1.default()(done);
+    });
+    it('test with null return', function (done) {
+        InOrder_1.default(function (next) { return next(); }, function (next) { return next(); })(done);
+    });
+    it('test with null callback', function (done) {
+        var task = InOrder_1.default(function (next) { return next(); }, function (next) { return next(); });
+        task();
+        setTimeout(done, 16);
+    });
+    it('catches errors', function (done) {
+        InOrder_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+    });
+    it('catches errors 2', function (done) {
+        InOrder_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+    });
+    it('callback shouldnt get called', function (done) {
+        InOrder_1.default(function (next) { })(function () { return done(new Error('called')); });
+        setTimeout(done, 500);
+    });
+    it('works 1', InSeries_1.default(function (next) { return next(null, 1); }, InOrder_1.default(function (next, val) { return next(null, val + 1); }, function (next, val) { return next(null, val + 1); }, function (next, val) { return next(null, val + 1); }), Assert_1.default(function (val) { return val === 1; })));
+    it('works 2', InSeries_1.default(function (next) { return next(null, { a: 1 }); }, InOrder_1.default(function (next, val) { val.a++; next(); }, function (next, val) { val.a++; next(); }, function (next, val) { val.a++; next(); }), Assert_1.default(function (val) { return val.a === 4; })));
 });

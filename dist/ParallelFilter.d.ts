@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Builds a task that filters all of its arguments in parallel, and returns the results
 * @param {CallbackTask} filter - an asynchronous filter function that returns true or false through its callback.
@@ -27,6 +23,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function ParallelFilter(filter : CallbackTask) : CallbackTask;
-
-export default ParallelFilter;
+declare function ParallelFilter(_1: Task): Task;
+export = ParallelFilter;

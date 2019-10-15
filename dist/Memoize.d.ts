@@ -1,10 +1,4 @@
-
-type key = (...args : any[]) => string;
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Memoize builds a wrapper function that caches results of previous executions.
 * As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
@@ -50,6 +44,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   test(null, 1); // task is only called once, even though memoizedTask is called three times
 * ```
 */
-declare function Memoize(task : CallbackTask, key ?: key) : CallbackTask;
-
-export default Memoize;
+declare function Memoize(_1?: Task, _2?: (...args: any[]) => string, _3?: object): Task;
+export = Memoize;

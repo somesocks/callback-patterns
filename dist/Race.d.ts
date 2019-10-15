@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Race accepts a number of functions, and returns a task function that executes all of its child tasks simultaneously.  The first result (or error) is returned, and the remaining results (or errors) are ignored.
 *
@@ -24,6 +20,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(onDone); // prints out [ 1 ], eventually
 * ```
 */
-declare function Race(...tasks: CallbackTask[]) : CallbackTask;
-
-export default Race;
+declare function Race(...args: Task[]): Task;
+export = Race;

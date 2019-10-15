@@ -1,12 +1,4 @@
-
-type Validator = (...args : any[]) => boolean;
-
-type Message = ((...args : any[]) => string) | string;
-
-type Callback = (err : Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Builds an assertion task.  When called,
 * if the arguments do not match the validator functions,
@@ -35,6 +27,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(onDone, -1); // prints '-1 is less than zero', eventually
 * ```
 */
-declare function Assert(condition : Validator, message ?: Message) : CallbackTask;
-
-export default Assert;
+declare function Assert(_1: any, _2?: any): Task;
+export = Assert;

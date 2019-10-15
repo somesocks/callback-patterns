@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Delay acts like `PassThrough`, but inserts a delay in the call.
 * @param {number} delay - The time to delay, in ms.
@@ -24,6 +20,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(onDone, 1); // prints null 1, after a 100 ms delay
 * ```
 */
-declare function Delay(ms : number) : CallbackTask;
-
-export default Delay;
+declare function Delay(_1?: number): Task;
+export = Delay;

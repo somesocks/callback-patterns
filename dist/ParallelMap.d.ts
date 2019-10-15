@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Builds a task wrapper that asynchronously maps each of its arguments to a result.
 * Note: even though the mapping function can return any number of results, ParallelMap only uses the first result
@@ -28,6 +24,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function ParallelMap(map : CallbackTask) : CallbackTask;
-
-export default ParallelMap;
+declare function ParallelMap(_1: Task): Task;
+export = ParallelMap;

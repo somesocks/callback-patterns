@@ -1,10 +1,6 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
-* Wraps around a promise generating function,
+* Wraps around a promise generator function,
 * to make it easier to integrate with task functions.
 * @param {function} generator - a function that generates a promise from the args.
 * @returns {CallbackTask} a task that wraps around the promise
@@ -26,6 +22,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function Callbackify(task : Promise<any> | any) : CallbackTask;
-
-export default Callbackify;
+declare function Callbackify(promiseGenerator: any): Task;
+export = Callbackify;

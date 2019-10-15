@@ -1,3 +1,6 @@
-module.exports = function _isFunction(val) {
-	return typeof val === 'function';
-};
+"use strict";
+function isFunction(val) {
+    return typeof val === 'function';
+}
+;
+module.exports = isFunction;

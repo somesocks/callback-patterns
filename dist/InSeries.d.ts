@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * ```javascript
 *   let InSeries = require('callback-patterns/InSeries');
@@ -37,6 +33,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   )(); // prints out 1 2 3 4 5, eventually
 ```
 */
-declare function InSeries(...tasks : CallbackTask[]) : CallbackTask;
-
-export default InSeries;
+declare var InSeries: (...args: Task[]) => Task;
+export = InSeries;

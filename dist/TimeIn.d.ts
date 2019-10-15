@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * TimeIn wraps a single task function, and returns a function that only returns after X ms.
 *
@@ -22,6 +18,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function TimeIn(task : CallbackTask, ms ?: number) : CallbackTask;
-
-export default TimeIn;
+declare function TimeIn(_1?: Task, _2?: number): Task;
+export = TimeIn;

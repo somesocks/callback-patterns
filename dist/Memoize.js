@@ -1,16 +1,15 @@
-
-var _catchWrapper = require('./_catchWrapper');
-var _onceWrapper = require('./_onceWrapper');
-var _nullCallback = require('./_nullCallback');
-var _defer = require('./_defer');
-
-var PassThrough = require('./PassThrough');
-
-var DEFAULT_KEY_FUNCTION = function () {
-	var args = Array.prototype.slice.call(arguments);
-	return JSON.stringify(args);
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var _onceWrapper_1 = __importDefault(require("./_onceWrapper"));
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
+var PassThrough_1 = __importDefault(require("./PassThrough"));
+var DEFAULT_KEY_FUNCTION = function () {
+    var args = Array.prototype.slice.call(arguments);
+    return JSON.stringify(args);
+};
 /**
 * Memoize builds a wrapper function that caches results of previous executions.
 * As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
@@ -57,30 +56,25 @@ var DEFAULT_KEY_FUNCTION = function () {
 * ```
 */
 function Memoize(_1, _2, _3) {
-	var task = _1 != null ? _catchWrapper(_1) : PassThrough;
-	var keyFunction = _2 || DEFAULT_KEY_FUNCTION;
-	var cache = _3 || {};
-
-	return function _memoizeInstance(_1) {
-		var next = _onceWrapper(_1 || _nullCallback);
-		var args = arguments;
-
-		args[0] = undefined;
-		var key = keyFunction.call.apply(keyFunction, args);
-
-		if (cache.hasOwnProperty(key)) {
-			var results = cache[key];
-
-			next.apply(undefined, results);
-		} else {
-			args[0] = function onResult() {
-				cache[key] = arguments;
-				next.apply(undefined, arguments);
-			};
-
-			task.apply(undefined, args);
-		}
-	};
+    var task = _1 != null ? _catchWrapper_1.default(_1) : PassThrough_1.default;
+    var keyFunction = _2 || DEFAULT_KEY_FUNCTION;
+    var cache = _3 || {};
+    return function _memoizeInstance(_1) {
+        var next = _onceWrapper_1.default(_1 || _nullCallback_1.default);
+        var args = arguments;
+        args[0] = undefined;
+        var key = keyFunction.call.apply(keyFunction, args);
+        if (cache.hasOwnProperty(key)) {
+            var results = cache[key];
+            next.apply(undefined, results);
+        }
+        else {
+            args[0] = function onResult() {
+                cache[key] = arguments;
+                next.apply(undefined, arguments);
+            };
+            task.apply(undefined, args);
+        }
+    };
 }
-
 module.exports = Memoize;

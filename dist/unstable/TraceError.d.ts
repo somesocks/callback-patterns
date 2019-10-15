@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from '../types/Task';
 /**
 * TraceError is an experimental wrapper that attempts to make errors more informative.
 * It does this by appending extra information to the stack of any error thrown in the task.
@@ -29,6 +25,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(next, ...args);
 * ```
 */
-declare function TraceError(task : CallbackTask) : CallbackTask;
-
-export default TraceError;
+declare var TraceError: (_1: Task) => Task;
+export = TraceError;

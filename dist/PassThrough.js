@@ -1,6 +1,8 @@
-
-var _nullCallback = require('./_nullCallback');
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
 /**
 * Sometimes, you need to pass previous arguments along with a new result.  The easiest way to do this is to use PassThrough, which is a convenience method for:
 * ```javascript
@@ -24,10 +26,9 @@ var _nullCallback = require('./_nullCallback');
 *   task(next, ...args);
 * ```
 */
-function PassThrough(_1) {
-	var next = _1 || _nullCallback;
-	arguments[0] = undefined;
-	next.apply(undefined, arguments);
-}
-
+var PassThrough = function PassThrough(_1) {
+    var next = _1 || _nullCallback_1.default;
+    arguments[0] = undefined;
+    next.apply(undefined, arguments);
+};
 module.exports = PassThrough;

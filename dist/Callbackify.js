@@ -1,8 +1,10 @@
-
-var _catchWrapper = require('./_catchWrapper');
-var _onceWrapper = require('./_onceWrapper');
-var PassThrough = require('./PassThrough');
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var _onceWrapper_1 = __importDefault(require("./_onceWrapper"));
+var PassThrough_1 = __importDefault(require("./PassThrough"));
 /**
 * Wraps around a promise generator function,
 * to make it easier to integrate with task functions.
@@ -27,31 +29,24 @@ var PassThrough = require('./PassThrough');
 * ```
 */
 function Callbackify(promiseGenerator) {
-	if (promiseGenerator == null) {
-		return PassThrough;
-	}
-
-	var _callbackifyInstance = function _callbackifyInstance(_1) {
-		var next = _onceWrapper(_1);
-		var args = arguments;
-
-		args.length--;
-		for (var i = 0; i < args.length; i++) {
-			args[i] = args[i+1];
-		}
-
-		var promise = promiseGenerator.apply(null, args);
-		promise = promise instanceof Promise ?
-			promise: Promise.resolve(promise);
-
-		var resolve = next.bind(null, null);
-		var reject = next;
-
-		return promise
-			.then(resolve, reject);
-	};
-
-	return _catchWrapper(_callbackifyInstance);
+    if (promiseGenerator == null) {
+        return PassThrough_1.default;
+    }
+    var _callbackifyInstance = function _callbackifyInstance(_1) {
+        var next = _onceWrapper_1.default(_1);
+        var args = arguments;
+        args.length--;
+        for (var i = 0; i < args.length; i++) {
+            args[i] = args[i + 1];
+        }
+        var promise = promiseGenerator.apply(null, args);
+        promise = promise instanceof Promise ?
+            promise : Promise.resolve(promise);
+        var resolve = next.bind(null, null);
+        var reject = next;
+        return promise
+            .then(resolve, reject);
+    };
+    return _catchWrapper_1.default(_callbackifyInstance);
 }
-
 module.exports = Callbackify;

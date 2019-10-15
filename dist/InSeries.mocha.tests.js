@@ -1,89 +1,57 @@
-/* eslint-env mocha, node */
-/* eslint-disable es5/no-destructuring */
-/* eslint-disable es5/no-block-scoping */
-/* eslint-disable es5/no-shorthand-properties */
-/* eslint-disable es5/no-arrow-expression */
-/* eslint-disable es5/no-arrow-functions */
-/* eslint-disable es5/no-rest-parameters */
-/* eslint-disable es5/no-spread */
-/* eslint-disable es5/no-template-literals */
-/* eslint-disable es5/no-es6-methods */
-
-const { InSeries, InParallel, CatchError, PassThrough, Logging } = require('./');
-
-describe('InSeries tests', () => {
-	it('Function.length should be at least 1', () => {
-		if (InSeries().length < 1) { throw new Error(); }
-		if (InSeries(() => {}).length < 1) { throw new Error(); }
-		if (InSeries(() => {}, () => {}).length < 1) { throw new Error(); }
-	});
-
-	it('test with 0 handlers', (done) => {
-		InSeries()(done);
-	});
-
-	it('test with null return', (done) => {
-		InSeries(
-			(next) => next(),
-			(next) => next()
-		)(done);
-	});
-
-	it('test with null callback', (done) => {
-		InSeries(
-			(next) => next(),
-			(next) => next()
-		)();
-		setTimeout(done, 16);
-	});
-
-	it('catches errors', (done) => {
-		InSeries(
-			(next) => next(),
-			(next) => { throw new Error('error'); }
-		)((err, res) => done(err != null ? null : err));
-	});
-
-	it('catches errors 2', (done) => {
-		InSeries(
-			(next) => next(),
-			(next) => { throw new Error('error'); }
-		)((err, res) => done(err != null ? null : err));
-	});
-
-	it('callback shouldnt get called', (done) => {
-		InSeries(
-			(next) => {}
-		)(() => done(new Error('called')));
-		setTimeout(done, 500);
-	});
-
-	it(
-		'deep error stack works',
-		InSeries(
-			CatchError(
-				InSeries(
-					InSeries(
-						(next) => next(),
-						(next) => { throw new Error('error'); }
-					)
-				)
-			),
-			Logging('Error Stack')
-		)
-	);
-
-	const SHORT_CHAIN = InSeries(
-		...Array(1000).fill(PassThrough)
-	);
-
-	const LONG_CHAIN = InSeries(
-		...Array(1000).fill(SHORT_CHAIN)
-	);
-
-
-	it('Long Chain Performance', (done) => {
-		LONG_CHAIN(done, 1, 2, 3);
-	});
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// import Assert from './Assert';
+// import Background from './Background';
+// import Bridge from './Bridge';
+// import Callbackify from './Callbackify';
+var CatchError_1 = __importDefault(require("./CatchError"));
+// import Delay from './Delay';
+// import If from './If';
+// import InOrder from './InOrder';
+// import InParallel from './InParallel';
+var InSeries_1 = __importDefault(require("./InSeries"));
+var Logging_1 = __importDefault(require("./Logging"));
+var PassThrough_1 = __importDefault(require("./PassThrough"));
+describe('InSeries tests', function () {
+    it('Function.length should be at least 1', function () {
+        if (InSeries_1.default().length < 1) {
+            throw new Error();
+        }
+        if (InSeries_1.default(function () { }).length < 1) {
+            throw new Error();
+        }
+        if (InSeries_1.default(function () { }, function () { }).length < 1) {
+            throw new Error();
+        }
+    });
+    it('test with 0 handlers', function (done) {
+        InSeries_1.default()(done);
+    });
+    it('test with null return', function (done) {
+        InSeries_1.default(function (next) { return next(); }, function (next) { return next(); })(done);
+    });
+    it('test with null callback', function (done) {
+        var task = InSeries_1.default(function (next) { return next(); }, function (next) { return next(); });
+        task();
+        setTimeout(done, 16);
+    });
+    it('catches errors', function (done) {
+        InSeries_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+    });
+    it('catches errors 2', function (done) {
+        InSeries_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+    });
+    it('callback shouldnt get called', function (done) {
+        InSeries_1.default(function (next) { })(function () { return done(new Error('called')); });
+        setTimeout(done, 500);
+    });
+    it('deep error stack works', InSeries_1.default(CatchError_1.default(InSeries_1.default(InSeries_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); }))), Logging_1.default('Error Stack')));
+    var SHORT_CHAIN = InSeries_1.default.apply(void 0, Array(1000).fill(PassThrough_1.default));
+    var LONG_CHAIN = InSeries_1.default.apply(void 0, Array(1000).fill(SHORT_CHAIN));
+    it('Long Chain Performance', function (done) {
+        LONG_CHAIN(done, 1, 2, 3);
+    });
 });

@@ -1,66 +1,39 @@
-/* eslint-env mocha, node */
-/* eslint-disable es5/no-destructuring */
-/* eslint-disable es5/no-block-scoping */
-/* eslint-disable es5/no-shorthand-properties */
-/* eslint-disable es5/no-arrow-expression */
-/* eslint-disable es5/no-arrow-functions */
-/* eslint-disable es5/no-rest-parameters */
-/* eslint-disable es5/no-spread */
-/* eslint-disable es5/no-template-literals */
-/* eslint-disable es5/no-es6-methods */
-
-const { Assert, InSeries, If } = require('./');
-
-describe('If', () => {
-	it('Function.length should be at least 1', () => {
-		if (If().length < 1) { throw new Error(); }
-		if (If(() => {}).length < 1) { throw new Error(); }
-		if (If(() => {}, () => {}).length < 1) { throw new Error(); }
-	});
-
-	it('test with 0 handlers', (done) => {
-		If()(done);
-	});
-
-	it('test with null callback', (done) => {
-		If()();
-		setTimeout(done, 16);
-	});
-
-	it('catches errors', (done) => {
-		If(
-			(next) => next(null, true),
-			(next) => { throw new Error('error'); }
-		)((err, res) => done(err != null ? null : err));
-	});
-
-	it('then works',
-		InSeries(
-			(next) => next(null, 1),
-			If(
-				(next, i) => next(null, i > 0),
-				(next) => next(null, true),
-				(next) => next(null, false)
-			),
-			Assert(
-				(val) => val === true
-			)
-		)
-	);
-
-	it('else works',
-		InSeries(
-			(next) => next(null, -1),
-			If(
-				(next, i) => next(null, i > 0),
-				(next) => next(null, true),
-				(next) => next(null, false)
-			),
-			Assert(
-				(val) => val === false
-			)
-		)
-	);
-
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __importDefault(require("./Assert"));
+// import Background from './Background';
+// import Bridge from './Bridge';
+// import CatchError from './CatchError';
+// import Delay from './Delay';
+var If_1 = __importDefault(require("./If"));
+// import Callbackify from './Callbackify';
+var InSeries_1 = __importDefault(require("./InSeries"));
+// import PassThrough from './PassThrough';
+describe('If', function () {
+    it('Function.length should be at least 1', function () {
+        if (If_1.default().length < 1) {
+            throw new Error();
+        }
+        if (If_1.default(function () { }).length < 1) {
+            throw new Error();
+        }
+        if (If_1.default(function () { }, function () { }).length < 1) {
+            throw new Error();
+        }
+    });
+    it('test with 0 handlers', function (done) {
+        If_1.default()(done);
+    });
+    it('test with null callback', function (done) {
+        If_1.default()();
+        setTimeout(done, 16);
+    });
+    it('catches errors', function (done) {
+        If_1.default(function (next) { return next(null, true); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+    });
+    it('then works', InSeries_1.default(function (next) { return next(null, 1); }, If_1.default(function (next, i) { return next(null, i > 0); }, function (next) { return next(null, true); }, function (next) { return next(null, false); }), Assert_1.default(function (val) { return val === true; })));
+    it('else works', InSeries_1.default(function (next) { return next(null, -1); }, If_1.default(function (next, i) { return next(null, i > 0); }, function (next) { return next(null, true); }, function (next) { return next(null, false); }), Assert_1.default(function (val) { return val === false; })));
 });

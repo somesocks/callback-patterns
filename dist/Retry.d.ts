@@ -1,8 +1,8 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
+declare type RetryOptions = {
+    timeout?: number;
+    retries?: number;
+};
 /**
 * Wraps a task and attempts to retry if it throws an error, with an exponential backoff.
 * @param {CallbackTask} task - the task to wrap.
@@ -12,6 +12,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 * @returns {CallbackTask} a task
 * @memberof callback-patterns
 */
-declare function Retry(task: CallbackTask, options ?: object) : CallbackTask;
-
-export default Retry;
+declare function Retry(task: Task, options?: RetryOptions): Task;
+export = Retry;

@@ -1,12 +1,12 @@
-/* eslint-env node */
-
-var defer = require('./_defer');
-var onceWrapper = require('./_onceWrapper');
-var catchWrapper = require('./_catchWrapper');
-var nullCallback = require('./_nullCallback');
-
-var EMPTY = function (next) { return (next || nullCallback)(); };
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _defer_1 = __importDefault(require("./_defer"));
+var _onceWrapper_1 = __importDefault(require("./_onceWrapper"));
+var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
+var EMPTY = function (next) { return (next || _nullCallback_1.default)(); };
 /**
 * ```javascript
 *   let InSeries = require('callback-patterns/InSeries');
@@ -42,39 +42,37 @@ var EMPTY = function (next) { return (next || nullCallback)(); };
 ```
 */
 var InSeries = function InSeries() {
-	var handlers = arguments;
-
-	if (handlers.length === 0) {
-		return EMPTY;
-	}
-
-	for (var i = 0; i < handlers.length; i++) {
-		handlers[i] = catchWrapper(handlers[i]);
-	}
-
-	return function _inSeriesInstance(_1) {
-		var next = onceWrapper(_1);
-		var index = 0;
-
-		var worker = function () {
-			if (arguments[0] != null) {
-				next.apply(undefined, arguments);
-			} else if (index >= handlers.length) {
-				next.apply(undefined, arguments);
-			} else {
-				var handler = handlers[index++]
-					.bind(undefined, onceWrapper(worker));
-
-				arguments[0] = handler;
-				arguments.length = arguments.length || 1;
-				defer.apply(undefined, arguments);
-			}
-		};
-
-		arguments[0] = undefined;
-		worker.apply(undefined, arguments);
-	};
-
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    var handlers = arguments;
+    if (handlers.length === 0) {
+        return EMPTY;
+    }
+    for (var i = 0; i < handlers.length; i++) {
+        handlers[i] = _catchWrapper_1.default(handlers[i]);
+    }
+    return function _inSeriesInstance(_1) {
+        var next = _onceWrapper_1.default(_1);
+        var index = 0;
+        var worker = function () {
+            if (arguments[0] != null) {
+                next.apply(undefined, arguments);
+            }
+            else if (index >= handlers.length) {
+                next.apply(undefined, arguments);
+            }
+            else {
+                var handler = handlers[index++]
+                    .bind(undefined, _onceWrapper_1.default(worker));
+                arguments[0] = handler;
+                arguments.length = arguments.length || 1;
+                _defer_1.default.apply(undefined, arguments);
+            }
+        };
+        arguments[0] = undefined;
+        worker.apply(undefined, arguments);
+    };
 };
-
 module.exports = InSeries;

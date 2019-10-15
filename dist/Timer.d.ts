@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * Wraps a task and logs how long it takes to finish, or fail.
 * @param {CallbackTask} task - the task to wrap.
@@ -10,6 +6,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 * @returns {CallbackTask} a task
 * @memberof callback-patterns
 */
-declare function Timer(task : CallbackTask) : CallbackTask;
-
-export default Timer;
+declare function Timer(task: Task, label: any): Task;
+export = Timer;

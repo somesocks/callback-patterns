@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * While accepts two tasks and returns a task that conditionally executes some number of times.
 * @param {function} conditionTask - a condition task.
@@ -23,6 +19,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 *   task(onDone, 1); // prints 9, eventually
 * ```
 */
-declare function While(_if : CallbackTask, _then : CallbackTask) : CallbackTask;
-
-export default While;
+declare function While(_1?: Task, _2?: Task): Task;
+export = While;

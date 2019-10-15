@@ -1,72 +1,26 @@
-/* eslint-env mocha, node */
-/* eslint-disable es5/no-destructuring */
-/* eslint-disable es5/no-block-scoping */
-/* eslint-disable es5/no-shorthand-properties */
-/* eslint-disable es5/no-arrow-expression */
-/* eslint-disable es5/no-arrow-functions */
-/* eslint-disable es5/no-rest-parameters */
-/* eslint-disable es5/no-spread */
-/* eslint-disable es5/no-template-literals */
-/* eslint-disable es5/no-es6-methods */
-
-const { InSeries, Assert, CatchError, PassThrough, Callbackify, Logging } = require('../dist');
-
-describe('Callbackify', () => {
-	it('Function.length should be at least 1', () => {
-		if (Callbackify().length < 1) { throw new Error(); }
-		if (Callbackify(() => {}).length < 1) { throw new Error(); }
-	});
-
-	it(
-		'Callbackify.resolve works',
-		InSeries(
-			(next) => next(null, 2),
-			Callbackify(
-				(val) => new Promise((resolve, reject) => resolve(val))
-			),
-			Assert((val) => val === 2, 'Callbackify failed to resolve')
-		)
-	);
-
-	it(
-		'Callbackify works on a function that doesnt return a promise',
-		InSeries(
-			(next) => next(null, 1),
-			Callbackify(
-				(val) => val + 1
-			),
-			Assert((val) => val === 2, 'Callbackify failed to resolve')
-		)
-	);
-
-
-	it(
-		'Callbackify.reject works',
-		InSeries(
-			(next) => next(null, 2),
-			CatchError(
-				Callbackify(
-					(val) => new Promise((resolve, reject) => reject(val))
-				)
-			),
-			Assert((err) => err !== null, 'Callbackify failed to reject')
-		)
-	);
-
-
-	it('test with 0 handlers', (done) => {
-		Callbackify()(done);
-	});
-
-	it('test with null return',
-		InSeries(
-			(next) => next(null, 2),
-			CatchError(
-				Callbackify(
-					(val) => null
-				)
-			),
-			Assert((err) => err == null, 'Callbackify should have rejected null')
-		)
-	);
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __importDefault(require("./Assert"));
+// import Background from './Background';
+// import Bridge from './Bridge';
+var CatchError_1 = __importDefault(require("./CatchError"));
+var Callbackify_1 = __importDefault(require("./Callbackify"));
+var InSeries_1 = __importDefault(require("./InSeries"));
+// import PassThrough from './PassThrough';
+describe('Callbackify', function () {
+    it('Function.length should be at least 1', function () {
+        if (Callbackify_1.default(function () { }).length < 1) {
+            throw new Error();
+        }
+    });
+    it('Callbackify.resolve works', InSeries_1.default(function (next) { return next(null, 2); }, Callbackify_1.default(function (val) { return new Promise(function (resolve, reject) { return resolve(val); }); }), Assert_1.default(function (val) { return val === 2; }, 'Callbackify failed to resolve')));
+    it('Callbackify works on a function that doesnt return a promise', InSeries_1.default(function (next) { return next(null, 1); }, Callbackify_1.default(function (val) { return val + 1; }), Assert_1.default(function (val) { return val === 2; }, 'Callbackify failed to resolve')));
+    it('Callbackify.reject works', InSeries_1.default(function (next) { return next(null, 2); }, CatchError_1.default(Callbackify_1.default(function (val) { return new Promise(function (resolve, reject) { return reject(val); }); })), Assert_1.default(function (err) { return err !== null; }, 'Callbackify failed to reject')));
+    it('test with 0 handlers', function (done) {
+        Callbackify_1.default()(done);
+    });
+    it('test with null return', InSeries_1.default(function (next) { return next(null, 2); }, CatchError_1.default(Callbackify_1.default(function (val) { return null; })), Assert_1.default(function (err) { return err == null; }, 'Callbackify should have rejected null')));
 });

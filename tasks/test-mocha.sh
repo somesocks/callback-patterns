@@ -14,11 +14,21 @@ DIST_DIR=$ROOT_DIR/dist
 NODE_BIN=$ROOT_DIR/node_modules/.bin
 PATH=$PATH:$NODE_BIN
 
+# this would be the simple case, but it misses
+# *.mocha.tests dirs, which I want to support
+# mocha \
+# 	"./dist/**/*.mocha.tests.js" \
+# 	$MOCHA
+
+
+# so, instead we find all matching test files/dirs,
+# sort them,
+# and pipe into mocha via xargs
 ( \
 	find \
 		$DIST_DIR \
-		\( -type f -and -name "*.mocha.tests.js" \) -or \
-		\( -type f -and -path "*.mocha.tests\/index.js" \) \
+		\( -type f -and -name *.mocha.tests.js \) -or \
+		\( -type f -and -path *.mocha.tests\/index.js \) \
 	| \
 	sort \
 		--stable \

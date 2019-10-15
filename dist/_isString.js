@@ -1,3 +1,6 @@
-module.exports = function _isString(val) {
-	return (typeof val === 'string') || (val instanceof String);
-};
+"use strict";
+function isString(val) {
+    return (typeof val === 'string') || (val instanceof String);
+}
+;
+module.exports = isString;

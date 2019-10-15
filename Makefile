@@ -1,9 +1,12 @@
+NPM=pnpm
+
 TASKS=./tasks
 
+.PHONY: default setup help
 
 ##
 ##
-##	vcallback-patterns
+##	callback-patterns
 ##		this is the base project makefile
 ##
 ##
@@ -18,41 +21,35 @@ default: help
 help:
 	@grep "^##.*" ./Makefile
 
-
-##		make build - make a new build
+##		make setup - setup for local development
 ##
-build: build-src build-docs build-meta
+setup:
+	sh $(TASKS)/setup.sh
 
 
-build-src:
-	sh $(TASKS)/build-src.sh
-
-build-docs:
-	sh $(TASKS)/build-docs.sh
-
-build-meta: build-src build-docs
-	sh $(TASKS)/build-meta.sh
-
-
-
-##		make test - run the test cases against the build
+##		make build - build the package
 ##
-test: test-mocha test-eslint
+build:
+	sh $(TASKS)/build.sh
 
-test-eslint:
-	ESLINT="$(ESLINT)" sh $(TASKS)/test-eslint.sh
+
+
+##		make test - run test cases against the built package
+##
+test: test-mocha
 
 test-mocha:
-	MOCHA="$(MOCHA)" sh $(TASKS)/test-mocha.sh
+	sh $(TASKS)/test-mocha.sh
 
 
 
-##		make package-check - print out a pre-publish package check
+
+##		make package-check - list the files that will be present in the package
 ##
 package-check:
 	sh $(TASKS)/package-check.sh
 
-##		make package-publish - publish package on npm
+##		make package-publish - publish the current dist dir
 ##
 package-publish:
 	sh $(TASKS)/package-publish.sh

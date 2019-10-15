@@ -1,8 +1,4 @@
-
-type Callback = (err ?: Error | null | undefined, ...res : any[]) => void;
-
-type CallbackTask = (next : Callback, ...args: any[]) => void;
-
+import Task from './types/Task';
 /**
 * ```javascript
 *   let InOrder = require('callback-patterns/InOrder');
@@ -31,6 +27,5 @@ type CallbackTask = (next : Callback, ...args: any[]) => void;
 * @returns {CallbackTask} a wrapper function that runs the tasks in order
 * @memberof callback-patterns
 */
-declare function InOrder(...tasks: CallbackTask[]) : CallbackTask;
-
-export default InOrder;
+declare var InOrder: (...args: Task[]) => Task;
+export = InOrder;

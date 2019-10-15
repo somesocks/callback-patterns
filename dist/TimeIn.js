@@ -1,24 +1,22 @@
+"use strict";
 /* eslin-env node */
-
-var InParallel = require('./InParallel');
-var PassThrough = require('./PassThrough');
-var Delay = require('./Delay');
-var InSeries = require('./InSeries');
-
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var InParallel_1 = __importDefault(require("./InParallel"));
+var PassThrough_1 = __importDefault(require("./PassThrough"));
+var Delay_1 = __importDefault(require("./Delay"));
+var InSeries_1 = __importDefault(require("./InSeries"));
 function _empty(next) { return next(); }
-
 function _results(next, r0, r1) {
-	var args = r1;
-
-	args.length++;
-	for (var i = args.length - 1; i > 0; i--) {
-		args[i] = args[i - 1];
-	}
-	args[0] = null;
-
-	return next.apply(null, args);
+    var args = r1;
+    args.length++;
+    for (var i = args.length - 1; i > 0; i--) {
+        args[i] = args[i - 1];
+    }
+    args[0] = null;
+    return next.apply(null, args);
 }
-
 /**
 * TimeIn wraps a single task function, and returns a function that only returns after X ms.
 *
@@ -39,21 +37,9 @@ function _results(next, r0, r1) {
 * ```
 */
 function TimeIn(_1, _2) {
-	var task = _1 || PassThrough;
-	var ms = _2 || 1000;
-
-	var timein = InSeries(
-		InParallel(
-			InSeries(
-				_empty,
-				Delay(ms)
-			),
-			task
-		),
-		_results
-	);
-
-	return timein;
+    var task = _1 || PassThrough_1.default;
+    var ms = _2 || 1000;
+    var timein = InSeries_1.default(InParallel_1.default(InSeries_1.default(_empty, Delay_1.default(ms)), task), _results);
+    return timein;
 }
-
 module.exports = TimeIn;

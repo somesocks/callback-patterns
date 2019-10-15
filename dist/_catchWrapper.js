@@ -1,18 +1,18 @@
-var _nullCallback = require('./_nullCallback');
-
-module.exports = function _catchWrapper(_1) {
-	var func = _1;
-
-	// eslint-disable-next-line camelcase
-	return function _catchWrapper_instance(_1) {
-		var next = _1;
-		try {
-			// eslint-disable-next-line prefer-spread, prefer-rest-params
-			func.apply(undefined, arguments);
-		} catch (err) {
-			// eslint-disable-next-line no-param-reassign
-			next = next || _nullCallback;
-			next(err);
-		}
-	};
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _nullCallback_1 = __importDefault(require("./_nullCallback"));
+function catchWrapper(func) {
+    return function _catchWrapper_instance(next) {
+        try {
+            func.apply(undefined, arguments);
+        }
+        catch (err) {
+            next = next || _nullCallback_1.default;
+            next(err);
+        }
+    };
+}
+;
+module.exports = catchWrapper;
