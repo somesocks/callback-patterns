@@ -1,5 +1,5 @@
 
-// import Assert from './Assert';
+import Assert from './Assert';
 // import Background from './Background';
 // import Bridge from './Bridge';
 // import Callbackify from './Callbackify';
@@ -40,6 +40,18 @@ describe('InSeries tests', () => {
 
 		setTimeout(done, 16);
 	});
+
+	it('works 1',
+		InSeries(
+			(next) => next(null, 1),
+			(next, val) => next(null, val + 1),
+			(next, val) => next(null, val + 1),
+			(next, val) => next(null, val + 1),
+			Assert(
+				(val) => val === 4
+			)
+		)
+	);
 
 	it('catches errors', (done) => {
 		InSeries(

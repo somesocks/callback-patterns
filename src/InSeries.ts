@@ -4,7 +4,6 @@ import Task from './types/Task';
 
 import defer from './_defer';
 import onceWrapper from './_onceWrapper';
-import catchWrapper from './_catchWrapper';
 import nullCallback from './_nullCallback';
 
 var EMPTY = function (next) { return (next || nullCallback)(); };
@@ -50,31 +49,44 @@ var InSeries = function InSeries(...args : Task[]) : Task {
 		return EMPTY;
 	}
 
-	for (var i = 0; i < handlers.length; i++) {
-		handlers[i] = catchWrapper(handlers[i]);
-	}
+	// for (var i = 0; i < handlers.length; i++) {
+	// 	handlers[i] = catchWrapper(handlers[i]);
+	// }
 
-	return function _inSeriesInstance(_1) {
-		var next = onceWrapper(_1);
+	return function _inSeriesInstance(next = nullCallback) {
 		var index = 0;
 
-		var worker = function () {
-			if (arguments[0] != null) {
+		var args = arguments;
+
+		var _execute = function () {
+			// console.log('_pre', index, handlers.length);
+			var _handler = handlers[index++];
+			try {
+				_handler.apply(undefined, args);
+			} catch (err) {
+				args[0](err);
+			}
+		};
+
+		var _prepare = function (err ?: any) {
+			if (err != null) {
 				next.apply(undefined, arguments as any);
 			} else if (index >= handlers.length) {
 				next.apply(undefined, arguments as any);
 			} else {
-				var handler = handlers[index++]
-					.bind(undefined, onceWrapper(worker));
+				// var _next = _post;
+				var _next = onceWrapper(_prepare);
 
-				arguments[0] = handler;
+				arguments[0] = _next;
 				arguments.length = arguments.length || 1;
-				defer.apply(undefined, arguments);
+				args = arguments;
+
+				defer(_execute);
 			}
 		};
 
 		arguments[0] = undefined;
-		worker.apply(undefined, arguments as any);
+		_prepare.apply(undefined, arguments as any);
 	};
 
 };

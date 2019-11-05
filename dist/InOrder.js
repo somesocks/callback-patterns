@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _defer_1 = __importDefault(require("./_defer"));
 var _onceWrapper_1 = __importDefault(require("./_onceWrapper"));
-var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
 var _nullCallback_1 = __importDefault(require("./_nullCallback"));
 var EMPTY = function (next) { return (next || _nullCallback_1.default)(); };
 /**
@@ -45,14 +44,24 @@ var InOrder = function InOrder() {
     if (handlers.length === 0) {
         return EMPTY;
     }
-    for (var i = 0; i < handlers.length; i++) {
-        handlers[i] = _catchWrapper_1.default(handlers[i]);
-    }
-    return function _inSeriesInstance(_1) {
-        var args = arguments;
-        var next = _onceWrapper_1.default(_1);
+    // for (var i = 0; i < handlers.length; i++) {
+    // 	handlers[i] = catchWrapper(handlers[i]);
+    // }
+    return function _inSeriesInstance(next) {
+        if (next === void 0) { next = _nullCallback_1.default; }
         var index = 0;
-        var worker = function (err) {
+        var args = arguments;
+        var _execute = function () {
+            // console.log('_execute', index, handlers.length);
+            var _handler = handlers[index++];
+            try {
+                _handler.apply(undefined, args);
+            }
+            catch (err) {
+                args[0](err);
+            }
+        };
+        var _prepare = function (err) {
             if (err != null) {
                 next.apply(undefined, arguments);
             }
@@ -61,15 +70,15 @@ var InOrder = function InOrder() {
                 next.apply(undefined, args);
             }
             else {
-                var handler = handlers[index++]
-                    .bind(undefined, _onceWrapper_1.default(worker));
-                args[0] = handler;
+                // var _next = _prepare;
+                var _next = _onceWrapper_1.default(_prepare);
+                args[0] = _next;
                 args.length = args.length || 1;
-                _defer_1.default.apply(undefined, args);
+                _defer_1.default(_execute);
             }
         };
-        args[0] = undefined;
-        worker.apply(undefined, args);
+        arguments[0] = undefined;
+        _prepare.apply(undefined, arguments);
     };
 };
 module.exports = InOrder;
