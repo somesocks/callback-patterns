@@ -47,7 +47,7 @@ var InOrder = function InOrder() {
     // for (var i = 0; i < handlers.length; i++) {
     // 	handlers[i] = catchWrapper(handlers[i]);
     // }
-    return function _inSeriesInstance(next) {
+    return function _inOrderInstance(next) {
         if (next === void 0) { next = _nullCallback_1.default; }
         var index = 0;
         var args = arguments;
