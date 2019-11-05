@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import Assert from './Assert';
+var Assert_1 = __importDefault(require("./Assert"));
 // import Background from './Background';
 // import Bridge from './Bridge';
 // import Callbackify from './Callbackify';
@@ -38,6 +38,7 @@ describe('InSeries tests', function () {
         task();
         setTimeout(done, 16);
     });
+    it('works 1', InSeries_1.default(function (next) { return next(null, 1); }, function (next, val) { return next(null, val + 1); }, function (next, val) { return next(null, val + 1); }, function (next, val) { return next(null, val + 1); }, Assert_1.default(function (val) { return val === 4; })));
     it('catches errors', function (done) {
         InSeries_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
     });

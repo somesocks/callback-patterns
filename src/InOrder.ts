@@ -45,35 +45,44 @@ var InOrder = function InOrder(...args : Task[]) : Task {
 		return EMPTY;
 	}
 
-	for (var i = 0; i < handlers.length; i++) {
-		handlers[i] = catchWrapper(handlers[i]);
-	}
+	// for (var i = 0; i < handlers.length; i++) {
+	// 	handlers[i] = catchWrapper(handlers[i]);
+	// }
 
-	return function _inSeriesInstance(_1) {
-		var args = arguments;
-		var next = onceWrapper(_1);
+	return function _inOrderInstance(next = nullCallback) {
+
 		var index = 0;
+		var args = arguments;
 
-		var worker = function (err) {
+		var _execute = function () {
+			// console.log('_execute', index, handlers.length);
+			var _handler = handlers[index++];
+			try {
+				_handler.apply(undefined, args);
+			} catch (err) {
+				args[0](err);
+			}
+		};
+
+		var _prepare = function (err ?: any) {
 			if (err != null) {
 				next.apply(undefined, arguments as any);
 			} else if (index >= handlers.length) {
 				args[0] = undefined;
 				next.apply(undefined, args as any);
 			} else {
-				var handler = handlers[index++]
-					.bind(undefined, onceWrapper(worker));
+				// var _next = _prepare;
+				var _next = onceWrapper(_prepare);
 
-				args[0] = handler;
+				args[0] = _next;
 				args.length = args.length || 1;
-				defer.apply(undefined, args);
+				defer(_execute);
 			}
 		};
 
-		args[0] = undefined;
-		worker.apply(undefined, args as any);
+		arguments[0] = undefined;
+		_prepare.apply(undefined, arguments as any);
 	};
-
 };
 
 export = InOrder;

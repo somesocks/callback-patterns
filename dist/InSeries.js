@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _defer_1 = __importDefault(require("./_defer"));
 var _onceWrapper_1 = __importDefault(require("./_onceWrapper"));
-var _catchWrapper_1 = __importDefault(require("./_catchWrapper"));
 var _nullCallback_1 = __importDefault(require("./_nullCallback"));
 var EMPTY = function (next) { return (next || _nullCallback_1.default)(); };
 /**
@@ -50,29 +49,41 @@ var InSeries = function InSeries() {
     if (handlers.length === 0) {
         return EMPTY;
     }
-    for (var i = 0; i < handlers.length; i++) {
-        handlers[i] = _catchWrapper_1.default(handlers[i]);
-    }
-    return function _inSeriesInstance(_1) {
-        var next = _onceWrapper_1.default(_1);
+    // for (var i = 0; i < handlers.length; i++) {
+    // 	handlers[i] = catchWrapper(handlers[i]);
+    // }
+    return function _inSeriesInstance(next) {
+        if (next === void 0) { next = _nullCallback_1.default; }
         var index = 0;
-        var worker = function () {
-            if (arguments[0] != null) {
+        var args = arguments;
+        var _execute = function () {
+            // console.log('_pre', index, handlers.length);
+            var _handler = handlers[index++];
+            try {
+                _handler.apply(undefined, args);
+            }
+            catch (err) {
+                args[0](err);
+            }
+        };
+        var _prepare = function (err) {
+            if (err != null) {
                 next.apply(undefined, arguments);
             }
             else if (index >= handlers.length) {
                 next.apply(undefined, arguments);
             }
             else {
-                var handler = handlers[index++]
-                    .bind(undefined, _onceWrapper_1.default(worker));
-                arguments[0] = handler;
+                // var _next = _post;
+                var _next = _onceWrapper_1.default(_prepare);
+                arguments[0] = _next;
                 arguments.length = arguments.length || 1;
-                _defer_1.default.apply(undefined, arguments);
+                args = arguments;
+                _defer_1.default(_execute);
             }
         };
         arguments[0] = undefined;
-        worker.apply(undefined, arguments);
+        _prepare.apply(undefined, arguments);
     };
 };
 module.exports = InSeries;
