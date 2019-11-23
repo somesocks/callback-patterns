@@ -74,8 +74,8 @@ var InSeries = function InSeries() {
                 next.apply(undefined, arguments);
             }
             else {
-                // var _next = _post;
                 var _next = _onceWrapper_1.default(_prepare);
+                // var _next = _prepare;
                 arguments[0] = _next;
                 arguments.length = arguments.length || 1;
                 args = arguments;

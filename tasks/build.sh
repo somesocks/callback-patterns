@@ -8,7 +8,7 @@
 # abort on error
 set -e
 
-PACKAGE_NAME=async-patterns
+PACKAGE_NAME="callback-patterns"
 
 #
 # expects to be run from root

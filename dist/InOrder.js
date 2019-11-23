@@ -70,8 +70,8 @@ var InOrder = function InOrder() {
                 next.apply(undefined, args);
             }
             else {
-                // var _next = _prepare;
                 var _next = _onceWrapper_1.default(_prepare);
+                // var _next = _prepare;
                 args[0] = _next;
                 args.length = args.length || 1;
                 _defer_1.default(_execute);

@@ -1,18 +1,73 @@
 
+import TinyLRU from 'tiny-lru';
+
 // import Callback from './types/Callback';
+
 import Task from './types/Task';
 
 import _catchWrapper from './_catchWrapper';
 import _onceWrapper from './_onceWrapper';
 import _nullCallback from './_nullCallback';
-import _defer from './_defer';
 
 import PassThrough from './PassThrough';
+
+import Joinable from './unstable/Joinable';
 
 var DEFAULT_KEY_FUNCTION = function () {
 	var args = Array.prototype.slice.call(arguments);
 	return JSON.stringify(args);
 };
+
+type _MemoizeCache = {
+	has : (key : string) => boolean,
+	get : (key : string) => any,
+	set : (key : string, val : any) => void,
+	del : (key : string) => void,
+}
+
+function ObjectCache(this : any) : void {
+	this._cache = {};
+};
+
+ObjectCache.prototype.has = function has(key : string) {
+	return this._cache.hasOwnProperty(key);
+};
+
+ObjectCache.prototype.get = function get(key : string) {
+	return this._cache[key];
+};
+
+ObjectCache.prototype.set = function set(key : string, val : any) {
+	this._cache[key] = val;
+	return this;
+};
+
+ObjectCache.prototype.del = function del(key : string) {
+	delete this._cache[key];
+};
+
+
+function LRUCache(this : any, size : number, ttl : number = 0) : void {
+	this._cache = TinyLRU(size, ttl);
+}
+
+LRUCache.prototype.has = function has(key : string) {
+	return this._cache.has(key);
+};
+
+LRUCache.prototype.get = function get(key : string) {
+	return this._cache.get(key);
+};
+
+LRUCache.prototype.set = function set(key : string, val : any) {
+	this._cache.set(key, val);
+	return this;
+};
+
+LRUCache.prototype.del = function del(key : string) {
+	this._cache.delete(key);
+};
+
 
 /**
 * Memoize builds a wrapper function that caches results of previous executions.
@@ -59,31 +114,33 @@ var DEFAULT_KEY_FUNCTION = function () {
 *   test(null, 1); // task is only called once, even though memoizedTask is called three times
 * ```
 */
-function Memoize(_1 ?: Task, _2 ?: (...args : any[]) => string, _3 ?: object) : Task {
-	var task = _1 != null ? _catchWrapper(_1) : PassThrough;
-	var keyFunction = _2 || DEFAULT_KEY_FUNCTION;
-	var cache = _3 || {};
+function Memoize(task ?: Task, keyFunction ?: (...args : any[]) => string, cache ?: _MemoizeCache) : Task {
+	let _task = task != null ? _catchWrapper(task) : PassThrough;
+	_task = Joinable(_task);
+	const _keyFunction = keyFunction || DEFAULT_KEY_FUNCTION;
+	const _cache : _MemoizeCache = cache || new ObjectCache();
 
 	return function _memoizeInstance(_1) {
 		var next = _onceWrapper(_1 || _nullCallback);
 		var args = arguments;
 
 		args[0] = undefined;
-		var key : string = keyFunction.call.apply(keyFunction, args as any) as string;
+		const key : string = _keyFunction.call.apply(_keyFunction, args as any) as string;
 
-		if (cache.hasOwnProperty(key)) {
-			var results = cache[key];
-
-			next.apply(undefined, results);
+		if (_cache.has(key)) {
+			const joinable = _cache.get(key);
+			joinable.join(next);
 		} else {
-			args[0] = function onResult() {
-				cache[key] = arguments;
-				next.apply(undefined, arguments as any);
-			};
-
-			task.apply(undefined, args as any);
+			args[0] = next; // setting the first arg back to the initial callback
+			args.length = args.length || 1;
+			const joinable : any = _task.apply(undefined, args as any);
+			_cache.set(key, joinable);
 		}
 	};
 }
+
+Memoize.ObjectCache = ObjectCache;
+
+Memoize.LRUCache = LRUCache;
 
 export = Memoize;

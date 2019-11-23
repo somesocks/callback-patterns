@@ -19,10 +19,12 @@
   },
   "homepage": "https://github.com/somesocks/callback-patterns",
   "dependencies": {
-    "setimmediate": "^1.0.5"
+    "setimmediate": "1.0.5",
+    "tiny-lru": "7.0.2"
   },
   "devDependencies": {
-		"@types/mocha": "^5.2.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.12",
     "chai": "^4.0.2",
     "jsdoc-to-markdown": "^4.0.1",
     "mocha": "5.1.1",
