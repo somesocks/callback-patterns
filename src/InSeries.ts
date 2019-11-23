@@ -74,8 +74,8 @@ var InSeries = function InSeries(...args : Task[]) : Task {
 			} else if (index >= handlers.length) {
 				next.apply(undefined, arguments as any);
 			} else {
-				// var _next = _post;
 				var _next = onceWrapper(_prepare);
+				// var _next = _prepare;
 
 				arguments[0] = _next;
 				arguments.length = arguments.length || 1;

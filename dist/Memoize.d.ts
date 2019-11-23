@@ -1,4 +1,10 @@
 import Task from './types/Task';
+declare type _MemoizeCache = {
+    has: (key: string) => boolean;
+    get: (key: string) => any;
+    set: (key: string, val: any) => void;
+    del: (key: string) => void;
+};
 /**
 * Memoize builds a wrapper function that caches results of previous executions.
 * As a result, repeated calls to Memoize may be much faster, if the request hits the cache.
@@ -44,5 +50,9 @@ import Task from './types/Task';
 *   test(null, 1); // task is only called once, even though memoizedTask is called three times
 * ```
 */
-declare function Memoize(_1?: Task, _2?: (...args: any[]) => string, _3?: object): Task;
+declare function Memoize(task?: Task, keyFunction?: (...args: any[]) => string, cache?: _MemoizeCache): Task;
+declare namespace Memoize {
+    var ObjectCache: (this: any) => void;
+    var LRUCache: (this: any, size: number, ttl?: number) => void;
+}
 export = Memoize;

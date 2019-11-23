@@ -7,7 +7,7 @@ import Assert from './Assert';
 import Delay from './Delay';
 // import If from './If';
 // import InOrder from './InOrder';
-// import InParallel from './InParallel';
+import InParallel from './InParallel';
 import InSeries from './InSeries';
 // import Logging from './Logging';
 import Memoize from './Memoize';
@@ -39,6 +39,65 @@ describe('Memoize', () => {
 		var counter = 0;
 		var task = (next) => next(null, ++counter);
 		task = Memoize(task);
+
+		var test = InSeries(
+			(next) => task(next),
+			(next) => task(next),
+			(next) => task(next),
+			Assert(
+				(val) => val === 1,
+				(val) => `expected val to be 1, got ${val}`
+			),
+			Assert(
+				() => counter === 1,
+				() => `expected counter to be 1, got ${counter}`
+			)
+		);
+
+		test(done);
+	});
+
+	it('memoize joins requests correctly', (done) => {
+		var counter = 0;
+
+		var task = InSeries(
+			Delay(1000),
+			(next) => next(null, ++counter)
+		);
+
+		task = Memoize(task, undefined, new Memoize.LRUCache(100));
+
+		var test = InSeries(
+			InParallel.Flatten(
+				(next) => task(next),
+				(next) => task(next),
+				(next) => task(next),
+			),
+			Assert(
+				(a, b, c) => a === 1,
+				(val) => `expected val to be 1, got ${val}`
+			),
+			Assert(
+				(a, b, c) => b === 1,
+				(val) => `expected val to be 1, got ${val}`
+			),
+			Assert(
+				(a, b, c) => c === 1,
+				(val) => `expected val to be 1, got ${val}`
+			),
+			Assert(
+				() => counter === 1,
+				() => `expected counter to be 1, got ${counter}`
+			)
+		);
+
+		test(done);
+	});
+
+	it('memoize with LRU cache works', (done) => {
+		var counter = 0;
+		var task = (next) => next(null, ++counter);
+		task = Memoize(task, undefined, new Memoize.LRUCache(100));
 
 		var test = InSeries(
 			(next) => task(next),

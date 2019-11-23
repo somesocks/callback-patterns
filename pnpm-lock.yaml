@@ -1,7 +1,9 @@
 dependencies:
   setimmediate: 1.0.5
+  tiny-lru: 7.0.2
 devDependencies:
   '@types/mocha': 5.2.7
+  '@types/node': 12.12.12
   chai: 4.2.0
   jsdoc-to-markdown: 4.0.1
   mocha: 5.1.1
@@ -13,6 +15,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-NYrtPht0wGzhwe9+/idPaBB+TqkY9AhTvOLMkThm0IoEfLaiVQZwBwyJ5puCkO3AUCWrmcoePjp2mbFocKy4SQ==
+  /@types/node/12.12.12:
+    dev: true
+    resolution:
+      integrity: sha512-MGuvYJrPU0HUwqF7LqvIj50RZUX23Z+m583KBygKYUZLlZ88n6w28XRNJRJgsHukLEnLz6w6SvxZoLgbr5wLqQ==
   /ansi-escape-sequences/4.1.0:
     dependencies:
       array-back: 3.1.0
@@ -638,6 +644,12 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha512-sVACdAWcZkSU9x7AOmJo5TqE+GyNJknHaHsMrR6ZnhjVlVN9Yx6FjHrsKZ3BjIpPCT68zYesPWkakrNupwfOTQ==
+  /tiny-lru/7.0.2:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-cmc9OOwmnAJtyFBYaznKR3abypEhWecarFrvS5db6qwSgoaDUWV0JX+mdh6B9wN60Wux3+gE1vjzxkoqxFBjqw==
   /type-detect/4.0.8:
     dev: true
     engines:
@@ -717,9 +729,11 @@ packages:
       integrity: sha1-+mv3YqYKQT+z3Y9LA8WyaSONMI8=
 specifiers:
   '@types/mocha': ^5.2.7
+  '@types/node': ^12.12.12
   chai: ^4.0.2
   jsdoc-to-markdown: ^4.0.1
   mocha: 5.1.1
-  setimmediate: ^1.0.5
+  setimmediate: 1.0.5
+  tiny-lru: 7.0.2
   typescript: ^3.5.3
   vet: 2.5.1

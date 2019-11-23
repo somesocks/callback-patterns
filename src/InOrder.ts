@@ -71,8 +71,8 @@ var InOrder = function InOrder(...args : Task[]) : Task {
 				args[0] = undefined;
 				next.apply(undefined, args as any);
 			} else {
-				// var _next = _prepare;
 				var _next = onceWrapper(_prepare);
+				// var _next = _prepare;
 
 				args[0] = _next;
 				args.length = args.length || 1;
