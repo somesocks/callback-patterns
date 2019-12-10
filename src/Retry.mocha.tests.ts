@@ -42,6 +42,102 @@ describe('Retry', () => {
 		setTimeout(done, 16);
 	});
 
+	it('retry works', (done) => {
+
+		let count = 0;
+
+		const task = Retry(
+			(next) => {
+				if (count < 5) {
+					count++;
+					throw new Error('foo');
+				} else {
+					next();
+				}
+			}
+		);
+
+		task(done);
+	});
+
+	it('retry works 2', (done) => {
+
+		let count = 0;
+
+		const task = Retry(
+			(next) => {
+				if (count < 5) {
+					count++;
+					throw new Error('foo');
+				} else {
+					next();
+				}
+			},
+			{
+				retries : 10,
+			}
+		);
+
+		task(done);
+	});
+
+	it('retry works with LinearRetryStrategy set', (done) => {
+
+		let count = 0;
+
+		const task = Retry(
+			(next) => {
+				if (count < 5) {
+					count++;
+					throw new Error('foo');
+				} else {
+					next();
+				}
+			},
+			Retry.LinearRetryStrategy()
+		);
+
+		task(done);
+	});
+
+	it('retry works with ExponentialRetryStrategy set', (done) => {
+
+		let count = 0;
+
+		const task = Retry(
+			(next) => {
+				if (count < 5) {
+					count++;
+					throw new Error('foo');
+				} else {
+					next();
+				}
+			},
+			Retry.ExponentialRetryStrategy()
+		);
+
+		task(done);
+	});
+
+	it('retry works with ManualRetryStrategy set', (done) => {
+
+		let count = 0;
+
+		const task = Retry(
+			(next) => {
+				if (count < 5) {
+					count++;
+					throw new Error('foo');
+				} else {
+					next();
+				}
+			},
+			Retry.ManualRetryStrategy(1, 1, 1, 100, 1000, 1000, 1000)
+		);
+
+		task(done);
+	});
+
 	it('catches errors', (done) => {
 		Retry(
 			(next) => { throw new Error('error'); }

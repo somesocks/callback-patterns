@@ -46,7 +46,7 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.PassThrough()](#callback-patterns.PassThrough)
     * [.Promisify(task)](#callback-patterns.Promisify) ⇒ <code>function</code>
     * [.Race(...tasks)](#callback-patterns.Race) ⇒ <code>CallbackTask</code>
-    * [.Retry(task, options)](#callback-patterns.Retry) ⇒ <code>CallbackTask</code>
+    * [.Retry(task, retryStrategy)](#callback-patterns.Retry) ⇒ <code>CallbackTask</code>
     * [.Throttle(task, limit)](#callback-patterns.Throttle) ⇒ <code>CallbackTask</code>
     * [.TimeIn(task, ms)](#callback-patterns.TimeIn) ⇒ <code>CallbackTask</code>
     * [.TimeOut(task, ms)](#callback-patterns.TimeOut) ⇒ <code>CallbackTask</code>
@@ -762,7 +762,7 @@ Race accepts a number of functions, and returns a task function that executes al
 
 <a name="callback-patterns.Retry"></a>
 
-### callback-patterns.Retry(task, options) ⇒ <code>CallbackTask</code>
+### callback-patterns.Retry(task, retryStrategy) ⇒ <code>CallbackTask</code>
 Wraps a task and attempts to retry if it throws an error, with an exponential backoff.
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
@@ -770,10 +770,30 @@ Wraps a task and attempts to retry if it throws an error, with an exponential ba
 **Params**
 
 - task <code>CallbackTask</code> - the task to wrap.
-- options <code>object</code> - an optional set of retry options.
-    - .timeout <code>object</code> - maximum time to attempt retries.
-    - .retries <code>object</code> - maximum number of retries to attempt.
+- retryStrategy <code>function</code> - an optional retry strategy.
 
+**Example**  
+```javascript
+  let Retry = require('callback-patterns/Retry');
+
+  let unstableTask = (next) => {
+    if (Math.random() > 0.9) { throw new Error(); }
+    else { next(); }
+  };
+
+  // attempt retries up to 10 times for up to 10000 ms ,
+  // with a constant retry delay of 100 ms between attempts
+  let stableTask = Retry(unstableTask, Retry.LinearRetryStrategy(100, 10, 10000));
+
+  // attempt retries up to 10 times for up to 10000 ms,
+  // with an exponential backoff retry delay of 100 ms, 200 ms, 400 ms, ...
+  let stableTask2 = Retry(unstableTask, Retry.ExponentialRetryStrategy(100, 10, 10000, 2));
+
+  // attempt retries up to 4 times,
+  // with retry delays of 100 ms, 100 ms, 100 ms, 1000ms
+  let stableTask3 = Retry(unstableTask, Retry.ManualRetryStrategy(100, 100, 100, 1000));
+
+```
 
 * * *
 

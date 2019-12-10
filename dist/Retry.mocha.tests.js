@@ -40,6 +40,73 @@ describe('Retry', function () {
         task();
         setTimeout(done, 16);
     });
+    it('retry works', function (done) {
+        var count = 0;
+        var task = Retry_1.default(function (next) {
+            if (count < 5) {
+                count++;
+                throw new Error('foo');
+            }
+            else {
+                next();
+            }
+        });
+        task(done);
+    });
+    it('retry works 2', function (done) {
+        var count = 0;
+        var task = Retry_1.default(function (next) {
+            if (count < 5) {
+                count++;
+                throw new Error('foo');
+            }
+            else {
+                next();
+            }
+        }, {
+            retries: 10,
+        });
+        task(done);
+    });
+    it('retry works with LinearRetryStrategy set', function (done) {
+        var count = 0;
+        var task = Retry_1.default(function (next) {
+            if (count < 5) {
+                count++;
+                throw new Error('foo');
+            }
+            else {
+                next();
+            }
+        }, Retry_1.default.LinearRetryStrategy());
+        task(done);
+    });
+    it('retry works with ExponentialRetryStrategy set', function (done) {
+        var count = 0;
+        var task = Retry_1.default(function (next) {
+            if (count < 5) {
+                count++;
+                throw new Error('foo');
+            }
+            else {
+                next();
+            }
+        }, Retry_1.default.ExponentialRetryStrategy());
+        task(done);
+    });
+    it('retry works with ManualRetryStrategy set', function (done) {
+        var count = 0;
+        var task = Retry_1.default(function (next) {
+            if (count < 5) {
+                count++;
+                throw new Error('foo');
+            }
+            else {
+                next();
+            }
+        }, Retry_1.default.ManualRetryStrategy(1, 1, 1, 100, 1000, 1000, 1000));
+        task(done);
+    });
     it('catches errors', function (done) {
         Retry_1.default(function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
     });
