@@ -763,7 +763,7 @@ Race accepts a number of functions, and returns a task function that executes al
 <a name="callback-patterns.Retry"></a>
 
 ### callback-patterns.Retry(task, retryStrategy) ⇒ <code>CallbackTask</code>
-Wraps a task and attempts to retry if it throws an error, with an exponential backoff.
+`Retry` eraps a task and attempts to retry if it throws an error, with different kinds of retry strategies (manual, linear or exponential backoff)
 
 **Kind**: static method of [<code>callback-patterns</code>](#callback-patterns)  
 **Returns**: <code>CallbackTask</code> - a task  

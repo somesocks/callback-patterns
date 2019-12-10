@@ -23,7 +23,9 @@ var DefaultDelayBuilder = function (options) {
     return delayFunc;
 };
 /**
-* Wraps a task and attempts to retry if it throws an error, with an exponential backoff.
+*
+* `Retry` eraps a task and attempts to retry if it throws an error, with different kinds of retry strategies (manual, linear or exponential backoff)
+*
 * @param {CallbackTask} task - the task to wrap.
 * @param {function} retryStrategy - an optional retry strategy.
 * @returns {CallbackTask} a task
