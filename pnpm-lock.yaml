@@ -4,9 +4,11 @@ dependencies:
 devDependencies:
   '@types/mocha': 5.2.7
   '@types/node': 12.12.12
+  '@types/ping': 0.2.0
   chai: 4.2.0
   jsdoc-to-markdown: 4.0.1
   mocha: 5.1.1
+  ping: 0.2.2
   typescript: 3.6.4
   vet: 2.5.1
 lockfileVersion: 5.1
@@ -19,6 +21,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-MGuvYJrPU0HUwqF7LqvIj50RZUX23Z+m583KBygKYUZLlZ88n6w28XRNJRJgsHukLEnLz6w6SvxZoLgbr5wLqQ==
+  /@types/ping/0.2.0:
+    dev: true
+    resolution:
+      integrity: sha512-4DnmDRxd3DyCc5+b26z85l0oeTiJwm9JXr30Em97M+BV5LL0GkRoTRVd3dtzwCznHZaEcCAaJH0eHtGMYmLMUg==
   /ansi-escape-sequences/4.1.0:
     dependencies:
       array-back: 3.1.0
@@ -515,6 +521,22 @@ packages:
     dev: true
     resolution:
       integrity: sha1-uULm1L3mUwBe9rcTYd74cn0GReA=
+  /ping/0.2.2:
+    dependencies:
+      q: 1.5.1
+      underscore: 1.9.1
+    dev: true
+    engines:
+      node: '>=0.8'
+    resolution:
+      integrity: sha1-GA+3UIwdx0eThJvONcgHP5llvOI=
+  /q/1.5.1:
+    dev: true
+    engines:
+      node: '>=0.6.0'
+      teleport: '>=0.2.0'
+    resolution:
+      integrity: sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
   /reduce-extract/1.0.0:
     dependencies:
       test-value: 1.1.0
@@ -688,6 +710,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-Tz+1OxBuYJf8+ctBCfKl6b36UCI=
+  /underscore/1.9.1:
+    dev: true
+    resolution:
+      integrity: sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
   /vet/2.5.1:
     dev: true
     resolution:
@@ -730,9 +756,11 @@ packages:
 specifiers:
   '@types/mocha': ^5.2.7
   '@types/node': ^12.12.12
+  '@types/ping': ^0.2.0
   chai: ^4.0.2
   jsdoc-to-markdown: ^4.0.1
   mocha: 5.1.1
+  ping: ^0.2.2
   setimmediate: 1.0.5
   tiny-lru: 7.0.2
   typescript: ^3.5.3

@@ -26,6 +26,18 @@ This makes it easier to compose callback-driven functions in useful ways, with a
 **Kind**: global namespace  
 
 * [callback-patterns](#callback-patterns) : <code>object</code>
+    * [.testing](#callback-patterns.testing) : <code>object</code>
+        * [.AssertionTest](#callback-patterns.testing.AssertionTest)
+            * [new AssertionTest()](#new_callback-patterns.testing.AssertionTest_new)
+            * [assertionTest.describe(description)](#callback-patterns.testing.AssertionTest+describe) ⇒ <code>AssertionTest</code>
+            * [assertionTest.setup(task)](#callback-patterns.testing.AssertionTest+setup) ⇒ <code>AssertionTest</code>
+            * [assertionTest.prepare(task)](#callback-patterns.testing.AssertionTest+prepare) ⇒ <code>AssertionTest</code>
+            * [assertionTest.execute(task)](#callback-patterns.testing.AssertionTest+execute) ⇒ <code>AssertionTest</code>
+            * [assertionTest.verify(...tasks)](#callback-patterns.testing.AssertionTest+verify) ⇒ <code>AssertionTest</code>
+            * [assertionTest.teardown(task)](#callback-patterns.testing.AssertionTest+teardown) ⇒ <code>AssertionTest</code>
+            * [assertionTest.build()](#callback-patterns.testing.AssertionTest+build) ⇒ <code>function</code>
+            * [AssertionTest.VerifyErrorWasNotThrown()](#callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown)
+            * [AssertionTest.VerifyErrorWasNotThrown()](#callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown)
     * [.unstable](#callback-patterns.unstable) : <code>object</code>
         * [.TraceError(task)](#callback-patterns.unstable.TraceError) ⇒ <code>CallbackTask</code>
     * [.Assert(validator, message)](#callback-patterns.Assert) ⇒ <code>CallbackTask</code>
@@ -53,6 +65,220 @@ This makes it easier to compose callback-driven functions in useful ways, with a
     * [.Timer(task, label)](#callback-patterns.Timer) ⇒ <code>CallbackTask</code>
     * [.While(conditionTask, loopTask)](#callback-patterns.While) ⇒ <code>function</code>
 
+
+* * *
+
+<a name="callback-patterns.testing"></a>
+
+### callback-patterns.testing : <code>object</code>
+**Kind**: static namespace of [<code>callback-patterns</code>](#callback-patterns)  
+
+* [.testing](#callback-patterns.testing) : <code>object</code>
+    * [.AssertionTest](#callback-patterns.testing.AssertionTest)
+        * [new AssertionTest()](#new_callback-patterns.testing.AssertionTest_new)
+        * [assertionTest.describe(description)](#callback-patterns.testing.AssertionTest+describe) ⇒ <code>AssertionTest</code>
+        * [assertionTest.setup(task)](#callback-patterns.testing.AssertionTest+setup) ⇒ <code>AssertionTest</code>
+        * [assertionTest.prepare(task)](#callback-patterns.testing.AssertionTest+prepare) ⇒ <code>AssertionTest</code>
+        * [assertionTest.execute(task)](#callback-patterns.testing.AssertionTest+execute) ⇒ <code>AssertionTest</code>
+        * [assertionTest.verify(...tasks)](#callback-patterns.testing.AssertionTest+verify) ⇒ <code>AssertionTest</code>
+        * [assertionTest.teardown(task)](#callback-patterns.testing.AssertionTest+teardown) ⇒ <code>AssertionTest</code>
+        * [assertionTest.build()](#callback-patterns.testing.AssertionTest+build) ⇒ <code>function</code>
+        * [AssertionTest.VerifyErrorWasNotThrown()](#callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown)
+        * [AssertionTest.VerifyErrorWasNotThrown()](#callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown)
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest"></a>
+
+#### testing.AssertionTest
+**Kind**: static class of [<code>testing</code>](#callback-patterns.testing)  
+
+* [.AssertionTest](#callback-patterns.testing.AssertionTest)
+    * [new AssertionTest()](#new_callback-patterns.testing.AssertionTest_new)
+    * [assertionTest.describe(description)](#callback-patterns.testing.AssertionTest+describe) ⇒ <code>AssertionTest</code>
+    * [assertionTest.setup(task)](#callback-patterns.testing.AssertionTest+setup) ⇒ <code>AssertionTest</code>
+    * [assertionTest.prepare(task)](#callback-patterns.testing.AssertionTest+prepare) ⇒ <code>AssertionTest</code>
+    * [assertionTest.execute(task)](#callback-patterns.testing.AssertionTest+execute) ⇒ <code>AssertionTest</code>
+    * [assertionTest.verify(...tasks)](#callback-patterns.testing.AssertionTest+verify) ⇒ <code>AssertionTest</code>
+    * [assertionTest.teardown(task)](#callback-patterns.testing.AssertionTest+teardown) ⇒ <code>AssertionTest</code>
+    * [assertionTest.build()](#callback-patterns.testing.AssertionTest+build) ⇒ <code>function</code>
+    * [AssertionTest.VerifyErrorWasNotThrown()](#callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown)
+    * [AssertionTest.VerifyErrorWasNotThrown()](#callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown)
+
+
+* * *
+
+<a name="new_callback-patterns.testing.AssertionTest_new"></a>
+
+##### new AssertionTest()
+```javascript
+
+const PingTest = AssertionTest()
+  .describe('can ping internet')
+  .setup(
+    // build our setup
+    (next) => {
+      const setup = {};
+      setup.testHosts = [ 'google.com', 'microsoft.com', 'yahoo.com' ];
+      next(null, setup);
+    }
+  )
+  .prepare(
+    // run test with first host
+    (next, setup) => {
+      const host = setup.testHosts[0];
+      next(null, host);
+    }
+  )
+  .execute(
+    (next, host) => ping.sys.probe(
+      host,
+      (isAlive, error) => next(error, isAlive)
+    )
+  )
+  .verify(
+    // verify no error was thrown
+    (next, { setup, request, result, error }) => next(error),
+    // verify result is true
+    (next, { setup, request, result, error }) => next(
+      result !== true ? new Error(`could not ping host ${request}`) : null
+    )
+  )
+  .teardown(
+    // nothing to teardown
+    (next, { setup, request, result, error }) => next()
+  )
+  .build();
+
+  test( () => console.log('test done') );
+
+```
+Constructor for an AssertionTest builder.
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest+describe"></a>
+
+##### assertionTest.describe(description) ⇒ <code>AssertionTest</code>
+`AssertionTest#describe` lets you set a description for a test case.
+This description is part of the label attached to the test case when built.
+
+**Kind**: instance method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+**Returns**: <code>AssertionTest</code> - this  
+**Params**
+
+- description <code>string</code> - a string label describing the test case
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest+setup"></a>
+
+##### assertionTest.setup(task) ⇒ <code>AssertionTest</code>
+`AssertionTest#setup` gives you a hook to build test fixtures before execution.
+This is the first step that runs in a test.
+`setup` is a separate step from `prepare` because you often want to use
+a common setup function to build test fixtures for multiple tests.
+
+**Kind**: instance method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+**Returns**: <code>AssertionTest</code> - this  
+**Params**
+
+- task <code>function</code> - a setup task function - should return a setup object
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest+prepare"></a>
+
+##### assertionTest.prepare(task) ⇒ <code>AssertionTest</code>
+`AssertionTest#prepare` gives you a hook to prepare the request that the test uses to execute.
+This is the second step that runs in a test, and the last step before `execute`.
+The `prepare` task is passed the results from `setup`.
+
+**Kind**: instance method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+**Returns**: <code>AssertionTest</code> - this  
+**Params**
+
+- task <code>function</code> - a prepare task function - should accept a context containing the setup, and return a request object to be given to the executing task
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest+execute"></a>
+
+##### assertionTest.execute(task) ⇒ <code>AssertionTest</code>
+`AssertionTest#execute` lets you specify the task that is executed in a test.
+The `execute` task is passed the results from `prepare`.
+
+**Kind**: instance method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+**Returns**: <code>AssertionTest</code> - this  
+**Params**
+
+- task <code>function</code> - the task the test should execute, and capture results and errors from
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest+verify"></a>
+
+##### assertionTest.verify(...tasks) ⇒ <code>AssertionTest</code>
+`AssertionTest#verify` lets you specify any number of tasks to verify the test results.
+Each `verify` task is passed a complete record of all test fixtures in an object,
+including the setup, the request, the result, and the error (if an error was thrown)
+
+**Kind**: instance method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+**Returns**: <code>AssertionTest</code> - this  
+**Params**
+
+- ...tasks <code>function</code> - any number of verification tasks
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest+teardown"></a>
+
+##### assertionTest.teardown(task) ⇒ <code>AssertionTest</code>
+`AssertionTest#teardown` gives you a hook to tear down the test fixtures after execution.
+The `teardown` task is passed a complete record of all test fixtures in an object,
+including the setup, the request, the result, and the error (if an error was thrown)
+
+**Kind**: instance method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+**Returns**: <code>AssertionTest</code> - this  
+**Params**
+
+- task <code>function</code> - a task to tear down the setup
+
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest+build"></a>
+
+##### assertionTest.build() ⇒ <code>function</code>
+Builds the test case function.
+
+**Kind**: instance method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+**Returns**: <code>function</code> - callback-expecting test function  
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown"></a>
+
+##### AssertionTest.VerifyErrorWasNotThrown()
+verifier function to make sure test DID NOT throw an error
+
+**Kind**: static method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
+
+* * *
+
+<a name="callback-patterns.testing.AssertionTest.VerifyErrorWasNotThrown"></a>
+
+##### AssertionTest.VerifyErrorWasNotThrown()
+verifier function to make sure test DID throw an error
+
+**Kind**: static method of [<code>AssertionTest</code>](#callback-patterns.testing.AssertionTest)  
 
 * * *
 

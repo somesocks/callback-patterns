@@ -1,6 +1,7 @@
 /** @namespace callback-patterns */
 
 import unstable from './unstable';
+// import testing from './testing';
 
 import Assert from './Assert';
 import Background from './Background';
@@ -29,6 +30,7 @@ import Retry from './Retry';
 export = {
 
 	unstable,
+	// testing,
 
 	Assert,
 	Background,
