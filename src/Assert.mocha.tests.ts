@@ -42,4 +42,25 @@ describe('Assert', () => {
 		LONG_CHAIN_PASSTHROUGH(done, 1, 2, 3, 4, 5, 6);
 	});
 
+	it(
+		're-throws error',
+		InSeries(
+			CatchError(
+				Assert(
+					() => false, // always fail,
+					() => {
+						const err : any = new Error('foo');
+						err.foo = true;
+						return err;
+					}
+				)
+			),
+			Assert(
+				(error) => error.foo === true,
+				'incorrect error re-thrown'
+			)
+		)
+	);
+
+
 });

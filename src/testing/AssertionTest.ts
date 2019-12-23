@@ -6,6 +6,8 @@ import InOrder from '../InOrder';
 import CatchError from '../CatchError';
 import PassThrough from '../PassThrough';
 
+import TraceError from '../unstable/TraceError';
+
 interface Callback {
 	(err ?: any | null | undefined, ...results : any[]) : void;
 }
@@ -370,6 +372,7 @@ AssertionTest.prototype.build = function build(this : any) {
 		_teardownWrapper,
 		_verifyWrapper
 	);
+	test = TraceError(test);
 
 	test.label = _label;
 
@@ -383,9 +386,7 @@ AssertionTest.prototype.build = function build(this : any) {
 */
 AssertionTest.VerifyErrorWasNotThrown = Assert(
 	function (context) { return context.error == null; },
-	function (context) {
-		return 'AssertionTest.VerifyErrorWasNotThrown: error was thrown ' + context.error.message
-	}
+	function (context) { return context.error; }
 );
 
 /**

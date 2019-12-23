@@ -49,9 +49,8 @@ function Assert(_1, _2 ?: any) : Task {
 		args[0] = undefined;
 
 		try {
-			err = validator.call.apply(validator, args) ?
-				undefined :
-				new Error(message.call.apply(message, args));
+			err = validator.call.apply(validator, args) ? undefined : message.call.apply(message, args);
+			err = (err == undefined || err instanceof Error) ? err : new Error(err);
 		} catch (e) {
 			err = e;
 		}

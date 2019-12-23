@@ -8,6 +8,7 @@ var InParallel_1 = __importDefault(require("../InParallel"));
 var InOrder_1 = __importDefault(require("../InOrder"));
 var CatchError_1 = __importDefault(require("../CatchError"));
 var PassThrough_1 = __importDefault(require("../PassThrough"));
+var TraceError_1 = __importDefault(require("../unstable/TraceError"));
 var DEFAULT_SETUP = function (next) {
     next();
 };
@@ -212,6 +213,7 @@ AssertionTest.prototype.build = function build() {
     var _verifyWrapper = InOrder_1.default.apply(null, _verify);
     var _teardownWrapper = InOrder_1.default(_teardown);
     var test = InSeries_1.default(_init, _setupWrapper, _prepareWrapper, _executeWrapper, _teardownWrapper, _verifyWrapper);
+    test = TraceError_1.default(test);
     test.label = _label;
     return test;
 };
@@ -220,9 +222,7 @@ AssertionTest.prototype.build = function build() {
 * @function VerifyErrorWasNotThrown
 * @memberof callback-patterns.testing.AssertionTest
 */
-AssertionTest.VerifyErrorWasNotThrown = Assert_1.default(function (context) { return context.error == null; }, function (context) {
-    return 'AssertionTest.VerifyErrorWasNotThrown: error was thrown ' + context.error.message;
-});
+AssertionTest.VerifyErrorWasNotThrown = Assert_1.default(function (context) { return context.error == null; }, function (context) { return context.error; });
 /**
 * verifier function to make sure test DID throw an error
 * @function VerifyErrorWasNotThrown

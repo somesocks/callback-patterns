@@ -9,6 +9,7 @@ var isBoolean_1 = __importDefault(require("vet/booleans/isBoolean"));
 // import isNumber from 'vet/numbers/isNumber';
 // import isShape from 'vet/objects/isShape';
 var Assert_1 = __importDefault(require("./Assert"));
+var CatchError_1 = __importDefault(require("./CatchError"));
 var InSeries_1 = __importDefault(require("./InSeries"));
 var PassThrough_1 = __importDefault(require("./PassThrough"));
 describe('Assert', function () {
@@ -21,4 +22,10 @@ describe('Assert', function () {
     it('Long Chain Performance (reference)', function (done) {
         LONG_CHAIN_PASSTHROUGH(done, 1, 2, 3, 4, 5, 6);
     });
+    it('re-throws error', InSeries_1.default(CatchError_1.default(Assert_1.default(function () { return false; }, // always fail,
+    function () {
+        var err = new Error('foo');
+        err.foo = true;
+        return err;
+    })), Assert_1.default(function (error) { return error.foo === true; }, 'incorrect error re-thrown')));
 });
