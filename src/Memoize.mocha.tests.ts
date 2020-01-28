@@ -116,6 +116,30 @@ describe('Memoize', () => {
 		test(done);
 	});
 
+	it('memoize with LRU cache ttl works', (done) => {
+		var counter = 0;
+		var task = (next) => next(null, ++counter);
+		task = Memoize(task, undefined, new Memoize.LRUCache(100, 50));
+
+		var test = InSeries(
+			(next) => task(next),
+			(next) => task(next),
+			(next) => task(next),
+			Delay(200),
+			(next) => task(next),
+			Assert(
+				(val) => val === 2,
+				(val) => `expected val to be 2, got ${val}`
+			),
+			Assert(
+				() => counter === 2,
+				() => `expected counter to be 2, got ${counter}`
+			)
+		);
+
+		test(done);
+	});
+
 	it('memoize speeds up task', (done) => {
 		var slowTask = InSeries(
 			PassThrough,

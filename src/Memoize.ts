@@ -52,7 +52,9 @@ function LRUCache(this : any, size : number, ttl : number = 0) : void {
 }
 
 LRUCache.prototype.has = function has(key : string) {
-	return this._cache.has(key);
+	return this._cache.get(key) != null;
+	// tiny-lru doesn't check for expiration in `has`
+	// return this._cache.has(key);
 };
 
 LRUCache.prototype.get = function get(key : string) {

@@ -56,6 +56,13 @@ describe('Memoize', function () {
         var test = InSeries_1.default(function (next) { return task(next); }, function (next) { return task(next); }, function (next) { return task(next); }, Assert_1.default(function (val) { return val === 1; }, function (val) { return "expected val to be 1, got " + val; }), Assert_1.default(function () { return counter === 1; }, function () { return "expected counter to be 1, got " + counter; }));
         test(done);
     });
+    it('memoize with LRU cache ttl works', function (done) {
+        var counter = 0;
+        var task = function (next) { return next(null, ++counter); };
+        task = Memoize_1.default(task, undefined, new Memoize_1.default.LRUCache(100, 50));
+        var test = InSeries_1.default(function (next) { return task(next); }, function (next) { return task(next); }, function (next) { return task(next); }, Delay_1.default(200), function (next) { return task(next); }, Assert_1.default(function (val) { return val === 2; }, function (val) { return "expected val to be 2, got " + val; }), Assert_1.default(function () { return counter === 2; }, function () { return "expected counter to be 2, got " + counter; }));
+        test(done);
+    });
     it('memoize speeds up task', function (done) {
         var slowTask = InSeries_1.default(PassThrough_1.default, Delay_1.default(1000));
         var fastTask = Memoize_1.default(slowTask);
