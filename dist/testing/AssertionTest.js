@@ -202,17 +202,18 @@ AssertionTest.prototype.build = function build() {
         context.request = request;
         next(null, context);
     });
-    var _executeWrapper = CatchError_1.default(InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, function (next, context) { _execute(next, context.request); }), function (next, context, result) {
+    var _executeWrapper = InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, function (next, context) { _execute(next, context.request); }), function (next, context, result) {
         context.result = result;
-        next();
-    }));
-    _executeWrapper = InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, _executeWrapper), function (next, context, error) {
-        context.error = error;
         next(null, context);
     });
     var _verifyWrapper = InOrder_1.default.apply(null, _verify);
     var _teardownWrapper = InOrder_1.default(_teardown);
-    var test = InSeries_1.default(_init, _setupWrapper, _prepareWrapper, _executeWrapper, _teardownWrapper, _verifyWrapper);
+    var _testCore = InSeries_1.default(_setupWrapper, _prepareWrapper, _executeWrapper, function (next) { next(); });
+    _testCore = InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, CatchError_1.default(_testCore)), function (next, context, error) {
+        context.error = error;
+        next(null, context);
+    });
+    var test = InSeries_1.default(_init, _testCore, _verifyWrapper, _teardownWrapper);
     test = TraceError_1.default(test);
     test.label = _label;
     return test;

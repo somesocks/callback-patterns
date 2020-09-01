@@ -21,6 +21,103 @@ const SetupTest = AssertionTest()
 	)
 	.build();
 
+const SetupErrorTest = AssertionTest()
+	.describe('error in setup is caught')
+	.setup(
+		(next) => next(new Error('foo'))
+	)
+	.verify(
+		(next, context) => next(
+      context.error && context.error.message === 'foo' ? null : new Error('bad setup')
+    )
+	)
+	.build();
+
+const SetupErrorTest2 = AssertionTest()
+	.describe('(thrown) error in setup is caught')
+	.setup(
+    (next) => next(new Error('foo'))
+	)
+	.verify(
+		(next, context) => next(
+      context.error && context.error.message === 'foo' ? null : new Error('bad setup')
+    )
+	)
+	.build();
+
+
+const PrepareErrorTest = AssertionTest()
+	.describe('error in prepare is caught')
+	.setup(
+		(next) => next(null, { val: 1 })
+	)
+	.prepare(
+    (next) => next(new Error('foo'))
+	)
+	.execute(
+		(next, request) => next(null, request + 1)
+	)
+	.verify(
+    (next, context) => next(
+      context.error && context.error.message === 'foo' ? null : new Error('bad setup')
+    )
+	)
+	.build();
+
+const PrepareErrorTest2 = AssertionTest()
+	.describe('(thrown) error in prepare is caught')
+	.setup(
+		(next) => next(null, { val: 1 })
+	)
+	.prepare(
+    (next) => { throw new Error('foo'); }
+	)
+	.execute(
+		(next, request) => next(null, request + 1)
+	)
+	.verify(
+    (next, context) => next(
+      context.error && context.error.message === 'foo' ? null : new Error('bad setup')
+    )
+	)
+	.build();
+
+const ExecuteErrorTest = AssertionTest()
+	.describe('error in execute is caught')
+	.setup(
+		(next) => next(null, { val: 1 })
+	)
+	.prepare(
+    (next, setup) => next(null, setup.val)
+	)
+	.execute(
+    (next) => next(new Error('foo'))
+  )
+	.verify(
+    (next, context) => next(
+      context.error && context.error.message === 'foo' ? null : new Error('bad setup')
+    )
+	)
+	.build();
+
+const ExecuteErrorTest2 = AssertionTest()
+	.describe('(thrown) error in execute is caught')
+	.setup(
+		(next) => next(null, { val: 1 })
+	)
+	.prepare(
+    (next, setup) => next(null, setup.val)
+	)
+	.execute(
+    (next) => { throw new Error('foo'); }
+  )
+	.verify(
+    (next, context) => next(
+      context.error && context.error.message === 'foo' ? null : new Error('bad setup')
+    )
+	)
+	.build();
+
 const SampleTest = AssertionTest()
 	.describe('sample test 1')
 	.setup(
@@ -93,6 +190,12 @@ const PingTest = AssertionTest()
 const TESTS = [
 	EmptyTest,
 	SetupTest,
+  SetupErrorTest,
+  SetupErrorTest2,
+  PrepareErrorTest,
+  PrepareErrorTest2,
+  ExecuteErrorTest,
+  ExecuteErrorTest2,
 	SampleTest,
 	PingTest,
 ];

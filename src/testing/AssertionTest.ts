@@ -5,6 +5,7 @@ import InParallel from '../InParallel';
 import InOrder from '../InOrder';
 import CatchError from '../CatchError';
 import PassThrough from '../PassThrough';
+import Logging from '../Logging';
 
 import TraceError from '../unstable/TraceError';
 
@@ -319,7 +320,7 @@ AssertionTest.prototype.build = function build(this : any) {
 		),
 		function (next, context, setup) {
 			context.setup = setup;
-			next(null, context);
+      next(null, context);
 		}
 	);
 
@@ -331,31 +332,18 @@ AssertionTest.prototype.build = function build(this : any) {
 		),
 		function (next, context, request) {
 			context.request = request;
-			next(null, context);
+      next(null, context);
 		}
 	);
 
 
-	var _executeWrapper = CatchError(
-		InSeries(
-			InParallel.Flatten(
-				PassThrough,
-				function (next, context) { _execute(next, context.request); }
-			),
-			function (next, context, result) {
-				context.result = result;
-				next();
-			}
-		)
-	);
-
-	_executeWrapper = InSeries(
+	var _executeWrapper = InSeries(
 		InParallel.Flatten(
 			PassThrough,
-			_executeWrapper
+			function (next, context) { _execute(next, context.request); }
 		),
-		function (next, context, error) {
-			context.error = error;
+		function (next, context, result) {
+			context.result = result;
 			next(null, context);
 		}
 	);
@@ -364,14 +352,31 @@ AssertionTest.prototype.build = function build(this : any) {
 
 	var _teardownWrapper = InOrder(_teardown);
 
+  var _testCore = InSeries(
+    _setupWrapper,
+    _prepareWrapper,
+    _executeWrapper,
+    function (next) { next(); },
+  );
+
+  _testCore = InSeries(
+    InParallel.Flatten(
+      PassThrough,
+      CatchError(_testCore)
+    ),
+    function (next, context, error) {
+      context.error = error;
+      next(null, context);
+    },
+  );
+
 	var test : CallbackTask = InSeries(
-		_init,
-		_setupWrapper,
-		_prepareWrapper,
-		_executeWrapper,
-		_teardownWrapper,
-		_verifyWrapper
-	);
+    _init,
+    _testCore,
+    _verifyWrapper,
+    _teardownWrapper,
+  );
+
 	test = TraceError(test);
 
 	test.label = _label;

@@ -15,6 +15,44 @@ var SetupTest = AssertionTest_1.default()
     .setup(function (next) { return next(null, 'setup'); })
     .verify(function (next, context) { return next(context.setup === 'setup' ? null : new Error('bad setup')); })
     .build();
+var SetupErrorTest = AssertionTest_1.default()
+    .describe('error in setup is caught')
+    .setup(function (next) { return next(new Error('foo')); })
+    .verify(function (next, context) { return next(context.error && context.error.message === 'foo' ? null : new Error('bad setup')); })
+    .build();
+var SetupErrorTest2 = AssertionTest_1.default()
+    .describe('(thrown) error in setup is caught')
+    .setup(function (next) { return next(new Error('foo')); })
+    .verify(function (next, context) { return next(context.error && context.error.message === 'foo' ? null : new Error('bad setup')); })
+    .build();
+var PrepareErrorTest = AssertionTest_1.default()
+    .describe('error in prepare is caught')
+    .setup(function (next) { return next(null, { val: 1 }); })
+    .prepare(function (next) { return next(new Error('foo')); })
+    .execute(function (next, request) { return next(null, request + 1); })
+    .verify(function (next, context) { return next(context.error && context.error.message === 'foo' ? null : new Error('bad setup')); })
+    .build();
+var PrepareErrorTest2 = AssertionTest_1.default()
+    .describe('(thrown) error in prepare is caught')
+    .setup(function (next) { return next(null, { val: 1 }); })
+    .prepare(function (next) { throw new Error('foo'); })
+    .execute(function (next, request) { return next(null, request + 1); })
+    .verify(function (next, context) { return next(context.error && context.error.message === 'foo' ? null : new Error('bad setup')); })
+    .build();
+var ExecuteErrorTest = AssertionTest_1.default()
+    .describe('error in execute is caught')
+    .setup(function (next) { return next(null, { val: 1 }); })
+    .prepare(function (next, setup) { return next(null, setup.val); })
+    .execute(function (next) { return next(new Error('foo')); })
+    .verify(function (next, context) { return next(context.error && context.error.message === 'foo' ? null : new Error('bad setup')); })
+    .build();
+var ExecuteErrorTest2 = AssertionTest_1.default()
+    .describe('(thrown) error in execute is caught')
+    .setup(function (next) { return next(null, { val: 1 }); })
+    .prepare(function (next, setup) { return next(null, setup.val); })
+    .execute(function (next) { throw new Error('foo'); })
+    .verify(function (next, context) { return next(context.error && context.error.message === 'foo' ? null : new Error('bad setup')); })
+    .build();
 var SampleTest = AssertionTest_1.default()
     .describe('sample test 1')
     .setup(function (next) { return next(null, { val: 1 }); })
@@ -58,6 +96,12 @@ function (next) { return next(); })
 var TESTS = [
     EmptyTest,
     SetupTest,
+    SetupErrorTest,
+    SetupErrorTest2,
+    PrepareErrorTest,
+    PrepareErrorTest2,
+    ExecuteErrorTest,
+    ExecuteErrorTest2,
     SampleTest,
     PingTest,
 ];
