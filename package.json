@@ -25,12 +25,12 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.12.12",
-		"@types/ping": "^0.2.0",
+    "@types/ping": "^0.2.0",
     "chai": "^4.0.2",
     "jsdoc-to-markdown": "^4.0.1",
     "mocha": "5.1.1",
-		"ping": "^0.2.2",
-    "typescript": "^3.5.3",
+    "ping": "^0.2.2",
+    "typescript": "4.0.2",
     "vet": "2.5.1"
   }
 }
