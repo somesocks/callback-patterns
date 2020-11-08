@@ -1,5 +1,5 @@
 import Task from './types/Task';
-declare type _MemoizeCache = {
+declare type TMemoizeCache = {
     has: (key: string) => boolean;
     get: (key: string) => any;
     set: (key: string, val: any) => void;
@@ -50,9 +50,21 @@ declare type _MemoizeCache = {
 *   test(null, 1); // task is only called once, even though memoizedTask is called three times
 * ```
 */
-declare function Memoize(task?: Task, keyFunction?: (...args: any[]) => string, cache?: _MemoizeCache): Task;
+declare function Memoize(task?: Task, keyFunction?: (...args: any[]) => string, cache?: TMemoizeCache): Task;
 declare namespace Memoize {
-    var ObjectCache: (this: any) => void;
-    var LRUCache: (this: any, size: number, ttl?: number) => void;
+    var ObjectCache: (this: any) => TMemoizeCache;
+    var LRUCache: (this: any, size: number, ttl?: number) => TMemoizeCache;
+    var SWR: typeof SWRMemoize;
+}
+declare type TKeyFunction = (...args: any[]) => string;
+declare type TSWRMemoizeOptions = {
+    keyFunction?: TKeyFunction;
+    staleCache?: TMemoizeCache;
+    refreshCache?: TMemoizeCache;
+};
+declare function SWRMemoize(task?: Task, options?: TSWRMemoizeOptions): Task;
+declare namespace SWRMemoize {
+    var ObjectCache: (this: any) => TMemoizeCache;
+    var LRUCache: (this: any, size: number, ttl?: number) => TMemoizeCache;
 }
 export = Memoize;

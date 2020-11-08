@@ -36,11 +36,11 @@ describe('Memoize', () => {
 
 
 	it('memoize works', (done) => {
-		var counter = 0;
-		var task = (next) => next(null, ++counter);
+		let counter = 0;
+		let task = (next) => next(null, ++counter);
 		task = Memoize(task);
 
-		var test = InSeries(
+		let test = InSeries(
 			(next) => task(next),
 			(next) => task(next),
 			(next) => task(next),
@@ -58,16 +58,16 @@ describe('Memoize', () => {
 	});
 
 	it('memoize joins requests correctly', (done) => {
-		var counter = 0;
+		let counter = 0;
 
-		var task = InSeries(
+		let task = InSeries(
 			Delay(1000),
 			(next) => next(null, ++counter)
 		);
 
-		task = Memoize(task, undefined, new Memoize.LRUCache(100));
+		task = Memoize(task, undefined, Memoize.LRUCache(100));
 
-		var test = InSeries(
+		let test = InSeries(
 			InParallel.Flatten(
 				(next) => task(next),
 				(next) => task(next),
@@ -95,11 +95,11 @@ describe('Memoize', () => {
 	});
 
 	it('memoize with LRU cache works', (done) => {
-		var counter = 0;
-		var task = (next) => next(null, ++counter);
-		task = Memoize(task, undefined, new Memoize.LRUCache(100));
+		let counter = 0;
+		let task = (next) => next(null, ++counter);
+		task = Memoize(task, undefined, Memoize.LRUCache(100));
 
-		var test = InSeries(
+		let test = InSeries(
 			(next) => task(next),
 			(next) => task(next),
 			(next) => task(next),
@@ -117,11 +117,11 @@ describe('Memoize', () => {
 	});
 
 	it('memoize with LRU cache ttl works', (done) => {
-		var counter = 0;
-		var task = (next) => next(null, ++counter);
-		task = Memoize(task, undefined, new Memoize.LRUCache(100, 50));
+		let counter = 0;
+		let task = (next) => next(null, ++counter);
+		task = Memoize(task, undefined, Memoize.LRUCache(100, 50));
 
-		var test = InSeries(
+		let test = InSeries(
 			(next) => task(next),
 			(next) => task(next),
 			(next) => task(next),
@@ -141,17 +141,17 @@ describe('Memoize', () => {
 	});
 
 	it('memoize speeds up task', (done) => {
-		var slowTask = InSeries(
+		let slowTask = InSeries(
 			PassThrough,
 			Delay(1000)
 		);
 
-		var fastTask = Memoize(slowTask);
+		let fastTask = Memoize(slowTask);
 
-		var start;
-		var finish;
+		let start;
+		let finish;
 
-		var test = InSeries(
+		let test = InSeries(
 			(next) => { start = Date.now(); next(); },
 			(next) => fastTask(next),
 			(next) => fastTask(next),

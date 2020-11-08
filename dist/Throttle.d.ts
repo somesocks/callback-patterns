@@ -9,6 +9,6 @@ import Task from './types/Task';
 */
 declare function Throttle(_1?: Task, _2?: number): Task;
 declare namespace Throttle {
-    var Queue: (this: any) => any;
+    var Queue: typeof import("./_queue");
 }
 export = Throttle;

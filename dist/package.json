@@ -1,6 +1,6 @@
 {
   "name": "callback-patterns",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "description": "A collection of design patterns for callback-driven async code",
   "main": "./index.js",
   "scripts": {},
@@ -24,13 +24,15 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.12",
-		"@types/ping": "^0.2.0",
+    "@types/node": "^14.14.6",
+    "@typescript-eslint/eslint-plugin": "4.1.0",
+    "@typescript-eslint/parser": "4.1.0",
     "chai": "^4.0.2",
+    "eslint": "7.9.0",
     "jsdoc-to-markdown": "^4.0.1",
     "mocha": "5.1.1",
-		"ping": "^0.2.2",
-    "typescript": "^3.5.3",
+    "ping": "^0.2.2",
+    "typescript": "4.0.3",
     "vet": "2.5.1"
   }
 }

@@ -13,9 +13,10 @@ var DEFAULT_KEY_FUNCTION = function () {
     return JSON.stringify(args);
 };
 function ObjectCache() {
-    this._cache = {};
+    var self = this instanceof ObjectCache ? this : Object.create(ObjectCache.prototype);
+    self._cache = {};
+    return self;
 }
-;
 ObjectCache.prototype.has = function has(key) {
     return this._cache.hasOwnProperty(key);
 };
@@ -31,7 +32,9 @@ ObjectCache.prototype.del = function del(key) {
 };
 function LRUCache(size, ttl) {
     if (ttl === void 0) { ttl = 0; }
-    this._cache = tiny_lru_1.default(size, ttl);
+    var self = this instanceof ObjectCache ? this : Object.create(LRUCache.prototype);
+    self._cache = tiny_lru_1.default(size, ttl);
+    return self;
 }
 LRUCache.prototype.has = function has(key) {
     return this._cache.get(key) != null;
@@ -97,8 +100,8 @@ function Memoize(task, keyFunction, cache) {
     var _task = task != null ? _catchWrapper_1.default(task) : PassThrough_1.default;
     _task = Joinable_1.default(_task);
     var _keyFunction = keyFunction || DEFAULT_KEY_FUNCTION;
-    var _cache = cache || new ObjectCache();
-    return function _memoizeInstance(_1) {
+    var _cache = cache || ObjectCache();
+    var res = function _memoizeInstance(_1) {
         var next = _onceWrapper_1.default(_1 || _nullCallback_1.default);
         var args = arguments;
         args[0] = undefined;
@@ -114,7 +117,54 @@ function Memoize(task, keyFunction, cache) {
             _cache.set(key, joinable);
         }
     };
+    res._keyFunction = _keyFunction;
+    res._cache = _cache;
+    return res;
 }
 Memoize.ObjectCache = ObjectCache;
 Memoize.LRUCache = LRUCache;
+function SWRMemoize(task, options) {
+    var _task = task != null ? _catchWrapper_1.default(task) : PassThrough_1.default;
+    _task = Joinable_1.default(_task);
+    var keyFunction = (options === null || options === void 0 ? void 0 : options.keyFunction) || DEFAULT_KEY_FUNCTION;
+    var staleCache = (options === null || options === void 0 ? void 0 : options.staleCache) || ObjectCache();
+    var refreshCache = (options === null || options === void 0 ? void 0 : options.refreshCache) || LRUCache(999999999, 0);
+    var res = function _SWRMemoizeInstance(_1) {
+        var next = _onceWrapper_1.default(_1 || _nullCallback_1.default);
+        var args = arguments;
+        args[0] = undefined;
+        var key = keyFunction.call.apply(keyFunction, args);
+        // console.log('_SWRMemoizeInstance state', key, refreshCache.has(key), staleCache.has(key));
+        var staleJoinable = staleCache.get(key);
+        var refreshJoinable;
+        if (refreshCache.has(key)) {
+            refreshJoinable = refreshCache.get(key);
+        }
+        else {
+            args[0] = next; // setting the first arg back to the initial callback
+            args.length = args.length || 1;
+            refreshJoinable = _task.apply(undefined, args);
+            refreshCache.set(key, refreshJoinable);
+            refreshJoinable.join(function () {
+                if (staleCache.get(key) === staleJoinable) {
+                    // console.log('refreshing stale cache');
+                    staleCache.set(key, refreshJoinable);
+                }
+                if (refreshCache.get(key) === refreshJoinable) {
+                    // console.log('clearing refresh cache');
+                    refreshCache.del(key);
+                }
+            });
+        }
+        // console.log('_SWRMemoizeInstance 2', key, refreshCache.has(key), staleCache.has(key));
+        (staleJoinable || refreshJoinable).join(next);
+    };
+    res._keyFunction = keyFunction;
+    res._staleCache = staleCache;
+    res._refreshCache = refreshCache;
+    return res;
+}
+SWRMemoize.ObjectCache = ObjectCache;
+SWRMemoize.LRUCache = LRUCache;
+Memoize.SWR = SWRMemoize;
 module.exports = Memoize;
