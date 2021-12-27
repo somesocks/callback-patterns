@@ -9,34 +9,25 @@ import Logging from '../Logging';
 
 import TraceError from '../unstable/TraceError';
 
-interface Callback {
-	(err ?: any | null | undefined, ...results : any[]) : void;
-}
+import { TCallbackTask } from '../types';
 
-interface CallbackTask {
-	(next : Callback, ...args : any[]) : void;
-
-	label ?: string;
-
-}
-
-const DEFAULT_SETUP : CallbackTask = function (next) {
+const DEFAULT_SETUP : TCallbackTask = function (next) {
 	next();
 };
 
-const DEFAULT_PREPARE : CallbackTask = function (next) {
+const DEFAULT_PREPARE : TCallbackTask = function (next) {
 	next();
 };
 
-const DEFAULT_EXECUTE : CallbackTask = function (next) {
+const DEFAULT_EXECUTE : TCallbackTask = function (next) {
 	next();
 };
 
-const DEFAULT_VERIFY : CallbackTask = function (next, context) {
+const DEFAULT_VERIFY : TCallbackTask = function (next, context) {
 	next(context.error);
 };
 
-const DEFAULT_TEARDOWN : CallbackTask = function (next) {
+const DEFAULT_TEARDOWN : TCallbackTask = function (next) {
 	next();
 };
 
@@ -66,7 +57,7 @@ interface IAssertionTest {
 	* @returns {AssertionTest} this
 	* @memberof callback-patterns.testing.AssertionTest#
 	*/
-	setup(setupTask : CallbackTask) : IAssertionTest;
+	setup(setupTask : TCallbackTask) : IAssertionTest;
 
 	/**
 	*
@@ -79,7 +70,7 @@ interface IAssertionTest {
 	* @returns {AssertionTest} this
 	* @memberof callback-patterns.testing.AssertionTest#
 	*/
-	prepare(prepareTask : CallbackTask) : IAssertionTest;
+	prepare(prepareTask : TCallbackTask) : IAssertionTest;
 
 	/**
 	*
@@ -91,7 +82,7 @@ interface IAssertionTest {
 	* @returns {AssertionTest} this
 	* @memberof callback-patterns.testing.AssertionTest#
 	*/
-	execute(executeTask : CallbackTask) : IAssertionTest;
+	execute(executeTask : TCallbackTask) : IAssertionTest;
 
 	/**
 	*
@@ -104,7 +95,7 @@ interface IAssertionTest {
 	* @returns {AssertionTest} this
 	* @memberof callback-patterns.testing.AssertionTest#
 	*/
-	verify(...verifyTasks : CallbackTask[]) : IAssertionTest;
+	verify(...verifyTasks : TCallbackTask[]) : IAssertionTest;
 
 	/**
 	*
@@ -117,7 +108,7 @@ interface IAssertionTest {
 	* @returns {AssertionTest} this
 	* @memberof callback-patterns.testing.AssertionTest#
 	*/
-	teardown(teardownTask: CallbackTask) : IAssertionTest;
+	teardown(teardownTask: TCallbackTask) : IAssertionTest;
 
 	/**
 	*
@@ -127,7 +118,9 @@ interface IAssertionTest {
 	* @returns {function} callback-expecting test function
 	* @memberof callback-patterns.testing.AssertionTest#
 	*/
-	build() : CallbackTask;
+	build() : TCallbackTask<{
+		label : string;
+	}>;
 
 }
 
@@ -307,9 +300,9 @@ AssertionTest.prototype.build = function build(this : any) {
 	var _execute = this._execute;
 	var _verify = this._verify;
 	var _teardown = this._teardown;
-	var _label = this._description;
+	var _label = this._description as string;
 
-	var _init : CallbackTask = function (next, context) {
+	var _init : TCallbackTask = function (next, context) {
 		next(null, context || {});
 	};
 
@@ -370,14 +363,20 @@ AssertionTest.prototype.build = function build(this : any) {
     },
   );
 
-	var test : CallbackTask = InSeries(
+	var test : TCallbackTask<{
+		label : string;
+	}> = InSeries(
     _init,
     _testCore,
     _verifyWrapper,
     _teardownWrapper,
-  );
+  ) as TCallbackTask<{
+		label : string;
+	}>;
 
-	test = TraceError(test);
+	test = TraceError(test) as TCallbackTask<{
+		label : string;
+	}>;
 
 	test.label = _label;
 

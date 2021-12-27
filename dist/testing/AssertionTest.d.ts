@@ -1,10 +1,4 @@
-interface Callback {
-    (err?: any | null | undefined, ...results: any[]): void;
-}
-interface CallbackTask {
-    (next: Callback, ...args: any[]): void;
-    label?: string;
-}
+import { TCallbackTask } from '../types';
 interface IAssertionTest {
     /**
     *
@@ -29,7 +23,7 @@ interface IAssertionTest {
     * @returns {AssertionTest} this
     * @memberof callback-patterns.testing.AssertionTest#
     */
-    setup(setupTask: CallbackTask): IAssertionTest;
+    setup(setupTask: TCallbackTask): IAssertionTest;
     /**
     *
     * `AssertionTest#prepare` gives you a hook to prepare the request that the test uses to execute.
@@ -41,7 +35,7 @@ interface IAssertionTest {
     * @returns {AssertionTest} this
     * @memberof callback-patterns.testing.AssertionTest#
     */
-    prepare(prepareTask: CallbackTask): IAssertionTest;
+    prepare(prepareTask: TCallbackTask): IAssertionTest;
     /**
     *
     * `AssertionTest#execute` lets you specify the task that is executed in a test.
@@ -52,7 +46,7 @@ interface IAssertionTest {
     * @returns {AssertionTest} this
     * @memberof callback-patterns.testing.AssertionTest#
     */
-    execute(executeTask: CallbackTask): IAssertionTest;
+    execute(executeTask: TCallbackTask): IAssertionTest;
     /**
     *
     * `AssertionTest#verify` lets you specify any number of tasks to verify the test results.
@@ -64,7 +58,7 @@ interface IAssertionTest {
     * @returns {AssertionTest} this
     * @memberof callback-patterns.testing.AssertionTest#
     */
-    verify(...verifyTasks: CallbackTask[]): IAssertionTest;
+    verify(...verifyTasks: TCallbackTask[]): IAssertionTest;
     /**
     *
     * `AssertionTest#teardown` gives you a hook to tear down the test fixtures after execution.
@@ -76,7 +70,7 @@ interface IAssertionTest {
     * @returns {AssertionTest} this
     * @memberof callback-patterns.testing.AssertionTest#
     */
-    teardown(teardownTask: CallbackTask): IAssertionTest;
+    teardown(teardownTask: TCallbackTask): IAssertionTest;
     /**
     *
     * Builds the test case function.
@@ -85,7 +79,9 @@ interface IAssertionTest {
     * @returns {function} callback-expecting test function
     * @memberof callback-patterns.testing.AssertionTest#
     */
-    build(): CallbackTask;
+    build(): TCallbackTask<{
+        label: string;
+    }>;
 }
 /**
 *
