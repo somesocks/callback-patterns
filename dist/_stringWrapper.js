@@ -7,10 +7,10 @@ var _isFunction_1 = __importDefault(require("./_isFunction"));
 function emptyStringWrapper() { return ''; }
 function stringWrapper(_1) {
     var log = _1;
-    if (_isFunction_1.default(log)) {
+    if ((0, _isFunction_1.default)(log)) {
         return log;
     }
-    else if (_isString_1.default(log)) {
+    else if ((0, _isString_1.default)(log)) {
         return function _stringWrapperInstance() { return log; };
     }
     else {

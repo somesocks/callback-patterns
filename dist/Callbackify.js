@@ -33,7 +33,7 @@ function Callbackify(promiseGenerator) {
         return PassThrough_1.default;
     }
     var _callbackifyInstance = function _callbackifyInstance(_1) {
-        var next = _onceWrapper_1.default(_1);
+        var next = (0, _onceWrapper_1.default)(_1);
         var args = arguments;
         args.length--;
         for (var i = 0; i < args.length; i++) {
@@ -47,6 +47,6 @@ function Callbackify(promiseGenerator) {
         return promise
             .then(resolve, reject);
     };
-    return _catchWrapper_1.default(_callbackifyInstance);
+    return (0, _catchWrapper_1.default)(_callbackifyInstance);
 }
 module.exports = Callbackify;

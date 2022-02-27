@@ -34,7 +34,7 @@ function _error(next) {
 function TimeOut(_1, _2) {
     var task = _1 || PassThrough_1.default;
     var ms = _2 || 1000;
-    var timeout = InSeries_1.default(Delay_1.default(ms), _error);
-    return Race_1.default(timeout, task);
+    var timeout = (0, InSeries_1.default)((0, Delay_1.default)(ms), _error);
+    return (0, Race_1.default)(timeout, task);
 }
 module.exports = TimeOut;

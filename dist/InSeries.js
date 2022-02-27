@@ -74,12 +74,12 @@ var InSeries = function InSeries() {
                 next.apply(undefined, arguments);
             }
             else {
-                var _next = _onceWrapper_1.default(_prepare);
+                var _next = (0, _onceWrapper_1.default)(_prepare);
                 // var _next = _prepare;
                 arguments[0] = _next;
                 arguments.length = arguments.length || 1;
                 args = arguments;
-                _defer_1.default(_execute);
+                (0, _defer_1.default)(_execute);
             }
         };
         arguments[0] = undefined;

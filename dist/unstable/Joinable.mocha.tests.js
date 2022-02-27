@@ -23,35 +23,35 @@ describe('Joinable', function () {
         }
     });
     it('Joinable works 1', function (done) {
-        var task = Joinable_1.default(function (next) { return next(null, 1); });
+        var task = (0, Joinable_1.default)(function (next) { return next(null, 1); });
         var record = task(function () { });
-        var verify = InSeries_1.default(function (next) { return record.join(next); }, Assert_1.default(function (val) { return val === 1; }));
+        var verify = (0, InSeries_1.default)(function (next) { return record.join(next); }, (0, Assert_1.default)(function (val) { return val === 1; }));
         verify(done);
     });
     it('Joinable works 2', function (done) {
-        var task = Joinable_1.default(function (next) { return next(null, 1); });
+        var task = (0, Joinable_1.default)(function (next) { return next(null, 1); });
         var record = task(function () { });
-        var verify = InSeries_1.default(InParallel_1.default.Flatten(function (next) { return record.join(next); }, function (next) { return record.join(next); }, function (next) { return record.join(next); }), 
+        var verify = (0, InSeries_1.default)(InParallel_1.default.Flatten(function (next) { return record.join(next); }, function (next) { return record.join(next); }, function (next) { return record.join(next); }), 
         // Logging((...args) => args),
-        Assert_1.default(function () {
+        (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
             return args.length === 3;
-        }), Assert_1.default(function () {
+        }), (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
             return args[0] === 1;
-        }), Assert_1.default(function () {
+        }), (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
             return args[1] === 1;
-        }), Assert_1.default(function () {
+        }), (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
@@ -61,29 +61,29 @@ describe('Joinable', function () {
         verify(done);
     });
     it('Joinable handles errors', function (done) {
-        var task = Joinable_1.default(function (next) { return next('error!'); });
+        var task = (0, Joinable_1.default)(function (next) { return next('error!'); });
         var record = task(function () { });
-        var verify = InSeries_1.default(InParallel_1.default.Flatten(CatchError_1.default(function (next) { return record.join(next); }), CatchError_1.default(function (next) { return record.join(next); }), CatchError_1.default(function (next) { return record.join(next); })), 
+        var verify = (0, InSeries_1.default)(InParallel_1.default.Flatten((0, CatchError_1.default)(function (next) { return record.join(next); }), (0, CatchError_1.default)(function (next) { return record.join(next); }), (0, CatchError_1.default)(function (next) { return record.join(next); })), 
         // Logging((...args) => args),
-        Assert_1.default(function () {
+        (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
             return args.length === 3;
-        }), Assert_1.default(function () {
+        }), (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
             return args[0] === 'error!';
-        }), Assert_1.default(function () {
+        }), (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
             return args[1] === 'error!';
-        }), Assert_1.default(function () {
+        }), (0, Assert_1.default)(function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
@@ -93,7 +93,7 @@ describe('Joinable', function () {
         verify(done);
     });
     it('deep join doesnt crash', function (done) {
-        var task = Joinable_1.default(InSeries_1.default(Delay_1.default(1000), function (next) { return next(null, 1); }));
+        var task = (0, Joinable_1.default)((0, InSeries_1.default)((0, Delay_1.default)(1000), function (next) { return next(null, 1); }));
         var record = task(function (err, res) {
             if (err) {
                 done(err);
@@ -115,7 +115,7 @@ describe('Joinable', function () {
         console.log('process mem heap/join', (heapAfter.heapUsed - heapBefore.heapUsed) / 1000);
     });
     it('deeper join doesnt crash', function (done) {
-        var task = Joinable_1.default(InSeries_1.default(Delay_1.default(1000), function (next) { return next(null, 1); }));
+        var task = (0, Joinable_1.default)((0, InSeries_1.default)((0, Delay_1.default)(1000), function (next) { return next(null, 1); }));
         var record = task(function (err, res) {
             if (err) {
                 done(err);
@@ -137,7 +137,7 @@ describe('Joinable', function () {
         console.log('process mem heap/join', (heapAfter.heapUsed - heapBefore.heapUsed) / 10000);
     });
     it('suuuper-deep join doesnt crash', function (done) {
-        var task = Joinable_1.default(InSeries_1.default(Delay_1.default(1000), function (next) { return next(null, 1); }));
+        var task = (0, Joinable_1.default)((0, InSeries_1.default)((0, Delay_1.default)(1000), function (next) { return next(null, 1); }));
         var record = task(function (err, res) {
             if (err) {
                 done(err);

@@ -23,7 +23,7 @@ function Throttle(_1, _2) {
     var _throttleInstance;
     var _deferredThrottleInstance;
     _throttleInstance = function _throttleInstance(_1) {
-        var next = _onceWrapper_1.default(_1);
+        var next = (0, _onceWrapper_1.default)(_1);
         var args = arguments;
         if (running < limit) {
             var after_1 = function after() {

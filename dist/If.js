@@ -34,11 +34,11 @@ var PassThrough_1 = __importDefault(require("./PassThrough"));
 * ```
 */
 function If(_1, _2, _3) {
-    var conditionTask = _1 != null ? _catchWrapper_1.default(_1) : PassThrough_1.default;
-    var thenTask = _2 != null ? _catchWrapper_1.default(_2) : PassThrough_1.default;
-    var elseTask = _3 != null ? _catchWrapper_1.default(_3) : PassThrough_1.default;
+    var conditionTask = _1 != null ? (0, _catchWrapper_1.default)(_1) : PassThrough_1.default;
+    var thenTask = _2 != null ? (0, _catchWrapper_1.default)(_2) : PassThrough_1.default;
+    var elseTask = _3 != null ? (0, _catchWrapper_1.default)(_3) : PassThrough_1.default;
     return function _ifInstance(_1) {
-        var next = _onceWrapper_1.default(_1 || _nullCallback_1.default);
+        var next = (0, _onceWrapper_1.default)(_1 || _nullCallback_1.default);
         var args = arguments;
         var onCondition = function _onCondition(err, res) {
             if (err) {

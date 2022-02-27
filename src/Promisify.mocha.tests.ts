@@ -18,7 +18,7 @@ import Promisify from './Promisify';
 
 describe('Promisify', () => {
 	it('Promisify works', (done) => {
-		new Promise((resolve) => resolve())
+		new Promise<void>((resolve) => resolve())
 			.then(
 				Promisify((next) => next(null, 1))
 			)
@@ -74,7 +74,7 @@ describe('Promisify', () => {
 			}
 		};
 
-		new Promise((resolve) => resolve())
+		new Promise<void>((resolve) => resolve())
 			.then(
 				Promisify((next) => next(new Error('throw error')))
 			)
@@ -90,7 +90,7 @@ describe('Promisify', () => {
 			}
 		};
 
-		new Promise((resolve) => resolve())
+		new Promise<void>((resolve) => resolve())
 			.then(
 				Promisify((next) => { throw new Error('throw error'); })
 			)

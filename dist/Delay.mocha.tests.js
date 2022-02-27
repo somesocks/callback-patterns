@@ -13,12 +13,12 @@ var InSeries_1 = __importDefault(require("./InSeries"));
 // import PassThrough from './PassThrough';
 describe('Delay', function () {
     it('Function.length should be at least 1', function () {
-        if (Delay_1.default().length < 1) {
+        if ((0, Delay_1.default)().length < 1) {
             throw new Error();
         }
     });
-    it('Delay 1', InSeries_1.default(function (next) { return next(null, 1, 2, 3); }, Delay_1.default(100), Assert_1.default(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
-    it('Delay 2', InSeries_1.default(function (next) { return next(null, 1, 2, 3); }, Delay_1.default(), Assert_1.default(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
+    it('Delay 1', (0, InSeries_1.default)(function (next) { return next(null, 1, 2, 3); }, (0, Delay_1.default)(100), (0, Assert_1.default)(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
+    it('Delay 2', (0, InSeries_1.default)(function (next) { return next(null, 1, 2, 3); }, (0, Delay_1.default)(), (0, Assert_1.default)(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
     var LONG_ARGS = [
         null,
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
@@ -86,5 +86,5 @@ describe('Delay', function () {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
     ];
-    it('Delay performance', InSeries_1.default(function (next) { return next.apply(null, LONG_ARGS); }, Delay_1.default()));
+    it('Delay performance', (0, InSeries_1.default)(function (next) { return next.apply(null, LONG_ARGS); }, (0, Delay_1.default)()));
 });

@@ -37,7 +37,7 @@ var _default = function () { return true; };
 function Assert(_1, _2) {
     var validator = _1 || _default;
     var message = _2 || 'callback-patterns/Assert failed';
-    message = _stringWrapper_1.default(message);
+    message = (0, _stringWrapper_1.default)(message);
     return function _assertInstance(_1) {
         var next = _1 || _nullCallback_1.default;
         var args = arguments;

@@ -14,26 +14,26 @@ var InSeries_1 = __importDefault(require("./InSeries"));
 // import PassThrough from './PassThrough';
 describe('If', function () {
     it('Function.length should be at least 1', function () {
-        if (If_1.default().length < 1) {
+        if ((0, If_1.default)().length < 1) {
             throw new Error();
         }
-        if (If_1.default(function () { }).length < 1) {
+        if ((0, If_1.default)(function () { }).length < 1) {
             throw new Error();
         }
-        if (If_1.default(function () { }, function () { }).length < 1) {
+        if ((0, If_1.default)(function () { }, function () { }).length < 1) {
             throw new Error();
         }
     });
     it('test with 0 handlers', function (done) {
-        If_1.default()(done);
+        (0, If_1.default)()(done);
     });
     it('test with null callback', function (done) {
-        If_1.default()();
+        (0, If_1.default)()();
         setTimeout(done, 16);
     });
     it('catches errors', function (done) {
-        If_1.default(function (next) { return next(null, true); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+        (0, If_1.default)(function (next) { return next(null, true); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
     });
-    it('then works', InSeries_1.default(function (next) { return next(null, 1); }, If_1.default(function (next, i) { return next(null, i > 0); }, function (next) { return next(null, true); }, function (next) { return next(null, false); }), Assert_1.default(function (val) { return val === true; })));
-    it('else works', InSeries_1.default(function (next) { return next(null, -1); }, If_1.default(function (next, i) { return next(null, i > 0); }, function (next) { return next(null, true); }, function (next) { return next(null, false); }), Assert_1.default(function (val) { return val === false; })));
+    it('then works', (0, InSeries_1.default)(function (next) { return next(null, 1); }, (0, If_1.default)(function (next, i) { return next(null, i > 0); }, function (next) { return next(null, true); }, function (next) { return next(null, false); }), (0, Assert_1.default)(function (val) { return val === true; })));
+    it('else works', (0, InSeries_1.default)(function (next) { return next(null, -1); }, (0, If_1.default)(function (next, i) { return next(null, i > 0); }, function (next) { return next(null, true); }, function (next) { return next(null, false); }), (0, Assert_1.default)(function (val) { return val === false; })));
 });

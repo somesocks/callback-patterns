@@ -35,8 +35,8 @@ var Promisify_1 = __importDefault(require("./Promisify"));
 */
 function Bridge(task) {
     task = task || PassThrough_1.default;
-    var callbackForm = _catchWrapper_1.default(task);
-    var promiseForm = Promisify_1.default(callbackForm);
+    var callbackForm = (0, _catchWrapper_1.default)(task);
+    var promiseForm = (0, Promisify_1.default)(callbackForm);
     var _bridgeInstance = function _bridgeInstance(_1) {
         if (typeof _1 === 'function') { // callback mode
             // eslint-disable-next-line no-invalid-this

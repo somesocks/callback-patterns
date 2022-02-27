@@ -1,10 +1,12 @@
 "use strict";
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -26,25 +28,25 @@ var ParallelFilter_1 = __importDefault(require("./ParallelFilter"));
 // import PassThrough from './PassThrough';
 describe('ParallelFilter', function () {
     it('Function.length should be at least 1', function () {
-        if (ParallelFilter_1.default(function (next) { return true; }).length < 1) {
+        if ((0, ParallelFilter_1.default)(function (next) { return true; }).length < 1) {
             throw new Error();
         }
     });
     it('test with 0 args', function (done) {
-        var task = ParallelFilter_1.default(function (next, item) { return next(null, true); });
+        var task = (0, ParallelFilter_1.default)(function (next, item) { return next(null, true); });
         task(done);
     });
     it('catches errors', function (done) {
-        var task = ParallelFilter_1.default(function (next, item) { throw new Error('error'); });
+        var task = (0, ParallelFilter_1.default)(function (next, item) { throw new Error('error'); });
         var onDone = function (err, res) { return done(err != null ? null : err); };
         task(onDone, 1, 2, 3);
     });
     it('works 1', function (done) {
-        var task = InSeries_1.default(function (next) { return next(null, 1, 2, 3); }, ParallelFilter_1.default(function (next, item) { return next(null, item > 1); }), Assert_1.default(function (a, b, c) { return a === 2 && b === 3 && c === undefined; }));
+        var task = (0, InSeries_1.default)(function (next) { return next(null, 1, 2, 3); }, (0, ParallelFilter_1.default)(function (next, item) { return next(null, item > 1); }), (0, Assert_1.default)(function (a, b, c) { return a === 2 && b === 3 && c === undefined; }));
         task(done);
     });
     it('performance', function (done) {
-        var task = InSeries_1.default(ParallelFilter_1.default(function (next, item) { return next(null, item > 0); }));
-        task.apply(void 0, __spreadArrays([done], Array(10000).fill(1)));
+        var task = (0, InSeries_1.default)((0, ParallelFilter_1.default)(function (next, item) { return next(null, item > 0); }));
+        task.apply(void 0, __spreadArray([done], Array(10000).fill(1), false));
     });
 });

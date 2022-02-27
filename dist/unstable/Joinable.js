@@ -20,7 +20,7 @@ _Joinable.prototype.join = function join(_then) {
         var _source_1 = this._next;
         this._next = function () {
             if (_source_1) {
-                _defer_1.default(_source_1);
+                (0, _defer_1.default)(_source_1);
             }
             _then.apply(undefined, self_1._results);
         };
@@ -40,7 +40,7 @@ _Joinable.prototype._start = function _start(next) {
     this.join(next);
     // prepare finish trigger
     var _finish = this._finish.bind(this);
-    _finish = _onceWrapper_1.default(_finish);
+    _finish = (0, _onceWrapper_1.default)(_finish);
     arguments[0] = _finish;
     arguments.length = arguments.length || 1;
     try {

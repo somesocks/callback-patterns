@@ -1,4 +1,4 @@
-import { TCallbackTask } from '../types';
+import TCallbackTask from '../types/TCallbackTask';
 interface IAssertionTest {
     /**
     *

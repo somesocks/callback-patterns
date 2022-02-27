@@ -50,7 +50,7 @@ describe('Timer', function () {
         Timer_1.default(function (next) { return next(null, 1); })(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
     });
     it('label works', function (done) {
-        Timer_1.default(function (next) { return next(null, 1); }, 'Label')(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
+        (0, Timer_1.default)(function (next) { return next(null, 1); }, 'Label')(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
     });
     it('measures time', function (done) {
         Timer_1.default(function (next) { return setTimeout(next, 128); })(done);

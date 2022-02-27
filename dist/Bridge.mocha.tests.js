@@ -15,17 +15,17 @@ var Bridge_1 = __importDefault(require("./Bridge"));
 var InSeries_1 = __importDefault(require("./InSeries"));
 describe('Bridge', function () {
     it('Function.length should be at least 1', function () {
-        if (Bridge_1.default().length < 1) {
+        if ((0, Bridge_1.default)().length < 1) {
             throw new Error();
         }
-        if (Bridge_1.default(function () { }).length < 1) {
+        if ((0, Bridge_1.default)(function () { }).length < 1) {
             throw new Error();
         }
     });
-    var EXAMPLE_BRIDGE = Bridge_1.default();
-    var FAILING_BRIDGE_1 = Bridge_1.default(function (next) { return next(new Error('fail')); });
-    var FAILING_BRIDGE_2 = Bridge_1.default(function (next) { throw new Error('fail'); });
-    it('Bridge works in callback mode', InSeries_1.default(function (next) { return next(null, 2); }, EXAMPLE_BRIDGE, Assert_1.default(function (val) { return val === 2; }, 'callback mode failed to pass args through')));
+    var EXAMPLE_BRIDGE = (0, Bridge_1.default)();
+    var FAILING_BRIDGE_1 = (0, Bridge_1.default)(function (next) { return next(new Error('fail')); });
+    var FAILING_BRIDGE_2 = (0, Bridge_1.default)(function (next) { throw new Error('fail'); });
+    it('Bridge works in callback mode', (0, InSeries_1.default)(function (next) { return next(null, 2); }, EXAMPLE_BRIDGE, (0, Assert_1.default)(function (val) { return val === 2; }, 'callback mode failed to pass args through')));
     it('Bridge fails correctly in callback mode', function (done) {
         FAILING_BRIDGE_1(function (err, res) { return done(err == null ? new Error('bridge should have failed') : null); });
     });
@@ -48,6 +48,6 @@ describe('Bridge', function () {
             .catch(function (err) { return done(); });
     });
     it('test with 0 handlers', function (done) {
-        Bridge_1.default()(done);
+        (0, Bridge_1.default)()(done);
     });
 });

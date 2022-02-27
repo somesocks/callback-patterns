@@ -119,13 +119,13 @@ describe('Memoize.SWR', function () {
     //
     it('memoize with LRU cache ttl works', function (done) {
         var counter = 0;
-        var task = TimeIn_1.default(function (next) {
+        var task = (0, TimeIn_1.default)(function (next) {
             counter = counter + 1;
             console.log('task called', counter);
             next(null, counter);
         }, 10);
         task = Memoize_1.default.SWR(task, { staleCache: Memoize_1.default.LRUCache(100, 200) });
-        var test = InSeries_1.default(Timer_1.default(function (next) { return task(next); }), Timer_1.default(function (next) { return task(next); }), Timer_1.default(function (next) { return task(next); }), Timer_1.default(function (next) { return task(next); }), Timer_1.default(function (next) { return task(next); }), Timer_1.default(function (next) { return task(next); }), Timer_1.default(function (next) { return task(next); }), Timer_1.default(function (next) { return task(next); }), Delay_1.default(400), Timer_1.default(function (next) { return task(next); }), Assert_1.default(function (val) { return val === 3; }, function (val) { return "expected val to be 3, got " + val; }), Assert_1.default(function () { return counter === 3; }, function () { return "expected counter to be 3, got " + counter; }));
+        var test = (0, InSeries_1.default)((0, Timer_1.default)(function (next) { return task(next); }), (0, Timer_1.default)(function (next) { return task(next); }), (0, Timer_1.default)(function (next) { return task(next); }), (0, Timer_1.default)(function (next) { return task(next); }), (0, Timer_1.default)(function (next) { return task(next); }), (0, Timer_1.default)(function (next) { return task(next); }), (0, Timer_1.default)(function (next) { return task(next); }), (0, Timer_1.default)(function (next) { return task(next); }), (0, Delay_1.default)(400), (0, Timer_1.default)(function (next) { return task(next); }), (0, Assert_1.default)(function (val) { return val === 3; }, function (val) { return "expected val to be 3, got ".concat(val); }), (0, Assert_1.default)(function () { return counter === 3; }, function () { return "expected counter to be 3, got ".concat(counter); }));
         test(done);
     });
     //

@@ -14,11 +14,11 @@ var EMPTY_TASK = function (next) { next(); };
 * @memberof callback-patterns
 */
 function Timer(task, label) {
-    task = _catchWrapper_1.default(task || EMPTY_TASK);
+    task = (0, _catchWrapper_1.default)(task || EMPTY_TASK);
     label = label || task.name || 'task';
     return function _timerInstance(_1) {
         var start = Date.now();
-        var next = _onceWrapper_1.default(_1);
+        var next = (0, _onceWrapper_1.default)(_1);
         var args = arguments;
         var done = function (err) {
             var end = Date.now();

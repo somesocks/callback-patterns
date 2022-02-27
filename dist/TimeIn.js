@@ -39,7 +39,7 @@ function _results(next, r0, r1) {
 function TimeIn(_1, _2) {
     var task = _1 || PassThrough_1.default;
     var ms = _2 || 1000;
-    var timein = InSeries_1.default(InParallel_1.default(InSeries_1.default(_empty, Delay_1.default(ms)), task), _results);
+    var timein = (0, InSeries_1.default)((0, InParallel_1.default)((0, InSeries_1.default)(_empty, (0, Delay_1.default)(ms)), task), _results);
     return timein;
 }
 module.exports = TimeIn;

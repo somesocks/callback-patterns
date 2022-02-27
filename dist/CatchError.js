@@ -55,7 +55,7 @@ var _nullCallback_1 = __importDefault(require("./_nullCallback"));
 * @memberof callback-patterns
 */
 var CatchError = function CatchError(_1) {
-    var task = _catchWrapper_1.default(_1);
+    var task = (0, _catchWrapper_1.default)(_1);
     return function _catchErrorInstance(_1) {
         var next = _1 || _nullCallback_1.default;
         arguments[0] = function _wrapper() {

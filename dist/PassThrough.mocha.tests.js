@@ -24,7 +24,7 @@ describe('PassThrough', function () {
             throw new Error();
         }
     });
-    it('PassThrough 1', InSeries_1.default(function (next) { return next(null, 1, 2, 3); }, PassThrough_1.default, Assert_1.default(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
+    it('PassThrough 1', (0, InSeries_1.default)(function (next) { return next(null, 1, 2, 3); }, PassThrough_1.default, (0, Assert_1.default)(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
     var LONG_ARGS = [
         null,
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
@@ -92,5 +92,5 @@ describe('PassThrough', function () {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
     ];
-    it('PassThrough performance', InSeries_1.default(function (next) { return next.apply(null, LONG_ARGS); }, PassThrough_1.default));
+    it('PassThrough performance', (0, InSeries_1.default)(function (next) { return next.apply(null, LONG_ARGS); }, PassThrough_1.default));
 });

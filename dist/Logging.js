@@ -41,7 +41,7 @@ function Logging(_1) {
     }
     else {
         for (var i = 0; i < arguments.length; i++) {
-            arguments[i] = _stringWrapper_1.default(arguments[i]);
+            arguments[i] = (0, _stringWrapper_1.default)(arguments[i]);
         }
     }
     var statements = arguments;

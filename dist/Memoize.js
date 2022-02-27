@@ -33,7 +33,7 @@ ObjectCache.prototype.del = function del(key) {
 function LRUCache(size, ttl) {
     if (ttl === void 0) { ttl = 0; }
     var self = this instanceof ObjectCache ? this : Object.create(LRUCache.prototype);
-    self._cache = tiny_lru_1.default(size, ttl);
+    self._cache = (0, tiny_lru_1.default)(size, ttl);
     return self;
 }
 LRUCache.prototype.has = function has(key) {
@@ -97,12 +97,12 @@ LRUCache.prototype.del = function del(key) {
 * ```
 */
 function Memoize(task, keyFunction, cache) {
-    var _task = task != null ? _catchWrapper_1.default(task) : PassThrough_1.default;
-    _task = Joinable_1.default(_task);
+    var _task = task != null ? (0, _catchWrapper_1.default)(task) : PassThrough_1.default;
+    _task = (0, Joinable_1.default)(_task);
     var _keyFunction = keyFunction || DEFAULT_KEY_FUNCTION;
     var _cache = cache || ObjectCache();
     var res = function _memoizeInstance(_1) {
-        var next = _onceWrapper_1.default(_1 || _nullCallback_1.default);
+        var next = (0, _onceWrapper_1.default)(_1 || _nullCallback_1.default);
         var args = arguments;
         args[0] = undefined;
         var key = _keyFunction.call.apply(_keyFunction, args);
@@ -124,13 +124,13 @@ function Memoize(task, keyFunction, cache) {
 Memoize.ObjectCache = ObjectCache;
 Memoize.LRUCache = LRUCache;
 function SWRMemoize(task, options) {
-    var _task = task != null ? _catchWrapper_1.default(task) : PassThrough_1.default;
-    _task = Joinable_1.default(_task);
+    var _task = task != null ? (0, _catchWrapper_1.default)(task) : PassThrough_1.default;
+    _task = (0, Joinable_1.default)(_task);
     var keyFunction = (options === null || options === void 0 ? void 0 : options.keyFunction) || DEFAULT_KEY_FUNCTION;
     var staleCache = (options === null || options === void 0 ? void 0 : options.staleCache) || ObjectCache();
     var refreshCache = (options === null || options === void 0 ? void 0 : options.refreshCache) || LRUCache(999999999, 0);
     var res = function _SWRMemoizeInstance(_1) {
-        var next = _onceWrapper_1.default(_1 || _nullCallback_1.default);
+        var next = (0, _onceWrapper_1.default)(_1 || _nullCallback_1.default);
         var args = arguments;
         args[0] = undefined;
         var key = keyFunction.call.apply(keyFunction, args);

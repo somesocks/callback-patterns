@@ -35,7 +35,7 @@ var EMPTY = function (next) { return (next || _nullCallback_1.default)(); };
 * ```
 */
 function Background(_1) {
-    var task = _1 ? _catchWrapper_1.default(_1) : EMPTY;
+    var task = _1 ? (0, _catchWrapper_1.default)(_1) : EMPTY;
     task = _defer_1.default.bind(null, task);
     return function _backgroundInstance(_1) {
         var next = _1 || _nullCallback_1.default;

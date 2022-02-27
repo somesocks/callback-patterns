@@ -29,11 +29,11 @@ var _false = function _false(next) { return next(null, false); };
 * ```
 */
 function While(_1, _2) {
-    var conditionTask = _1 != null ? _catchWrapper_1.default(_1) : _false;
-    var loopTask = _2 != null ? _catchWrapper_1.default(_2) : PassThrough_1.default;
+    var conditionTask = _1 != null ? (0, _catchWrapper_1.default)(_1) : _false;
+    var loopTask = _2 != null ? (0, _catchWrapper_1.default)(_2) : PassThrough_1.default;
     var deferredLoopTask = _defer_1.default.bind(null, loopTask);
     return function _whileInstance(_1) {
-        var next = _onceWrapper_1.default(_1 || _nullCallback_1.default);
+        var next = (0, _onceWrapper_1.default)(_1 || _nullCallback_1.default);
         var args = arguments;
         var onCondition;
         var onLoop;

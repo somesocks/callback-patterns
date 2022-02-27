@@ -57,26 +57,26 @@ var _callbackBuilder = function (context, index) {
 * ```
 */
 function ParallelFilter(_1) {
-    var mapper = _1 != null ? _catchWrapper_1.default(_1) : PassThrough_1.default;
+    var mapper = _1 != null ? (0, _catchWrapper_1.default)(_1) : PassThrough_1.default;
     return function _inParallelInstance(_1) {
         var args = arguments;
-        var next = _onceWrapper_1.default(_1);
+        var next = (0, _onceWrapper_1.default)(_1);
         var context = {
-            next: _onceWrapper_1.default(next),
+            next: (0, _onceWrapper_1.default)(next),
             results: args,
             done: 0,
         };
         // no arguments, just return
         if (arguments.length == 1) {
-            _defer_1.default(next);
+            (0, _defer_1.default)(next);
             return;
         }
         for (var i = 1; i < arguments.length; i++) {
             // eslint-disable-next-line no-loop-func
             var onDone = _callbackBuilder(context, i - 1);
-            onDone = _onceWrapper_1.default(onDone);
+            onDone = (0, _onceWrapper_1.default)(onDone);
             var handler = mapper.bind(null, onDone, arguments[i], i - 1);
-            _defer_1.default(handler);
+            (0, _defer_1.default)(handler);
         }
     };
 }

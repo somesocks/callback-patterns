@@ -9,7 +9,7 @@ import Logging from '../Logging';
 
 import TraceError from '../unstable/TraceError';
 
-import { TCallbackTask } from '../types';
+import TCallbackTask from '../types/TCallbackTask';
 
 const DEFAULT_SETUP : TCallbackTask = function (next) {
 	next();

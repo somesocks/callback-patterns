@@ -27,36 +27,36 @@ describe('InParallel', function () {
         LONG_CHAIN(done, 1, 2, 3, 4, 5, 6, 7, 8);
     });
     it('Function.length should be at least 1', function () {
-        if (InParallel_1.default().length < 1) {
+        if ((0, InParallel_1.default)().length < 1) {
             throw new Error();
         }
-        if (InParallel_1.default(function () { }).length < 1) {
+        if ((0, InParallel_1.default)(function () { }).length < 1) {
             throw new Error();
         }
-        if (InParallel_1.default(function () { }, function () { }).length < 1) {
+        if ((0, InParallel_1.default)(function () { }, function () { }).length < 1) {
             throw new Error();
         }
     });
     it('test with 0 handlers', function (done) {
-        InParallel_1.default()(done);
+        (0, InParallel_1.default)()(done);
     });
-    it('autoboxing works', InSeries_1.default(InParallel_1.default(function (next) { return next(); }, function (next) { return next(null); }, function (next) { return next(null, 1); }, function (next) { return next(null, 2, 3); }), Assert_1.default(function (r0, r1, r2, r3) { return r0[0] === undefined; }, 'autoboxing with empty results failed'), Assert_1.default(function (r0, r1, r2, r3) { return r1[0] === undefined; }, 'autoboxing with 0 results failed'), Assert_1.default(function (r0, r1, r2, r3) { return r2[0] === 1; }, 'autoboxing with 1 results failed'), Assert_1.default(function (r0, r1, r2, r3) { return r3[0] === 2 && r3[1] === 3; }, 'autoboxing with 2 results failed')));
+    it('autoboxing works', (0, InSeries_1.default)((0, InParallel_1.default)(function (next) { return next(); }, function (next) { return next(null); }, function (next) { return next(null, 1); }, function (next) { return next(null, 2, 3); }), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r0[0] === undefined; }, 'autoboxing with empty results failed'), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r1[0] === undefined; }, 'autoboxing with 0 results failed'), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r2[0] === 1; }, 'autoboxing with 1 results failed'), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r3[0] === 2 && r3[1] === 3; }, 'autoboxing with 2 results failed')));
     it('test with null return', function (done) {
-        InParallel_1.default(function (next) { return next(); }, function (next) { return next(); })(done);
+        (0, InParallel_1.default)(function (next) { return next(); }, function (next) { return next(); })(done);
     });
     it('test with null callback', function (done) {
-        var task = InParallel_1.default(function (next) { return next(); }, function (next) { return next(); });
+        var task = (0, InParallel_1.default)(function (next) { return next(); }, function (next) { return next(); });
         task();
         setTimeout(done, 16);
     });
     it('catches errors', function (done) {
-        InParallel_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+        (0, InParallel_1.default)(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
     });
     it('doesnt return on no callback', function (done) {
-        InSeries_1.default(InParallel_1.default(PassThrough_1.default, function (next) { return null; }), function () { throw new Error('shouldnt get here'); })(done);
+        (0, InSeries_1.default)((0, InParallel_1.default)(PassThrough_1.default, function (next) { return null; }), function () { throw new Error('shouldnt get here'); })(done);
         setTimeout(done, 500);
     });
-    it('deep error stack works', InSeries_1.default(CatchError_1.default(InParallel_1.default(InParallel_1.default(function (next) { return next(); }, function (next) { throw new Error('error'); }))), Logging_1.default('Error Stack')));
+    it('deep error stack works', (0, InSeries_1.default)((0, CatchError_1.default)((0, InParallel_1.default)((0, InParallel_1.default)(function (next) { return next(); }, function (next) { throw new Error('error'); }))), (0, Logging_1.default)('Error Stack')));
 });
 describe('InParallel.Flatten', function () {
     var LONG_CHAIN = InParallel_1.default.Flatten.apply(InParallel_1.default, Array(50000).fill(PassThrough_1.default));
@@ -83,13 +83,13 @@ describe('InParallel.Flatten', function () {
     it('test with 0 handlers', function (done) {
         InParallel_1.default.Flatten()(done);
     });
-    it('autoboxing works', InSeries_1.default(InParallel_1.default.Flatten(function (next) { return next(); }, function (next) { return next(null); }, function (next) { return next(null, 1); }, function (next) { return next(null, 2, 3); }), Assert_1.default(function (r0, r1, r2, r3) { return r0 === undefined; }, function () {
+    it('autoboxing works', (0, InSeries_1.default)(InParallel_1.default.Flatten(function (next) { return next(); }, function (next) { return next(null); }, function (next) { return next(null, 1); }, function (next) { return next(null, 2, 3); }), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r0 === undefined; }, function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        return "autoboxing with empty results failed: " + console.log(args);
-    }), Assert_1.default(function (r0, r1, r2, r3) { return r1 === undefined; }, 'autoboxing with 0 results failed'), Assert_1.default(function (r0, r1, r2, r3) { return r2 === 1; }, 'autoboxing with 1 results failed'), Assert_1.default(function (r0, r1, r2, r3) { return r3[0] === 2 && r3[1] === 3; }, 'autoboxing with 2 results failed')));
+        return "autoboxing with empty results failed: ".concat(console.log(args));
+    }), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r1 === undefined; }, 'autoboxing with 0 results failed'), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r2 === 1; }, 'autoboxing with 1 results failed'), (0, Assert_1.default)(function (r0, r1, r2, r3) { return r3[0] === 2 && r3[1] === 3; }, 'autoboxing with 2 results failed')));
     it('test with null return', function (done) {
         InParallel_1.default.Flatten(function (next) { return next(); }, function (next) { return next(); })(done);
     });
@@ -102,8 +102,8 @@ describe('InParallel.Flatten', function () {
         InParallel_1.default.Flatten(function (next) { return next(); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
     });
     it('doesnt return on no callback', function (done) {
-        InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, function (next) { return null; }), function () { throw new Error('shouldnt get here'); })(done);
+        (0, InSeries_1.default)(InParallel_1.default.Flatten(PassThrough_1.default, function (next) { return null; }), function () { throw new Error('shouldnt get here'); })(done);
         setTimeout(done, 500);
     });
-    it('deep error stack works', InSeries_1.default(CatchError_1.default(InParallel_1.default.Flatten(InParallel_1.default.Flatten(function (next) { return next(); }, function (next) { throw new Error('error'); }))), Logging_1.default('Error Stack')));
+    it('deep error stack works', (0, InSeries_1.default)((0, CatchError_1.default)(InParallel_1.default.Flatten(InParallel_1.default.Flatten(function (next) { return next(); }, function (next) { throw new Error('error'); }))), (0, Logging_1.default)('Error Stack')));
 });

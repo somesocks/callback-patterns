@@ -54,11 +54,11 @@ var DefaultDelayBuilder = function (options) {
 * @memberof callback-patterns
 */
 function Retry(task, retryStrategy) {
-    task = _catchWrapper_1.default(task || EMPTY_TASK);
+    task = (0, _catchWrapper_1.default)(task || EMPTY_TASK);
     var delayFunc = typeof retryStrategy === 'function' ?
         retryStrategy : DefaultDelayBuilder(retryStrategy);
     return function _retryInstance(_1) {
-        var next = _onceWrapper_1.default(_1);
+        var next = (0, _onceWrapper_1.default)(_1);
         var args = arguments;
         var retryState = {
             err: undefined,

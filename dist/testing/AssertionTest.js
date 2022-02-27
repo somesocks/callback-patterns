@@ -194,27 +194,27 @@ AssertionTest.prototype.build = function build() {
     var _init = function (next, context) {
         next(null, context || {});
     };
-    var _setupWrapper = InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, _setup), function (next, context, setup) {
+    var _setupWrapper = (0, InSeries_1.default)(InParallel_1.default.Flatten(PassThrough_1.default, _setup), function (next, context, setup) {
         context.setup = setup;
         next(null, context);
     });
-    var _prepareWrapper = InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, function (next, context) { _prepare(next, context.setup); }), function (next, context, request) {
+    var _prepareWrapper = (0, InSeries_1.default)(InParallel_1.default.Flatten(PassThrough_1.default, function (next, context) { _prepare(next, context.setup); }), function (next, context, request) {
         context.request = request;
         next(null, context);
     });
-    var _executeWrapper = InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, function (next, context) { _execute(next, context.request); }), function (next, context, result) {
+    var _executeWrapper = (0, InSeries_1.default)(InParallel_1.default.Flatten(PassThrough_1.default, function (next, context) { _execute(next, context.request); }), function (next, context, result) {
         context.result = result;
         next(null, context);
     });
     var _verifyWrapper = InOrder_1.default.apply(null, _verify);
-    var _teardownWrapper = InOrder_1.default(_teardown);
-    var _testCore = InSeries_1.default(_setupWrapper, _prepareWrapper, _executeWrapper, function (next) { next(); });
-    _testCore = InSeries_1.default(InParallel_1.default.Flatten(PassThrough_1.default, CatchError_1.default(_testCore)), function (next, context, error) {
+    var _teardownWrapper = (0, InOrder_1.default)(_teardown);
+    var _testCore = (0, InSeries_1.default)(_setupWrapper, _prepareWrapper, _executeWrapper, function (next) { next(); });
+    _testCore = (0, InSeries_1.default)(InParallel_1.default.Flatten(PassThrough_1.default, (0, CatchError_1.default)(_testCore)), function (next, context, error) {
         context.error = error;
         next(null, context);
     });
-    var test = InSeries_1.default(_init, _testCore, _verifyWrapper, _teardownWrapper);
-    test = TraceError_1.default(test);
+    var test = (0, InSeries_1.default)(_init, _testCore, _verifyWrapper, _teardownWrapper);
+    test = (0, TraceError_1.default)(test);
     test.label = _label;
     return test;
 };
@@ -223,11 +223,11 @@ AssertionTest.prototype.build = function build() {
 * @function VerifyErrorWasNotThrown
 * @memberof callback-patterns.testing.AssertionTest
 */
-AssertionTest.VerifyErrorWasNotThrown = Assert_1.default(function (context) { return context.error == null; }, function (context) { return context.error; });
+AssertionTest.VerifyErrorWasNotThrown = (0, Assert_1.default)(function (context) { return context.error == null; }, function (context) { return context.error; });
 /**
 * verifier function to make sure test DID throw an error
 * @function VerifyErrorWasNotThrown
 * @memberof callback-patterns.testing.AssertionTest
 */
-AssertionTest.VerifyErrorWasThrown = Assert_1.default(function (context) { return context.error != null; }, 'AssertionTest.VerifyErrorWasThrown: error was not thrown');
+AssertionTest.VerifyErrorWasThrown = (0, Assert_1.default)(function (context) { return context.error != null; }, 'AssertionTest.VerifyErrorWasThrown: error was not thrown');
 module.exports = AssertionTest;

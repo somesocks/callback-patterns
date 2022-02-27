@@ -20,14 +20,14 @@ describe('Background', function () {
             throw new Error();
         }
     });
-    it('Background 1', InSeries_1.default(function (next) { return next(null, 1, 2, 3); }, Background_1.default(PassThrough_1.default), Assert_1.default(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
+    it('Background 1', (0, InSeries_1.default)(function (next) { return next(null, 1, 2, 3); }, (0, Background_1.default)(PassThrough_1.default), (0, Assert_1.default)(function (a, b, c) { return (a === 1 && b === 2 && c === 3); })));
     it('Background 2', function (done) {
         var a = 1;
-        var task = InSeries_1.default(function (next) { return next(); }, Background_1.default(function (next) {
+        var task = (0, InSeries_1.default)(function (next) { return next(); }, (0, Background_1.default)(function (next) {
             console.log('in background');
             a = 2;
             next();
-        }), Delay_1.default(100), Assert_1.default(function () { return (a === 2); }));
+        }), (0, Delay_1.default)(100), (0, Assert_1.default)(function () { return (a === 2); }));
         task(done);
     });
     var LONG_ARGS = [
@@ -97,5 +97,5 @@ describe('Background', function () {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f',
     ];
-    it('Background performance', InSeries_1.default(function (next) { return next.apply(null, LONG_ARGS); }, Background_1.default(PassThrough_1.default)));
+    it('Background performance', (0, InSeries_1.default)(function (next) { return next.apply(null, LONG_ARGS); }, (0, Background_1.default)(PassThrough_1.default)));
 });

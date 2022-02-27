@@ -22,34 +22,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Race_1 = __importDefault(require("./Race"));
 describe('Race', function () {
     it('test with 0 handlers', function (done) {
-        Race_1.default()(done);
+        (0, Race_1.default)()(done);
     });
     it('test with null return', function (done) {
-        Race_1.default(function (next) { return next(); }, function (next) { return next(); })(done);
+        (0, Race_1.default)(function (next) { return next(); }, function (next) { return next(); })(done);
     });
     it('Function.length should be at least 1', function () {
-        if (Race_1.default().length < 1) {
+        if ((0, Race_1.default)().length < 1) {
             throw new Error();
         }
-        if (Race_1.default(function (next) { return true; }).length < 1) {
+        if ((0, Race_1.default)(function (next) { return true; }).length < 1) {
             throw new Error();
         }
     });
     it('test with null callback', function (done) {
-        var task = Race_1.default(function (next) { return next(); }, function (next) { return next(); });
+        var task = (0, Race_1.default)(function (next) { return next(); }, function (next) { return next(); });
         task();
         setTimeout(done, 16);
     });
     it('catches errors', function (done) {
-        Race_1.default(function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+        (0, Race_1.default)(function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
     });
     it('returns 1', function (done) {
-        Race_1.default(function (next) { return next(null, 1); }, function (next) { })(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
+        (0, Race_1.default)(function (next) { return next(null, 1); }, function (next) { })(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
     });
     it('returns 1', function (done) {
-        Race_1.default(function (next) { return next(null, 1); }, function (next) { return next(null, 2); })(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
+        (0, Race_1.default)(function (next) { return next(null, 1); }, function (next) { return next(null, 2); })(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
     });
     it('returns 1', function (done) {
-        Race_1.default(function (next) { return setTimeout(next, 500, null, 2); }, function (next) { return next(null, 1); })(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
+        (0, Race_1.default)(function (next) { return setTimeout(next, 500, null, 2); }, function (next) { return next(null, 1); })(function (err, res) { return done(((err != null) && (res === 1)) ? null : err); });
     });
 });

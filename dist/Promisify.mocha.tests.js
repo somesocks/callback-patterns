@@ -22,23 +22,23 @@ var Promisify_1 = __importDefault(require("./Promisify"));
 describe('Promisify', function () {
     it('Promisify works', function (done) {
         new Promise(function (resolve) { return resolve(); })
-            .then(Promisify_1.default(function (next) { return next(null, 1); }))
+            .then((0, Promisify_1.default)(function (next) { return next(null, 1); }))
             .then(function (val) { return done(val !== 1 ? new Error('missing res') : null); });
     });
     it('Promisify accepts multiple arguments', function (done) {
-        var task = Promisify_1.default(function (next, a, b, c) { return next(null, a + b + c); });
+        var task = (0, Promisify_1.default)(function (next, a, b, c) { return next(null, a + b + c); });
         task(1, 2, 3)
             .then(function (val) { return done(val !== 6 ? new Error('missing arguments') : null); });
     });
     it('Promisify returns single argument correctly', function (done) {
-        var task = Promisify_1.default(function (next, a, b) { return next(null, a); });
+        var task = (0, Promisify_1.default)(function (next, a, b) { return next(null, a); });
         task(1, 2)
-            .then(function (val) { return done(val !== 1 ? new Error("bad results " + val) : null); });
+            .then(function (val) { return done(val !== 1 ? new Error("bad results ".concat(val)) : null); });
     });
     it('Promisify returns multiple arguments correctly', function (done) {
-        var task = Promisify_1.default(function (next, a, b) { return next(null, a, b); });
+        var task = (0, Promisify_1.default)(function (next, a, b) { return next(null, a, b); });
         task(1, 2)
-            .then(function (val) { return done((val[0] !== 1 || val[1] !== 2) ? new Error("missing arguments " + val) : null); });
+            .then(function (val) { return done((val[0] !== 1 || val[1] !== 2) ? new Error("missing arguments ".concat(val)) : null); });
     });
     it('Promisify catches callback errors', function (done) {
         var onCatch = function (err) {
@@ -50,7 +50,7 @@ describe('Promisify', function () {
             }
         };
         new Promise(function (resolve) { return resolve(); })
-            .then(Promisify_1.default(function (next) { return next(new Error('throw error')); }))
+            .then((0, Promisify_1.default)(function (next) { return next(new Error('throw error')); }))
             .catch(onCatch);
     });
     it('Promisify catches thrown errors', function (done) {
@@ -63,7 +63,7 @@ describe('Promisify', function () {
             }
         };
         new Promise(function (resolve) { return resolve(); })
-            .then(Promisify_1.default(function (next) { throw new Error('throw error'); }))
+            .then((0, Promisify_1.default)(function (next) { throw new Error('throw error'); }))
             .catch(onCatch);
     });
 });

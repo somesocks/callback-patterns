@@ -24,34 +24,34 @@ var Logging_1 = __importDefault(require("./Logging"));
 var Throttle_1 = __importDefault(require("./Throttle"));
 describe('Throttle', function () {
     it('test with 0 handlers', function (done) {
-        Throttle_1.default()(done);
+        (0, Throttle_1.default)()(done);
     });
     it('Function.length should be at least 1', function () {
-        if (Throttle_1.default().length < 1) {
+        if ((0, Throttle_1.default)().length < 1) {
             throw new Error();
         }
-        if (Throttle_1.default(function (next) { return true; }).length < 1) {
+        if ((0, Throttle_1.default)(function (next) { return true; }).length < 1) {
             throw new Error();
         }
     });
     it('throttling works', function (done) {
         var arr = [];
-        var task = Throttle_1.default(InSeries_1.default(Logging_1.default('task before'), function (next, i, timeout) { return setTimeout(next, timeout, null, i); }, Logging_1.default('task after '), function (next, i) {
+        var task = (0, Throttle_1.default)((0, InSeries_1.default)((0, Logging_1.default)('task before'), function (next, i, timeout) { return setTimeout(next, timeout, null, i); }, (0, Logging_1.default)('task after '), function (next, i) {
             arr.push(i);
             next();
         }));
-        InSeries_1.default(InParallel_1.default(function (next) { return task(next, 1, 300); }, function (next) { return task(next, 2, 200); }, function (next) { return task(next, 3, 100); }, function (next) { return task(next, 4, 0); }), function (next, res) {
+        (0, InSeries_1.default)((0, InParallel_1.default)(function (next) { return task(next, 1, 300); }, function (next) { return task(next, 2, 200); }, function (next) { return task(next, 3, 100); }, function (next) { return task(next, 4, 0); }), function (next, res) {
             chai_1.assert.deepEqual(arr, [1, 2, 3, 4]);
             next();
         })(done);
     });
     it('throttling works 2', function (done) {
         var arr = [];
-        var task = Throttle_1.default(InSeries_1.default(Logging_1.default('task before'), function (next, i, timeout) { return setTimeout(next, timeout, null, i); }, Logging_1.default('task after '), function (next, i) {
+        var task = (0, Throttle_1.default)((0, InSeries_1.default)((0, Logging_1.default)('task before'), function (next, i, timeout) { return setTimeout(next, timeout, null, i); }, (0, Logging_1.default)('task after '), function (next, i) {
             arr.push(i);
             next();
         }), 2);
-        InSeries_1.default(InParallel_1.default(function (next) { return task(next, 1, 100); }, function (next) { return task(next, 2, 0); }, function (next) { return task(next, 3, 100); }, function (next) { return task(next, 4, 0); }), function (next, res) {
+        (0, InSeries_1.default)((0, InParallel_1.default)(function (next) { return task(next, 1, 100); }, function (next) { return task(next, 2, 0); }, function (next) { return task(next, 3, 100); }, function (next) { return task(next, 4, 0); }), function (next, res) {
             chai_1.assert.deepEqual(arr, [2, 1, 3, 4]);
             next();
         })(done);

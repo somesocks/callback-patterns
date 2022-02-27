@@ -67,11 +67,11 @@ function InParallel() {
         return EMPTY;
     }
     for (var i = 0; i < handlers.length; i++) {
-        handlers[i] = _catchWrapper_1.default(handlers[i]);
+        handlers[i] = (0, _catchWrapper_1.default)(handlers[i]);
     }
     return function _inParallelInstance(_1) {
         var context = {
-            next: _onceWrapper_1.default(_1),
+            next: (0, _onceWrapper_1.default)(_1),
             handlers: handlers,
             results: Array(handlers.length + 1),
             finished: 0,
@@ -80,7 +80,7 @@ function InParallel() {
             // eslint-disable-next-line no-loop-func
             var onDone = _callback(context, i);
             var handler = handlers[i]
-                .bind(undefined, _onceWrapper_1.default(onDone));
+                .bind(undefined, (0, _onceWrapper_1.default)(onDone));
             arguments[0] = handler;
             arguments.length = arguments.length || 1;
             _defer_1.default.apply(undefined, arguments);
@@ -149,11 +149,11 @@ function Flatten() {
         return EMPTY;
     }
     for (var i = 0; i < handlers.length; i++) {
-        handlers[i] = _catchWrapper_1.default(handlers[i]);
+        handlers[i] = (0, _catchWrapper_1.default)(handlers[i]);
     }
     return function _inParallelFlattenInstance(_1) {
         var context = {
-            next: _onceWrapper_1.default(_1),
+            next: (0, _onceWrapper_1.default)(_1),
             handlers: handlers,
             results: Array(handlers.length + 1),
             finished: 0,
@@ -162,7 +162,7 @@ function Flatten() {
             // eslint-disable-next-line no-loop-func
             var onDone = _callbackWithFlatten(context, i);
             var handler = handlers[i]
-                .bind(undefined, _onceWrapper_1.default(onDone));
+                .bind(undefined, (0, _onceWrapper_1.default)(onDone));
             arguments[0] = handler;
             arguments.length = arguments.length || 1;
             _defer_1.default.apply(undefined, arguments);

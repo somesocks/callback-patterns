@@ -27,18 +27,18 @@ var InSeries_1 = __importDefault(require("./InSeries"));
 var While_1 = __importDefault(require("./While"));
 describe('While', function () {
     it('Function.length should be at least 1', function () {
-        if (While_1.default().length < 1) {
+        if ((0, While_1.default)().length < 1) {
             throw new Error();
         }
     });
     it('test with 0 handlers', function (done) {
-        While_1.default()(done);
+        (0, While_1.default)()(done);
     });
     it('test with null callback', function (done) {
-        While_1.default()();
+        (0, While_1.default)()();
         setTimeout(done, 16);
     });
-    it('works correctly', InSeries_1.default(function (next) { return next(null, 1); }, While_1.default(function (next, num) { return next(null, num < 10); }, function (next, num) { return next(null, num + 1); }), Assert_1.default(function () {
+    it('works correctly', (0, InSeries_1.default)(function (next) { return next(null, 1); }, (0, While_1.default)(function (next, num) { return next(null, num < 10); }, function (next, num) { return next(null, num + 1); }), (0, Assert_1.default)(function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -46,9 +46,9 @@ describe('While', function () {
         return args[0] === 10;
     }, 'Value not 10')));
     it('catches errors', function (done) {
-        While_1.default(function (next) { return next(null, true); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
+        (0, While_1.default)(function (next) { return next(null, true); }, function (next) { throw new Error('error'); })(function (err, res) { return done(err != null ? null : err); });
     });
-    it('deep loop works correctly', InSeries_1.default(function (next) { return next(null, 1); }, While_1.default(function (next, num) { return next(null, num < 100000); }, function (next, num) { return next(null, num + 1); }), Assert_1.default(function () {
+    it('deep loop works correctly', (0, InSeries_1.default)(function (next) { return next(null, 1); }, (0, While_1.default)(function (next, num) { return next(null, num < 100000); }, function (next, num) { return next(null, num + 1); }), (0, Assert_1.default)(function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];

@@ -38,11 +38,11 @@ function Race() {
         return EMPTY;
     }
     for (var i = 0; i < tasks.length; i++) {
-        tasks[i] = _catchWrapper_1.default(tasks[i]);
+        tasks[i] = (0, _catchWrapper_1.default)(tasks[i]);
         tasks[i] = _defer_1.default.bind(null, tasks[i]);
     }
     return function _raceInstance(_1) {
-        var next = _onceWrapper_1.default(_1);
+        var next = (0, _onceWrapper_1.default)(_1);
         var args = arguments;
         args[0] = next;
         for (var i = 0; i < tasks.length; i++) {
