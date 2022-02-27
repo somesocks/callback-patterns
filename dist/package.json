@@ -2,7 +2,6 @@
   "name": "callback-patterns",
   "version": "3.0.0",
   "description": "A collection of design patterns for callback-driven async code",
-  "main": "./index.js",
   "scripts": {},
   "repository": {
     "type": "git",

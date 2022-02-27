@@ -1,6 +1,7 @@
 
 # test cases
-*.mocha.tests.js
+*.tests.js
+*.tests.d.ts
 
 *.snippet.js
 *.snippet.ts
